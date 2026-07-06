@@ -1,0 +1,60 @@
+{
+  "name": "webctl",
+  "version": "0.1.0",
+  "description": "Control the web from your terminal. Sites as commands, browser automation, and a native MCP server for AI agents.",
+  "author": "Mehal Srivastava",
+  "license": "SEE LICENSE IN LICENSE",
+  "type": "module",
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "main": "dist/main.js",
+  "bin": {
+    "webctl": "dist/main.js"
+  },
+  "files": [
+    "dist/",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "dev": "tsx src/main.ts",
+    "build": "tsc --build && node -e \"require('fs').chmodSync('dist/main.js', 0o755)\"",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "prepublishOnly": "npm run build"
+  },
+  "keywords": [
+    "cli",
+    "browser",
+    "automation",
+    "mcp",
+    "agents",
+    "web"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MeHalogen/webctl.git"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.12.0",
+    "@mozilla/readability": "^0.6.0",
+    "commander": "^14.0.3",
+    "fast-xml-parser": "^5.2.0",
+    "jsdom": "^29.0.2",
+    "picocolors": "^1.1.1",
+    "turndown": "^7.2.2",
+    "turndown-plugin-gfm": "^1.0.2",
+    "ws": "^8.18.0",
+    "zod": "^3.24.0"
+  },
+  "devDependencies": {
+    "@types/jsdom": "^27.0.0",
+    "@types/node": "^25.5.2",
+    "@types/turndown": "^5.0.6",
+    "@types/ws": "^8.5.13",
+    "tsx": "^4.19.3",
+    "typescript": "^5.8.0",
+    "vitest": "^4.1.0"
+  }
+}
