@@ -1,4 +1,4 @@
-const USER_AGENT = 'sitewise/0.1 (+https://github.com/MeHalogen/sitewise)';
+const USER_AGENT = 'sitewise/1.0 (+https://github.com/MeHalogen/sitewise)';
 const DEFAULT_TIMEOUT_MS = 15_000;
 
 export class HttpError extends Error {

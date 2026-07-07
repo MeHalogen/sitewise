@@ -1,9 +1,9 @@
 {
   "name": "sitewise",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "Control the web from your terminal. Sites as commands, browser automation, and a native MCP server for AI agents.",
   "author": "Mehal Srivastava",
-  "license": "SEE LICENSE IN LICENSE",
+  "license": "MIT",
   "type": "module",
   "engines": {
     "node": ">=20.0.0"
@@ -15,6 +15,7 @@
   "files": [
     "dist/",
     "README.md",
+    "CHANGELOG.md",
     "LICENSE"
   ],
   "scripts": {
@@ -35,6 +36,10 @@
   "repository": {
     "type": "git",
     "url": "git+https://github.com/MeHalogen/sitewise.git"
+  },
+  "homepage": "https://github.com/MeHalogen/sitewise#readme",
+  "bugs": {
+    "url": "https://github.com/MeHalogen/sitewise/issues"
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.12.0",

@@ -21,7 +21,7 @@ import { render } from './output.js';
 import { readUrl } from './read.js';
 import { adapters, listCommands } from './registry.js';
 
-const VERSION = '0.1.0';
+const VERSION = '1.0.0';
 
 const program = new Command('sitewise')
   .description('Control the web from your terminal — sites as commands, browser automation, MCP for agents.')

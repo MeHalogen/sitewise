@@ -129,4 +129,4 @@ The agent gets tools for listing/running site commands (`run_command`), reading 
 
 ## License
 
-Proprietary — see [LICENSE](./LICENSE).
+[MIT](./LICENSE) © Mehal Srivastava
