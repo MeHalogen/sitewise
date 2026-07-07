@@ -28,31 +28,35 @@ webctl doctor
 
 ## Site commands
 
+**51 sites** and counting. Run `webctl list` to see them all with their mode.
+
 **API adapters** — instant, no browser, work anywhere (including CI):
 
-| Site | Commands |
-|------|----------|
-| `hackernews` | `top`, `new`, `search` |
-| `reddit` | `hot`, `top`, `new`, `search` |
-| `github` | `search`, `repo`, `releases` |
-| `arxiv` | `search`, `recent`, `abstract` |
-| `wikipedia` | `summary`, `search` |
-| `crypto` | `top`, `price` |
-| `weather` | `now` |
-| `rss` | `read` (any RSS/Atom feed) |
+| Category | Sites |
+|----------|-------|
+| Dev & packages | `github` `gitlab` `npm` `pypi` `crates` `stackoverflow` `devto` |
+| News & knowledge | `hackernews` `reddit` `arxiv` `wikipedia` `wikidata` `rss` |
+| Books & words | `openlibrary` `gutenberg` `dictionary` `urban` `words` `quotes` |
+| Media | `itunes` `tvmaze` `anime` `musicbrainz` `rickandmorty` `pokemon` |
+| Finance & crypto | `crypto` `coinpaprika` `coinlore` `defillama` `trending` `fx` |
+| Food, world & fun | `cocktail` `meal` `brewery` `weather` `ip` `nasa` `worldtime` `art` `trivia` `joke` `lyrics` |
 
 **Browser adapters** — run through your logged-in browser for sites with no usable API:
 
 | Site | Commands |
 |------|----------|
 | `youtube` | `search` |
-| `twitter` | `search`, `profile` |
-| `linkedin` | `search` |
-| `amazon` | `search` |
+| `githubtrending` | `today` |
 | `producthunt` | `today` |
 | `lobsters` | `hot` |
+| `steam` | `search` |
+| `imdb` | `search` |
+| `amazon` | `search` |
+| `twitter` | `search`, `profile` *(needs login)* |
+| `linkedin` | `search` *(needs login)* |
 
 ```bash
+webctl npm search "web framework" -l 5
 webctl github search "language:rust http server" -l 5
 webctl arxiv recent cs.AI
 webctl weather now "San Francisco"

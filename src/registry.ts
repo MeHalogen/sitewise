@@ -1,4 +1,6 @@
 import type { Adapter, AdapterCommand } from './adapter.js';
+import { loadApiAdapter } from './api/declarative.js';
+import { builtinApiAdapters } from './api/specs.js';
 import { createBrowserRunner } from './browser/adapter-runtime.js';
 import { loadBrowserAdapter } from './browser/declarative.js';
 import { arxiv } from './adapters/arxiv.js';
@@ -12,15 +14,15 @@ import { builtinBrowserAdapters } from './adapters/web/specs.js';
 import { loadUserAdapterSpecs } from './adapters/web/user-adapters.js';
 import { wikipedia } from './adapters/wikipedia.js';
 
-const apiAdapters: Adapter[] = [arxiv, crypto, github, hackernews, reddit, rss, weather, wikipedia];
+const codeAdapters: Adapter[] = [arxiv, crypto, github, hackernews, reddit, rss, weather, wikipedia];
 
 function buildAdapters(): Adapter[] {
   const runner = createBrowserRunner();
+  const apiAdapters = builtinApiAdapters.map(loadApiAdapter);
   const browserSpecs = [...builtinBrowserAdapters, ...loadUserAdapterSpecs()];
   const browserAdapters = browserSpecs.map((spec) => loadBrowserAdapter(spec, runner));
-  // API adapters first (they need no browser), then browser adapters, all sorted by name.
-  return [...apiAdapters.map((a) => ({ ...a, mode: 'api' as const })), ...browserAdapters].sort((a, b) =>
-    a.name.localeCompare(b.name),
+  return [...codeAdapters.map((a) => ({ ...a, mode: 'api' as const })), ...apiAdapters, ...browserAdapters].sort(
+    (a, b) => a.name.localeCompare(b.name),
   );
 }
 

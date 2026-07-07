@@ -1,5 +1,8 @@
 import type { Adapter, CommandContext, CommandResult } from '../adapter.js';
+import { resolveUrl } from '../template.js';
 import type { ListSpec } from './extract.js';
+
+export { resolveUrl };
 
 /** A single command in a declarative browser adapter. */
 export interface BrowserCommandSpec {
@@ -27,12 +30,6 @@ export interface BrowserAdapterSpec {
 
 /** Runs a resolved browser command against a real browser. Injected so the loader is testable. */
 export type BrowserRunner = (spec: BrowserCommandSpec, resolvedUrl: string) => Promise<Record<string, string>[]>;
-
-export function resolveUrl(template: string, args: string[]): string {
-  let url = template.replace(/\{query\}/g, encodeURIComponent(args.join(' ')));
-  url = url.replace(/\{(\d+)\}/g, (_, i) => encodeURIComponent(args[Number(i)] ?? ''));
-  return url;
-}
 
 function toResult(spec: BrowserCommandSpec, rows: Record<string, string>[]): CommandResult {
   const columns = spec.columns ?? Object.keys(spec.list.fields);

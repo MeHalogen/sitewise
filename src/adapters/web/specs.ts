@@ -141,6 +141,75 @@ export const builtinBrowserAdapters: BrowserAdapterSpec[] = [
     ],
   },
   {
+    name: 'githubtrending',
+    description: '[browser] GitHub — trending repositories',
+    commands: [
+      {
+        name: 'today',
+        description: "Today's trending repos",
+        url: 'https://github.com/trending',
+        waitFor: 'article.Box-row',
+        columns: ['repo', 'stars', 'description'],
+        list: {
+          selector: 'article.Box-row',
+          limit: 25,
+          fields: {
+            repo: { selector: 'h2 a' },
+            description: { selector: 'p' },
+            stars: { selector: 'a[href$="/stargazers"]' },
+            url: { selector: 'h2 a', attr: 'href', absolute: true },
+          },
+        },
+      },
+    ],
+  },
+  {
+    name: 'steam',
+    description: '[browser] Steam — store search',
+    commands: [
+      {
+        name: 'search',
+        description: 'Search the Steam store',
+        url: 'https://store.steampowered.com/search/?term={query}',
+        waitFor: '#search_resultsRows a',
+        args: [{ name: '<query>', description: 'game title' }],
+        columns: ['title', 'released', 'price'],
+        list: {
+          selector: '#search_resultsRows a',
+          limit: 25,
+          fields: {
+            title: { selector: '.title' },
+            released: { selector: '.search_released' },
+            price: { selector: '.discount_final_price' },
+            url: { attr: 'href', absolute: true },
+          },
+        },
+      },
+    ],
+  },
+  {
+    name: 'imdb',
+    description: '[browser] IMDb — title search',
+    commands: [
+      {
+        name: 'search',
+        description: 'Search movies and shows',
+        url: 'https://www.imdb.com/find/?q={query}&s=tt',
+        waitFor: 'a.ipc-metadata-list-summary-item__t',
+        args: [{ name: '<query>', description: 'title' }],
+        columns: ['title'],
+        list: {
+          selector: 'li.ipc-metadata-list-summary-item',
+          limit: 20,
+          fields: {
+            title: { selector: 'a.ipc-metadata-list-summary-item__t' },
+            url: { selector: 'a.ipc-metadata-list-summary-item__t', attr: 'href', absolute: true },
+          },
+        },
+      },
+    ],
+  },
+  {
     name: 'amazon',
     description: '[browser] Amazon — product search',
     commands: [
