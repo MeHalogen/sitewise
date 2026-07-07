@@ -74,8 +74,9 @@ program
       table: {
         columns: [
           { key: 'site', header: 'Site' },
+          { key: 'mode', header: 'Mode' },
           { key: 'command', header: 'Command' },
-          { key: 'description', header: 'Description', maxWidth: 80 },
+          { key: 'description', header: 'Description', maxWidth: 70 },
         ],
         rows,
       },

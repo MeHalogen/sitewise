@@ -28,6 +28,8 @@ webctl doctor
 
 ## Site commands
 
+**API adapters** — instant, no browser, work anywhere (including CI):
+
 | Site | Commands |
 |------|----------|
 | `hackernews` | `top`, `new`, `search` |
@@ -39,15 +41,54 @@ webctl doctor
 | `weather` | `now` |
 | `rss` | `read` (any RSS/Atom feed) |
 
+**Browser adapters** — run through your logged-in browser for sites with no usable API:
+
+| Site | Commands |
+|------|----------|
+| `youtube` | `search` |
+| `twitter` | `search`, `profile` |
+| `linkedin` | `search` |
+| `amazon` | `search` |
+| `producthunt` | `today` |
+| `lobsters` | `hot` |
+
 ```bash
 webctl github search "language:rust http server" -l 5
 webctl arxiv recent cs.AI
 webctl weather now "San Francisco"
-webctl rss read https://blog.rust-lang.org/feed.xml
-webctl list          # everything, including future adapters
+webctl youtube search "rust async" -l 5
+webctl twitter profile jack           # uses your logged-in X session
+webctl list                           # everything, with mode (api/browser)
 ```
 
 Every command supports `--json` for structured output.
+
+### Write your own adapter (no engine code)
+
+Browser adapters are just data: a URL, an optional wait selector, and a set of
+CSS field selectors. Drop a YAML file in `~/.webctl/adapters/` and it shows up
+in `webctl list`:
+
+```yaml
+name: news
+description: "[browser] Example news site"
+commands:
+  - name: top
+    description: Top headlines
+    url: https://example.com/news
+    waitFor: article.story
+    columns: [headline, section]
+    list:
+      selector: article.story
+      limit: 20
+      fields:
+        headline: { selector: h2 }
+        section: { selector: .section }
+        url: { selector: a, attr: href }
+```
+
+Because it's plain data, selectors that drift can be fixed in seconds — and AI
+agents can author new adapters through the MCP server.
 
 ## Read anything as Markdown
 

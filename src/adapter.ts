@@ -45,5 +45,7 @@ export interface AdapterCommand {
 export interface Adapter {
   name: string;
   description: string;
+  /** how the adapter fetches data — public API or a driven browser */
+  mode?: 'api' | 'browser';
   commands: AdapterCommand[];
 }
