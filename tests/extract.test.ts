@@ -73,4 +73,19 @@ describe('extractRows', () => {
   it('returns no rows when nothing matches', () => {
     expect(extractRows(doc('<p>nothing</p>'), spec)).toEqual([]);
   });
+
+  it('resolves relative hrefs to absolute when absolute:true', () => {
+    const document = new JSDOM('<a class="x" href="/watch?v=1">v</a>', {
+      url: 'https://www.youtube.com/results',
+    }).window.document;
+    const rows = extractRows(document, {
+      selector: 'a.x',
+      fields: {
+        raw: { attr: 'href' },
+        abs: { attr: 'href', absolute: true },
+      },
+    });
+    expect(rows[0].raw).toBe('/watch?v=1');
+    expect(rows[0].abs).toBe('https://www.youtube.com/watch?v=1');
+  });
 });

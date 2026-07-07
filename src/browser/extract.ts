@@ -12,6 +12,8 @@ export interface FieldSpec {
   selector?: string;
   /** read this attribute instead of text content (e.g. "href", "src") */
   attr?: string;
+  /** for href/src, return the browser-resolved absolute URL instead of the raw attribute */
+  absolute?: boolean;
 }
 
 export interface ListSpec {
@@ -35,7 +37,9 @@ export function extractRows(root: Document | Element, spec: ListSpec): Record<st
         continue;
       }
       if (f.attr) {
-        row[key] = el.getAttribute(f.attr) ?? '';
+        // For href/src, the DOM property is already resolved to an absolute URL.
+        const prop = f.absolute ? (el as unknown as Record<string, unknown>)[f.attr] : undefined;
+        row[key] = typeof prop === 'string' && prop ? prop : (el.getAttribute(f.attr) ?? '');
       } else {
         row[key] = (el.textContent ?? '').replace(/\s+/g, ' ').trim();
       }

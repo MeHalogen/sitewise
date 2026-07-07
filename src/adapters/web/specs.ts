@@ -15,18 +15,16 @@ export const builtinBrowserAdapters: BrowserAdapterSpec[] = [
     commands: [
       {
         name: 'today',
-        description: "Today's top products",
+        description: "Today's top products (ranked)",
         url: 'https://www.producthunt.com/',
-        waitFor: '[data-test^="post-item"]',
-        columns: ['name', 'tagline', 'votes'],
+        waitFor: '[data-test="homepage-section-today"] a[href^="/products/"]',
+        columns: ['name', 'url'],
         list: {
-          selector: '[data-test^="post-item"]',
+          selector: '[data-test="homepage-section-today"] a[href^="/products/"]',
           limit: 20,
           fields: {
-            name: { selector: '[data-test="post-name"]' },
-            tagline: { selector: '[data-test="post-name"] + *' },
-            votes: { selector: '[data-test="vote-button"]' },
-            url: { selector: 'a[data-test="post-name"]', attr: 'href' },
+            name: {},
+            url: { attr: 'href', absolute: true },
           },
         },
       },
@@ -72,7 +70,7 @@ export const builtinBrowserAdapters: BrowserAdapterSpec[] = [
           limit: 20,
           fields: {
             title: { selector: '#video-title' },
-            url: { selector: '#video-title', attr: 'href' },
+            url: { selector: '#video-title', attr: 'href', absolute: true },
             channel: { selector: 'ytd-channel-name a' },
             meta: { selector: '#metadata-line' },
           },
@@ -158,7 +156,7 @@ export const builtinBrowserAdapters: BrowserAdapterSpec[] = [
           limit: 20,
           fields: {
             title: { selector: 'h2 span' },
-            url: { selector: 'h2 a', attr: 'href' },
+            url: { selector: 'a.a-link-normal.s-no-outline', attr: 'href', absolute: true },
             price: { selector: '.a-price .a-offscreen' },
             rating: { selector: '.a-icon-alt' },
           },
