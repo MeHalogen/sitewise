@@ -23,9 +23,9 @@ async function pollForSelector(
 }
 
 /**
- * Drive the webctl-managed browser through one declarative command:
+ * Drive the sitewise-managed browser through one declarative command:
  * open a throwaway tab, navigate, wait, extract rows, and close the tab.
- * Reuses the persistent webctl profile so logged-in sessions apply.
+ * Reuses the persistent sitewise profile so logged-in sessions apply.
  */
 export function createBrowserRunner(port = DEFAULT_CDP_PORT): BrowserRunner {
   return async (spec: BrowserCommandSpec, url: string): Promise<Record<string, string>[]> => {

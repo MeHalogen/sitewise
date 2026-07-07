@@ -31,12 +31,12 @@ export function findChrome(): string | null {
 }
 
 export function profileDir(): string {
-  return path.join(homedir(), '.webctl', 'browser-profile');
+  return path.join(homedir(), '.sitewise', 'browser-profile');
 }
 
 /**
- * Launch a webctl-managed Chrome with CDP enabled on the given port.
- * Uses a dedicated profile under ~/.webctl so it never touches the user's main profile;
+ * Launch a sitewise-managed Chrome with CDP enabled on the given port.
+ * Uses a dedicated profile under ~/.sitewise so it never touches the user's main profile;
  * log in to sites there once and sessions persist across runs.
  */
 export async function launchChrome(port = DEFAULT_CDP_PORT): Promise<{ alreadyRunning: boolean; binary?: string }> {
@@ -44,7 +44,7 @@ export async function launchChrome(port = DEFAULT_CDP_PORT): Promise<{ alreadyRu
 
   const binary = findChrome();
   if (!binary) {
-    throw new Error('No Chrome/Chromium/Brave/Edge binary found. Install one or use `webctl browser attach --port`.');
+    throw new Error('No Chrome/Chromium/Brave/Edge binary found. Install one or use `sitewise browser attach --port`.');
   }
 
   const child = spawn(

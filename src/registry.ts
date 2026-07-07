@@ -36,7 +36,7 @@ export function findCommand(adapterName: string, commandName: string): AdapterCo
   return findAdapter(adapterName)?.commands.find((c) => c.name === commandName);
 }
 
-/** Flat listing of every command, for `webctl list` and the MCP server. */
+/** Flat listing of every command, for `sitewise list` and the MCP server. */
 export function listCommands(): { site: string; mode: string; command: string; description: string }[] {
   return adapters.flatMap((a) =>
     a.commands.map((c) => ({ site: a.name, mode: a.mode ?? 'api', command: c.name, description: c.description })),

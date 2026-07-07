@@ -23,20 +23,20 @@ function asText(text: string) {
   return { content: [{ type: 'text' as const, text }] };
 }
 
-/** Run webctl as an MCP server over stdio, exposing adapters + browser control as tools. */
+/** Run sitewise as an MCP server over stdio, exposing adapters + browser control as tools. */
 export async function runMcpServer(version: string): Promise<void> {
-  const server = new McpServer({ name: 'webctl', version });
+  const server = new McpServer({ name: 'sitewise', version });
 
   server.tool(
     'list_commands',
-    'List every available site command (site, command, description). Call this first to discover what webctl can do.',
+    'List every available site command (site, command, description). Call this first to discover what sitewise can do.',
     {},
     async () => asText(JSON.stringify(listCommands(), null, 2)),
   );
 
   server.tool(
     'run_command',
-    'Run a webctl site command, e.g. site="hackernews" command="top". Returns structured JSON.',
+    'Run a sitewise site command, e.g. site="hackernews" command="top". Returns structured JSON.',
     {
       site: z.string().describe('adapter name, e.g. hackernews, reddit, github'),
       command: z.string().describe('command name, e.g. top, search'),
@@ -70,7 +70,7 @@ export async function runMcpServer(version: string): Promise<void> {
 
   const tab = z.string().optional().describe('tab to target: 0-based index or URL/title substring; defaults to first tab');
 
-  server.tool('browser_start', 'Launch (or confirm) the webctl-managed Chrome with DevTools control enabled.', {}, async () =>
+  server.tool('browser_start', 'Launch (or confirm) the sitewise-managed Chrome with DevTools control enabled.', {}, async () =>
     asContent(await browserStart()),
   );
   server.tool('browser_tabs', 'List open browser tabs with their indexes.', {}, async () =>

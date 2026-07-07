@@ -1,5 +1,5 @@
 {
-  "name": "webctl",
+  "name": "sitewise",
   "version": "0.1.0",
   "description": "Control the web from your terminal. Sites as commands, browser automation, and a native MCP server for AI agents.",
   "author": "Mehal Srivastava",
@@ -10,7 +10,7 @@
   },
   "main": "dist/main.js",
   "bin": {
-    "webctl": "dist/main.js"
+    "sitewise": "dist/main.js"
   },
   "files": [
     "dist/",
@@ -34,7 +34,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/MeHalogen/webctl.git"
+    "url": "git+https://github.com/MeHalogen/sitewise.git"
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.12.0",

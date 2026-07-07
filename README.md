@@ -1,20 +1,20 @@
-# webctl
+# sitewise
 
 > **Control the web from your terminal.**
 > Sites as commands. Browser automation without an extension. A native MCP server for AI agents.
 
 ```bash
-webctl hackernews top --limit 5
-webctl reddit hot programming
-webctl read https://any-article.com --json
-webctl browser goto github.com
+sitewise hackernews top --limit 5
+sitewise reddit hot programming
+sitewise read https://any-article.com --json
+sitewise browser goto github.com
 ```
 
-## Why webctl
+## Why sitewise
 
-- **Zero setup.** `npm i -g webctl` and the core commands work immediately — no extension, no daemon, no account. Works on servers and in CI.
-- **Agent-native.** `webctl mcp` runs a full MCP server over stdio. Add it to Claude Code or Cursor and your agent gets site commands, article extraction, and browser control as first-class tools.
-- **Real browser control when you need it.** `webctl browser` drives a Chrome-family browser directly over the DevTools protocol — navigate, click, fill, extract, screenshot — using a dedicated profile where your logins persist.
+- **Zero setup.** `npm i -g sitewise` and the core commands work immediately — no extension, no daemon, no account. Works on servers and in CI.
+- **Agent-native.** `sitewise mcp` runs a full MCP server over stdio. Add it to Claude Code or Cursor and your agent gets site commands, article extraction, and browser control as first-class tools.
+- **Real browser control when you need it.** `sitewise browser` drives a Chrome-family browser directly over the DevTools protocol — navigate, click, fill, extract, screenshot — using a dedicated profile where your logins persist.
 - **Human and machine output.** Beautiful tables in a terminal; clean JSON with `--json` or whenever output is piped.
 
 ## Install
@@ -22,13 +22,13 @@ webctl browser goto github.com
 Requires Node.js >= 20.
 
 ```bash
-npm install -g webctl
-webctl doctor
+npm install -g sitewise
+sitewise doctor
 ```
 
 ## Site commands
 
-**51 sites** and counting. Run `webctl list` to see them all with their mode.
+**51 sites** and counting. Run `sitewise list` to see them all with their mode.
 
 **API adapters** — instant, no browser, work anywhere (including CI):
 
@@ -56,13 +56,13 @@ webctl doctor
 | `linkedin` | `search` *(needs login)* |
 
 ```bash
-webctl npm search "web framework" -l 5
-webctl github search "language:rust http server" -l 5
-webctl arxiv recent cs.AI
-webctl weather now "San Francisco"
-webctl youtube search "rust async" -l 5
-webctl twitter profile jack           # uses your logged-in X session
-webctl list                           # everything, with mode (api/browser)
+sitewise npm search "web framework" -l 5
+sitewise github search "language:rust http server" -l 5
+sitewise arxiv recent cs.AI
+sitewise weather now "San Francisco"
+sitewise youtube search "rust async" -l 5
+sitewise twitter profile jack           # uses your logged-in X session
+sitewise list                           # everything, with mode (api/browser)
 ```
 
 Every command supports `--json` for structured output.
@@ -70,8 +70,8 @@ Every command supports `--json` for structured output.
 ### Write your own adapter (no engine code)
 
 Browser adapters are just data: a URL, an optional wait selector, and a set of
-CSS field selectors. Drop a YAML file in `~/.webctl/adapters/` and it shows up
-in `webctl list`:
+CSS field selectors. Drop a YAML file in `~/.sitewise/adapters/` and it shows up
+in `sitewise list`:
 
 ```yaml
 name: news
@@ -97,7 +97,7 @@ agents can author new adapters through the MCP server.
 ## Read anything as Markdown
 
 ```bash
-webctl read https://example.com/some-article
+sitewise read https://example.com/some-article
 ```
 
 Extracts the main article (title, byline, body) and prints clean Markdown. Great for piping into an LLM.
@@ -105,24 +105,24 @@ Extracts the main article (title, byline, body) and prints clean Markdown. Great
 ## Browser control
 
 ```bash
-webctl browser start                 # launches Chrome with a dedicated webctl profile
-webctl browser goto news.ycombinator.com
-webctl browser text                  # visible text of the page
-webctl browser read                  # main article as Markdown
-webctl browser click 'a.morelink'
-webctl browser fill 'input[name=q]' "query"
-webctl browser screenshot -o page.png
-webctl browser tabs                  # list tabs; target one with -t <index|substring>
+sitewise browser start                 # launches Chrome with a dedicated sitewise profile
+sitewise browser goto news.ycombinator.com
+sitewise browser text                  # visible text of the page
+sitewise browser read                  # main article as Markdown
+sitewise browser click 'a.morelink'
+sitewise browser fill 'input[name=q]' "query"
+sitewise browser screenshot -o page.png
+sitewise browser tabs                  # list tabs; target one with -t <index|substring>
 ```
 
-Log in to sites once in the webctl browser window — sessions persist in `~/.webctl/browser-profile`.
+Log in to sites once in the sitewise browser window — sessions persist in `~/.sitewise/browser-profile`.
 
 ## For AI agents (MCP)
 
-Add webctl as an MCP server:
+Add sitewise as an MCP server:
 
 ```bash
-claude mcp add webctl -- webctl mcp
+claude mcp add sitewise -- sitewise mcp
 ```
 
 The agent gets tools for listing/running site commands (`run_command`), reading URLs as Markdown (`read_url`), and full browser control (`browser_goto`, `browser_click`, `browser_fill`, `browser_text`, `browser_read`, `browser_eval`).

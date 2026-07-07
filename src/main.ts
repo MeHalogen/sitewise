@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-/** webctl — control the web from your terminal. */
+/** sitewise — control the web from your terminal. */
 import { Command } from 'commander';
 import pc from 'picocolors';
 import type { Adapter, AdapterCommand } from './adapter.js';
@@ -23,7 +23,7 @@ import { adapters, listCommands } from './registry.js';
 
 const VERSION = '0.1.0';
 
-const program = new Command('webctl')
+const program = new Command('sitewise')
   .description('Control the web from your terminal — sites as commands, browser automation, MCP for agents.')
   .version(VERSION)
   .option('-j, --json', 'output machine-readable JSON')
@@ -103,7 +103,7 @@ program
 
 program
   .command('doctor')
-  .description('Check that webctl is healthy (node, network, browser)')
+  .description('Check that sitewise is healthy (node, network, browser)')
   .action(async () => {
     const result = await runDoctor();
     if (wantJson()) output({ data: result });
@@ -113,7 +113,7 @@ program
 
 program
   .command('mcp')
-  .description('Run webctl as an MCP server over stdio (for Claude Code, Cursor, and other agents)')
+  .description('Run sitewise as an MCP server over stdio (for Claude Code, Cursor, and other agents)')
   .action(async () => {
     const { runMcpServer } = await import('./mcp/server.js');
     await runMcpServer(VERSION);
@@ -142,7 +142,7 @@ const browserAction =
 
 browser
   .command('start')
-  .description('Launch a webctl-managed Chrome (dedicated profile, sessions persist)')
+  .description('Launch a sitewise-managed Chrome (dedicated profile, sessions persist)')
   .action(browserAction(() => browserStart(Number(browser.opts().port))));
 browser.command('tabs').description('List open tabs').action(browserAction(() => browserTabs(browserOpts())));
 browser

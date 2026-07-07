@@ -5,7 +5,7 @@ import yaml from 'js-yaml';
 import type { BrowserAdapterSpec } from '../../browser/declarative.js';
 
 export function userAdapterDir(): string {
-  return path.join(homedir(), '.webctl', 'adapters');
+  return path.join(homedir(), '.sitewise', 'adapters');
 }
 
 function isValidSpec(spec: unknown): spec is BrowserAdapterSpec {
@@ -16,7 +16,7 @@ function isValidSpec(spec: unknown): spec is BrowserAdapterSpec {
 
 /**
  * Load user/community/agent-authored browser adapters from
- * ~/.webctl/adapters/*.yaml. Malformed files are skipped, not fatal, so one
+ * ~/.sitewise/adapters/*.yaml. Malformed files are skipped, not fatal, so one
  * bad adapter never takes down the CLI.
  */
 export function loadUserAdapterSpecs(): BrowserAdapterSpec[] {
@@ -31,9 +31,9 @@ export function loadUserAdapterSpecs(): BrowserAdapterSpec[] {
     try {
       const doc = yaml.load(readFileSync(path.join(userAdapterDir(), file), 'utf8'));
       if (isValidSpec(doc)) specs.push(doc);
-      else process.stderr.write(`webctl: skipping invalid adapter ${file}\n`);
+      else process.stderr.write(`sitewise: skipping invalid adapter ${file}\n`);
     } catch (err) {
-      process.stderr.write(`webctl: failed to load adapter ${file}: ${(err as Error).message}\n`);
+      process.stderr.write(`sitewise: failed to load adapter ${file}: ${(err as Error).message}\n`);
     }
   }
   return specs;

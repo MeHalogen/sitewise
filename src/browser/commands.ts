@@ -43,7 +43,7 @@ export async function browserStart(port?: number): Promise<CommandResult> {
   const res = await launchChrome(port ?? DEFAULT_CDP_PORT);
   const text = res.alreadyRunning
     ? 'Browser already running with CDP enabled.'
-    : `Launched ${res.binary} with a dedicated webctl profile. Log in to sites there; sessions persist.`;
+    : `Launched ${res.binary} with a dedicated sitewise profile. Log in to sites there; sessions persist.`;
   return { data: res, text };
 }
 

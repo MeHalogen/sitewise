@@ -37,7 +37,7 @@ export async function runDoctor(): Promise<{ checks: Check[]; healthy: boolean }
   checks.push({
     name: 'Browser control endpoint',
     ok: cdp,
-    detail: cdp ? 'CDP responding on port 9222' : 'not running — start with `webctl browser start`',
+    detail: cdp ? 'CDP responding on port 9222' : 'not running — start with `sitewise browser start`',
   });
 
   return { checks, healthy: checks.every((c) => c.ok || c.name.startsWith('Browser')) };
@@ -48,6 +48,6 @@ export function renderDoctor(result: { checks: Check[]; healthy: boolean }): str
     (c) => `${c.ok ? pc.green('✓') : pc.yellow('✗')} ${pc.bold(c.name)} ${pc.dim('— ' + c.detail)}`,
   );
   lines.push('');
-  lines.push(result.healthy ? pc.green('webctl is ready.') : pc.yellow('Some checks failed — see above.'));
+  lines.push(result.healthy ? pc.green('sitewise is ready.') : pc.yellow('Some checks failed — see above.'));
   return lines.join('\n');
 }

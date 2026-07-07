@@ -4,9 +4,9 @@ import type { BrowserAdapterSpec } from '../../browser/declarative.js';
  * Built-in browser adapters, shipped as declarative specs. Each command
  * navigates a URL, optionally waits for a selector, then extracts rows.
  *
- * Selectors on large sites drift over time; `webctl <site> <cmd>` re-reads the
+ * Selectors on large sites drift over time; `sitewise <site> <cmd>` re-reads the
  * live DOM every run, and specs are plain data so they (or user overrides in
- * ~/.webctl/adapters/*.yaml) can be fixed without touching engine code.
+ * ~/.sitewise/adapters/*.yaml) can be fixed without touching engine code.
  */
 export const builtinBrowserAdapters: BrowserAdapterSpec[] = [
   {
