@@ -1,77 +1,156 @@
 # sitewise
 
 > **Control the web from your terminal.**
-> Sites as commands. Browser automation without an extension. A native MCP server for AI agents.
+> Turn any website into a deterministic command — for you, and for your AI agents.
+
+[![npm version](https://img.shields.io/npm/v/sitewise?color=cb3837&logo=npm)](https://www.npmjs.com/package/sitewise)
+[![license](https://img.shields.io/npm/l/sitewise?color=blue)](./LICENSE)
+[![node](https://img.shields.io/node/v/sitewise)](https://nodejs.org)
+
+![sitewise demo](https://raw.githubusercontent.com/MeHalogen/sitewise/main/demo.gif)
 
 ```bash
-sitewise hackernews top --limit 5
-sitewise reddit hot programming
-sitewise read https://any-article.com --json
-sitewise browser goto github.com
+sitewise hackernews top
+sitewise github search "language:rust cli"
+sitewise weather now "San Francisco"
+sitewise read https://some-article.com
 ```
 
-## Why sitewise
+---
 
-- **Zero setup.** `npm i -g sitewise` and the core commands work immediately — no extension, no daemon, no account. Works on servers and in CI.
-- **Agent-native.** `sitewise mcp` runs a full MCP server over stdio. Add it to Claude Code or Cursor and your agent gets site commands, article extraction, and browser control as first-class tools.
-- **Real browser control when you need it.** `sitewise browser` drives a Chrome-family browser directly over the DevTools protocol — navigate, click, fill, extract, screenshot — using a dedicated profile where your logins persist.
-- **Human and machine output.** Beautiful tables in a terminal; clean JSON with `--json` or whenever output is piped.
+## What is sitewise?
+
+sitewise gives you one clean surface over the web — three ways:
+
+1. **Site commands** — 40+ sites exposed as commands over their public APIs. No keys, no browser, no setup. `sitewise hackernews top` just works, even on a server or in CI.
+2. **Browser automation** — drive a real Chrome-family browser over the DevTools Protocol (no extension). Navigate, click, fill, extract, screenshot — using a persistent profile where your logins stick. This also powers adapters for sites with no usable API.
+3. **A native MCP server** — `sitewise mcp` exposes everything above as tools for AI agents (Claude Code, Cursor, or any MCP client), so your agent gets **structured, deterministic** web access instead of screen-scraping.
+
+Human output is pretty tables; machine output is clean JSON with `--json` (or automatically when piped).
+
+---
 
 ## Install
 
-Requires Node.js >= 20.
+Requires **Node.js ≥ 20**.
 
 ```bash
 npm install -g sitewise
-sitewise doctor
+sitewise doctor      # verifies node, network, and browser
 ```
+
+## Quick start
+
+```bash
+sitewise list                          # every site + command, with its mode
+sitewise hackernews top --limit 5
+sitewise npm search "web framework"
+sitewise crypto top
+sitewise read https://example.com/post # any article → clean Markdown
+```
+
+Every command takes `--json` for structured output and `--limit <n>` where it applies.
+
+---
 
 ## Site commands
 
-**51 sites** and counting. Run `sitewise list` to see them all with their mode.
+**51 sites, 65 commands.** Two kinds:
 
-**API adapters** — instant, no browser, work anywhere (including CI):
+### API adapters — instant, no browser, work anywhere
 
 | Category | Sites |
 |----------|-------|
-| Dev & packages | `github` `gitlab` `npm` `pypi` `crates` `stackoverflow` `devto` |
-| News & knowledge | `hackernews` `reddit` `arxiv` `wikipedia` `wikidata` `rss` |
-| Books & words | `openlibrary` `gutenberg` `dictionary` `urban` `words` `quotes` |
-| Media | `itunes` `tvmaze` `anime` `musicbrainz` `rickandmorty` `pokemon` |
-| Finance & crypto | `crypto` `coinpaprika` `coinlore` `defillama` `trending` `fx` |
-| Food, world & fun | `cocktail` `meal` `brewery` `weather` `ip` `nasa` `worldtime` `art` `trivia` `joke` `lyrics` |
+| **Dev & packages** | `github` · `gitlab` · `npm` · `pypi` · `crates` · `stackoverflow` · `devto` |
+| **News & knowledge** | `hackernews` · `reddit` · `arxiv` · `wikipedia` · `wikidata` · `rss` |
+| **Books & words** | `openlibrary` · `gutenberg` · `dictionary` · `urban` · `words` · `quotes` |
+| **Media** | `itunes` · `tvmaze` · `anime` · `musicbrainz` · `rickandmorty` · `pokemon` |
+| **Finance & crypto** | `crypto` · `coinpaprika` · `coinlore` · `defillama` · `trending` · `fx` |
+| **Food, world & fun** | `cocktail` · `meal` · `brewery` · `weather` · `ip` · `nasa` · `worldtime` · `art` · `trivia` · `joke` · `lyrics` |
 
-**Browser adapters** — run through your logged-in browser for sites with no usable API:
+### Browser adapters — run through your (logged-in) browser
 
-| Site | Commands |
-|------|----------|
-| `youtube` | `search` |
-| `githubtrending` | `today` |
-| `producthunt` | `today` |
-| `lobsters` | `hot` |
-| `steam` | `search` |
-| `imdb` | `search` |
-| `amazon` | `search` |
-| `twitter` | `search`, `profile` *(needs login)* |
-| `linkedin` | `search` *(needs login)* |
+| Site | Commands | Login |
+|------|----------|-------|
+| `youtube` | `search` | no |
+| `githubtrending` | `today` | no |
+| `producthunt` | `today` | no |
+| `lobsters` | `hot` | no |
+| `steam` | `search` | no |
+| `imdb` | `search` | no |
+| `amazon` | `search` | no |
+| `twitter` | `search`, `profile` | **yes** |
+| `linkedin` | `search` | **yes** |
 
 ```bash
-sitewise npm search "web framework" -l 5
-sitewise github search "language:rust http server" -l 5
 sitewise arxiv recent cs.AI
-sitewise weather now "San Francisco"
-sitewise youtube search "rust async" -l 5
-sitewise twitter profile jack           # uses your logged-in X session
-sitewise list                           # everything, with mode (api/browser)
+sitewise stackoverflow search "async rust"
+sitewise youtube search "svelte 5" --limit 5
+sitewise twitter profile jack          # uses your logged-in X session
 ```
 
-Every command supports `--json` for structured output.
+Run `sitewise list` to see them all, each tagged `api` or `browser`.
 
-### Write your own adapter (no engine code)
+---
 
-Browser adapters are just data: a URL, an optional wait selector, and a set of
-CSS field selectors. Drop a YAML file in `~/.sitewise/adapters/` and it shows up
-in `sitewise list`:
+## Read any page as Markdown
+
+```bash
+sitewise read https://example.com/some-article
+```
+
+Extracts the main article (title, byline, body) and prints clean Markdown — perfect for piping into an LLM or saving notes. Add `--json` for structured fields.
+
+---
+
+## Browser control
+
+sitewise launches and drives a dedicated Chrome-family browser (Chrome, Chromium, Brave, or Edge) over the DevTools Protocol. It uses its own profile at `~/.sitewise/browser-profile`, so it never touches your everyday browser — **log into a site once there and the session persists** across runs.
+
+```bash
+sitewise browser start                 # launch the managed browser
+sitewise browser goto news.ycombinator.com
+sitewise browser text                  # visible text of the page
+sitewise browser read                  # main article as Markdown
+sitewise browser click 'a.morelink'
+sitewise browser fill 'input[name=q]' "query"
+sitewise browser eval "document.title"
+sitewise browser screenshot -o page.png
+sitewise browser tabs                  # list tabs; target one with -t <index|substring>
+```
+
+---
+
+## For AI agents (MCP)
+
+sitewise is an MCP server out of the box. Add it to Claude Code:
+
+```bash
+claude mcp add -s user sitewise -- sitewise mcp
+```
+
+(Or point any MCP client at the command `sitewise mcp`.)
+
+Your agent then gets these tools:
+
+| Tool | What it does |
+|------|--------------|
+| `list_commands` | discover every available site command |
+| `run_command` | run any site command, returns structured JSON |
+| `read_url` | fetch a URL as clean Markdown |
+| `browser_start` / `browser_tabs` | launch and inspect the browser |
+| `browser_goto` / `browser_read` / `browser_text` | navigate and extract |
+| `browser_click` / `browser_fill` / `browser_eval` | interact with pages |
+
+The API tools work immediately with no browser; the `browser_*` tools launch the managed browser on first use.
+
+---
+
+## Write your own adapter — no code
+
+Adapters are **plain data**. Drop a YAML file into `~/.sitewise/adapters/` and it shows up in `sitewise list`.
+
+A browser adapter is a URL, an optional wait selector, and CSS field selectors:
 
 ```yaml
 name: news
@@ -88,44 +167,53 @@ commands:
       fields:
         headline: { selector: h2 }
         section: { selector: .section }
-        url: { selector: a, attr: href }
+        url: { selector: a, attr: href, absolute: true }
 ```
 
-Because it's plain data, selectors that drift can be fixed in seconds — and AI
-agents can author new adapters through the MCP server.
+- `{query}` in a `url` is replaced by the command's arguments; `{0}`, `{1}` are positional.
+- `attr` reads an attribute (e.g. `href`) instead of text; `absolute: true` resolves relative URLs.
+- No `selector` on a field means "use the matched item element itself."
 
-## Read anything as Markdown
+Because adapters are data, a selector that drifts is a one-line fix — and an AI agent can author new adapters through the MCP server.
+
+---
+
+## Scripting & JSON
+
+Output switches to JSON automatically when piped, or force it with `--json`:
 
 ```bash
-sitewise read https://example.com/some-article
+sitewise crypto top --json | jq '.[0].symbol'
+sitewise github search "stars:>10000 language:go" --json > repos.json
 ```
 
-Extracts the main article (title, byline, body) and prints clean Markdown. Great for piping into an LLM.
+---
 
-## Browser control
+## How it works
+
+Two small, declarative engines share one output layer:
+
+- **API engine** — fetches a no-key JSON endpoint and maps it to rows via dot-paths.
+- **Browser engine** — connects to the DevTools Protocol, opens a throwaway tab, waits for content, and runs a dependency-free extractor injected into the page (the same extractor is unit-tested against real DOM).
+
+Adding a site touches **data, not engine code** — which is why the library grows fast and stays maintainable.
+
+---
+
+## Development
 
 ```bash
-sitewise browser start                 # launches Chrome with a dedicated sitewise profile
-sitewise browser goto news.ycombinator.com
-sitewise browser text                  # visible text of the page
-sitewise browser read                  # main article as Markdown
-sitewise browser click 'a.morelink'
-sitewise browser fill 'input[name=q]' "query"
-sitewise browser screenshot -o page.png
-sitewise browser tabs                  # list tabs; target one with -t <index|substring>
+git clone https://github.com/MeHalogen/sitewise
+cd sitewise
+npm install
+npm run dev -- hackernews top     # run from source
+npm test                          # unit tests
+npm run build                     # compile to dist/
 ```
 
-Log in to sites once in the sitewise browser window — sessions persist in `~/.sitewise/browser-profile`.
+Contributions welcome — new adapters are especially easy (see above).
 
-## For AI agents (MCP)
-
-Add sitewise as an MCP server:
-
-```bash
-claude mcp add sitewise -- sitewise mcp
-```
-
-The agent gets tools for listing/running site commands (`run_command`), reading URLs as Markdown (`read_url`), and full browser control (`browser_goto`, `browser_click`, `browser_fill`, `browser_text`, `browser_read`, `browser_eval`).
+---
 
 ## License
 
