@@ -42,6 +42,7 @@
     "url": "https://github.com/MeHalogen/sitewise/issues"
   },
   "dependencies": {
+    "@anthropic-ai/sdk": "^0.68.0",
     "@modelcontextprotocol/sdk": "^1.12.0",
     "@mozilla/readability": "^0.6.0",
     "commander": "^14.0.3",

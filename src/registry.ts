@@ -2,7 +2,7 @@ import type { Adapter, AdapterCommand } from './adapter.js';
 import { loadApiAdapter } from './api/declarative.js';
 import { builtinApiAdapters } from './api/specs.js';
 import { createBrowserRunner } from './browser/adapter-runtime.js';
-import { loadBrowserAdapter } from './browser/declarative.js';
+import { loadBrowserAdapter, type BrowserAdapterSpec } from './browser/declarative.js';
 import { arxiv } from './adapters/arxiv.js';
 import { crypto } from './adapters/crypto.js';
 import { github } from './adapters/github.js';
@@ -16,11 +16,23 @@ import { wikipedia } from './adapters/wikipedia.js';
 
 const codeAdapters: Adapter[] = [arxiv, crypto, github, hackernews, reddit, rss, weather, wikipedia];
 
+/** Built-in specs merged with user overrides (~/.sitewise/adapters/*.yaml win by name). */
+export function browserSpecs(): Map<string, BrowserAdapterSpec> {
+  const byName = new Map<string, BrowserAdapterSpec>();
+  for (const spec of builtinBrowserAdapters) byName.set(spec.name, spec);
+  for (const spec of loadUserAdapterSpecs()) byName.set(spec.name, spec); // override wins
+  return byName;
+}
+
+/** The current (possibly healed) spec for a browser adapter, by name. */
+export function findBrowserSpec(name: string): BrowserAdapterSpec | undefined {
+  return browserSpecs().get(name);
+}
+
 function buildAdapters(): Adapter[] {
   const runner = createBrowserRunner();
   const apiAdapters = builtinApiAdapters.map(loadApiAdapter);
-  const browserSpecs = [...builtinBrowserAdapters, ...loadUserAdapterSpecs()];
-  const browserAdapters = browserSpecs.map((spec) => loadBrowserAdapter(spec, runner));
+  const browserAdapters = [...browserSpecs().values()].map((spec) => loadBrowserAdapter(spec, runner));
   return [...codeAdapters.map((a) => ({ ...a, mode: 'api' as const })), ...apiAdapters, ...browserAdapters].sort(
     (a, b) => a.name.localeCompare(b.name),
   );

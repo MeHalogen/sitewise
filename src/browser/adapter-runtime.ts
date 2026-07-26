@@ -22,35 +22,52 @@ async function pollForSelector(
   throw new Error(`Timed out waiting for "${selector}" to appear.`);
 }
 
+export interface BrowserRunDetail {
+  rows: Record<string, string>[];
+  /** full page HTML — used by self-healing when rows come back empty */
+  html: string;
+}
+
 /**
  * Drive the sitewise-managed browser through one declarative command:
- * open a throwaway tab, navigate, wait, extract rows, and close the tab.
- * Reuses the persistent sitewise profile so logged-in sessions apply.
+ * open a throwaway tab, navigate, wait, extract rows (and capture HTML), then
+ * close the tab. Reuses the persistent sitewise profile so logins apply.
  */
-export function createBrowserRunner(port = DEFAULT_CDP_PORT): BrowserRunner {
-  return async (spec: BrowserCommandSpec, url: string): Promise<Record<string, string>[]> => {
-    await launchChrome(port);
-    const session = await CdpSession.connect(await getBrowserWsUrl(port));
-    let targetId: string | undefined;
-    try {
-      const created = await session.send<{ targetId: string }>('Target.createTarget', { url: 'about:blank' });
-      targetId = created.targetId;
-      const sessionId = await session.attachToTarget(targetId);
+export async function runBrowserCommandDetailed(
+  spec: BrowserCommandSpec,
+  url: string,
+  port = DEFAULT_CDP_PORT,
+): Promise<BrowserRunDetail> {
+  await launchChrome(port);
+  const session = await CdpSession.connect(await getBrowserWsUrl(port));
+  let targetId: string | undefined;
+  try {
+    const created = await session.send<{ targetId: string }>('Target.createTarget', { url: 'about:blank' });
+    targetId = created.targetId;
+    const sessionId = await session.attachToTarget(targetId);
 
-      await session.send('Page.enable', {}, sessionId);
-      await session.send('Runtime.enable', {}, sessionId);
-      const loaded = session.waitForEvent('Page.loadEventFired', NAV_TIMEOUT_MS, sessionId).catch(() => {});
-      await session.send('Page.navigate', { url }, sessionId);
-      await loaded;
+    await session.send('Page.enable', {}, sessionId);
+    await session.send('Runtime.enable', {}, sessionId);
+    const loaded = session.waitForEvent('Page.loadEventFired', NAV_TIMEOUT_MS, sessionId).catch(() => {});
+    await session.send('Page.navigate', { url }, sessionId);
+    await loaded;
 
-      if (spec.waitFor) await pollForSelector(session, sessionId, spec.waitFor, WAIT_SELECTOR_TIMEOUT_MS);
-
-      // Inject the shared extractor so tests (jsdom) and prod (page) run identical logic.
-      const expr = `(${extractRows.toString()})(document, ${JSON.stringify(spec.list)})`;
-      return await evaluate<Record<string, string>[]>(session, expr, sessionId);
-    } finally {
-      if (targetId) await session.send('Target.closeTarget', { targetId }).catch(() => {});
-      session.close();
+    if (spec.waitFor) {
+      // A stale waitFor selector shouldn't block healing — swallow the timeout.
+      await pollForSelector(session, sessionId, spec.waitFor, WAIT_SELECTOR_TIMEOUT_MS).catch(() => {});
     }
-  };
+
+    // Inject the shared extractor so tests (jsdom) and prod (page) run identical logic.
+    const expr = `(${extractRows.toString()})(document, ${JSON.stringify(spec.list)})`;
+    const rows = await evaluate<Record<string, string>[]>(session, expr, sessionId);
+    const html = await evaluate<string>(session, 'document.documentElement.outerHTML', sessionId);
+    return { rows, html };
+  } finally {
+    if (targetId) await session.send('Target.closeTarget', { targetId }).catch(() => {});
+    session.close();
+  }
+}
+
+export function createBrowserRunner(port = DEFAULT_CDP_PORT): BrowserRunner {
+  return async (spec: BrowserCommandSpec, url: string) => (await runBrowserCommandDetailed(spec, url, port)).rows;
 }

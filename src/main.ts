@@ -16,12 +16,17 @@ import {
   browserText,
   type BrowserOpts,
 } from './browser/commands.js';
+import { runBrowserCommandDetailed } from './browser/adapter-runtime.js';
+import { resolveUrl } from './browser/declarative.js';
+import { countUsableRows, healAgainstHtml } from './browser/heal.js';
+import { applyHeal, persistSpec } from './browser/heal-store.js';
 import { loadConfig, saveConfig } from './config.js';
 import { defaultPanels, panelLabel, renderDash } from './dash.js';
 import { renderDoctor, runDoctor } from './doctor.js';
+import { defaultLLM, llmAvailable } from './llm.js';
 import { render } from './output.js';
 import { readUrl } from './read.js';
-import { adapters, listCommands } from './registry.js';
+import { adapters, findBrowserSpec, listCommands } from './registry.js';
 import { parseEvery, runWatchesOnce, watchLabel } from './watch.js';
 
 const VERSION = '1.1.0';
@@ -273,6 +278,48 @@ watch
       const lines = await runWatchesOnce({ defaultEveryMs: tick });
       for (const line of lines) console.log(pc.dim(`${new Date().toLocaleTimeString()}  ${line}`));
       await new Promise((r) => setTimeout(r, tick));
+    }
+  });
+
+// ---- heal: repair a browser adapter whose selectors broke ----
+program
+  .command('heal')
+  .description('Self-heal a browser adapter: if it returns no data, an LLM proposes new selectors, verifies them, and saves the fix')
+  .argument('<site>', 'browser adapter name, e.g. producthunt')
+  .argument('<command>', 'command name, e.g. today')
+  .argument('[args...]', 'command arguments (same as running it)')
+  .option('--force', 'heal even if the current selectors still return data')
+  .action(async (site: string, command: string, args: string[], opts: { force?: boolean }) => {
+    try {
+      if (!llmAvailable()) {
+        fail(new Error('Healing needs an LLM. Set ANTHROPIC_API_KEY (optionally SITEWISE_LLM_MODEL), then retry.'));
+      }
+      const spec = findBrowserSpec(site);
+      if (!spec) fail(new Error(`No browser adapter named "${site}". See: sitewise list`));
+      const cmd = spec!.commands.find((c) => c.name === command);
+      if (!cmd) fail(new Error(`Adapter "${site}" has no command "${command}".`));
+
+      const url = resolveUrl(cmd!.url, args);
+      console.log(pc.dim(`Loading ${url} …`));
+      const { rows, html } = await runBrowserCommandDetailed(cmd!, url);
+
+      if (countUsableRows(rows) > 0 && !opts.force) {
+        console.log(pc.green(`✓ ${site} ${command} is healthy — ${countUsableRows(rows)} rows. Nothing to heal.`));
+        return;
+      }
+
+      console.log(pc.yellow(`No data extracted — asking the model to repair selectors …`));
+      const result = await healAgainstHtml(defaultLLM(), cmd!, html);
+      if (!result.healed) {
+        fail(new Error(`Could not heal automatically: ${result.reason}`));
+      }
+      const healedSpec = applyHeal(spec!, command, result.proposal!);
+      const file = persistSpec(healedSpec);
+      console.log(pc.green(`✓ Healed ${site} ${command} — now extracts ${countUsableRows(result.rows)} rows.`));
+      console.log(pc.dim(`  new item selector: ${result.proposal!.selector}`));
+      console.log(pc.dim(`  saved to ${file} (overrides the built-in; hand-edit or delete to revert)`));
+    } catch (err) {
+      fail(err);
     }
   });
 
