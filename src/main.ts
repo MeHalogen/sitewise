@@ -16,12 +16,15 @@ import {
   browserText,
   type BrowserOpts,
 } from './browser/commands.js';
+import { loadConfig, saveConfig } from './config.js';
+import { defaultPanels, panelLabel, renderDash } from './dash.js';
 import { renderDoctor, runDoctor } from './doctor.js';
 import { render } from './output.js';
 import { readUrl } from './read.js';
 import { adapters, listCommands } from './registry.js';
+import { parseEvery, runWatchesOnce, watchLabel } from './watch.js';
 
-const VERSION = '1.0.0';
+const VERSION = '1.1.0';
 
 const program = new Command('sitewise')
   .description('Control the web from your terminal — sites as commands, browser automation, MCP for agents.')
@@ -117,6 +120,160 @@ program
   .action(async () => {
     const { runMcpServer } = await import('./mcp/server.js');
     await runMcpServer(VERSION);
+  });
+
+// ---- dash: your personal terminal briefing ----
+const dash = program
+  .command('dash')
+  .description('Your personal dashboard — configured feeds in one command')
+  .action(async () => {
+    try {
+      console.log(await renderDash());
+    } catch (err) {
+      fail(err);
+    }
+  });
+
+dash
+  .command('init')
+  .description('Create a starter dashboard (HN, crypto, DEV; add weather with --city)')
+  .option('-c, --city <city>', 'add a weather panel for this city')
+  .action((opts: { city?: string }) => {
+    const config = loadConfig();
+    config.dash = defaultPanels(opts.city);
+    saveConfig(config);
+    console.log(`Dashboard created with ${config.dash.length} panels. Run ${pc.cyan('sitewise dash')} to see it.`);
+  });
+
+dash
+  .command('add')
+  .description('Add any site command as a dashboard panel')
+  .argument('<site>', 'adapter name, e.g. reddit')
+  .argument('<command>', 'command name, e.g. hot')
+  .argument('[args...]', 'command arguments')
+  .option('-l, --limit <n>', 'rows to show', '5')
+  .option('--title <title>', 'panel title')
+  .action((site: string, command: string, args: string[], opts: { limit: string; title?: string }) => {
+    const config = loadConfig();
+    config.dash.push({ site, command, args, limit: Number(opts.limit), title: opts.title });
+    saveConfig(config);
+    console.log(`Added panel #${config.dash.length}. Run ${pc.cyan('sitewise dash')}.`);
+  });
+
+dash
+  .command('remove')
+  .description('Remove a panel by number (see: dash list)')
+  .argument('<n>', '1-based panel number')
+  .action((n: string) => {
+    const config = loadConfig();
+    const idx = Number(n) - 1;
+    if (idx < 0 || idx >= config.dash.length) fail(new Error(`no panel #${n}`));
+    const [removed] = config.dash.splice(idx, 1);
+    saveConfig(config);
+    console.log(`Removed: ${panelLabel(removed)}`);
+  });
+
+dash
+  .command('list')
+  .description('List configured panels')
+  .action(() => {
+    const { dash: panels } = loadConfig();
+    if (panels.length === 0) console.log('No panels. Try: sitewise dash init');
+    panels.forEach((p, i) => console.log(`${i + 1}. ${panelLabel(p)}${p.limit ? pc.dim(`  (limit ${p.limit})`) : ''}`));
+  });
+
+// ---- watch: notify me when the web changes ----
+const watch = program
+  .command('watch')
+  .description('Watch any command for changes or thresholds; get desktop notifications');
+
+watch
+  .command('add')
+  .description('Watch a command (change detection by default; add --field + --below/--above for thresholds)')
+  .argument('<site>', 'adapter name, e.g. crypto')
+  .argument('<command>', 'command name, e.g. price')
+  .argument('[args...]', 'command arguments')
+  .option('--field <name>', 'numeric field on the first row to test')
+  .option('--below <n>', 'trigger when field < n')
+  .option('--above <n>', 'trigger when field > n')
+  .option('--every <dur>', 'minimum re-check interval, e.g. 30s, 15m, 1h', '15m')
+  .option('--note <text>', 'label used in notifications')
+  .action(
+    (
+      site: string,
+      command: string,
+      args: string[],
+      opts: { field?: string; below?: string; above?: string; every: string; note?: string },
+    ) => {
+      const config = loadConfig();
+      const id = `${site}-${command}-${config.watches.length + 1}`;
+      config.watches.push({
+        id,
+        site,
+        command,
+        args,
+        field: opts.field,
+        below: opts.below !== undefined ? Number(opts.below) : undefined,
+        above: opts.above !== undefined ? Number(opts.above) : undefined,
+        every: opts.every,
+        note: opts.note,
+      });
+      saveConfig(config);
+      console.log(
+        `Watching ${pc.cyan(id)} every ${opts.every}. Check with ${pc.cyan('sitewise watch run')} or keep ${pc.cyan(
+          'sitewise watch daemon',
+        )} running.`,
+      );
+    },
+  );
+
+watch
+  .command('list')
+  .description('List watches')
+  .action(() => {
+    const { watches } = loadConfig();
+    if (watches.length === 0) console.log('No watches. Try: sitewise watch add crypto price bitcoin --field price --below 60000');
+    watches.forEach((w) => {
+      const mode = w.field ? `${w.field} ${w.below !== undefined ? '< ' + w.below : ''}${w.above !== undefined ? ' > ' + w.above : ''}` : 'on change';
+      console.log(`${pc.cyan(w.id)}  ${watchLabel(w)}  ${pc.dim(`[${mode}, every ${w.every ?? '15m'}]`)}`);
+    });
+  });
+
+watch
+  .command('remove')
+  .description('Remove a watch by id')
+  .argument('<id>')
+  .action((id: string) => {
+    const config = loadConfig();
+    const before = config.watches.length;
+    config.watches = config.watches.filter((w) => w.id !== id);
+    if (config.watches.length === before) fail(new Error(`no watch with id ${id}`));
+    saveConfig(config);
+    console.log(`Removed ${id}`);
+  });
+
+watch
+  .command('run')
+  .description('Run all watches once (ideal for cron); notifies on triggers')
+  .option('--force', 'ignore per-watch intervals and run everything now')
+  .action(async (opts: { force?: boolean }) => {
+    const lines = await runWatchesOnce({ force: opts.force ?? true });
+    for (const line of lines) console.log(pc.dim(line));
+  });
+
+watch
+  .command('daemon')
+  .description('Keep running, checking due watches on an interval')
+  .option('-i, --interval <dur>', 'tick interval, e.g. 60s, 5m', '5m')
+  .action(async (opts: { interval: string }) => {
+    const tick = parseEvery(opts.interval, 5 * 60_000);
+    console.log(`sitewise watch daemon — ticking every ${opts.interval}. Ctrl-C to stop.`);
+    // Run immediately, then on the interval; per-watch `every` gates re-runs.
+    for (;;) {
+      const lines = await runWatchesOnce({ defaultEveryMs: tick });
+      for (const line of lines) console.log(pc.dim(`${new Date().toLocaleTimeString()}  ${line}`));
+      await new Promise((r) => setTimeout(r, tick));
+    }
   });
 
 const browser = program
