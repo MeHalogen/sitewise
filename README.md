@@ -138,11 +138,62 @@ Your agent then gets these tools:
 | `list_commands` | discover every available site command |
 | `run_command` | run any site command, returns structured JSON |
 | `read_url` | fetch a URL as clean Markdown |
+| `author_adapter` | create a new adapter from selectors the agent found (verified against the live page before saving) |
 | `browser_start` / `browser_tabs` | launch and inspect the browser |
 | `browser_goto` / `browser_read` / `browser_text` | navigate and extract |
 | `browser_click` / `browser_fill` / `browser_eval` | interact with pages |
 
 The API tools work immediately with no browser; the `browser_*` tools launch the managed browser on first use.
+
+## Intelligence & habit features
+
+Powerful without a key; even better with one. The LLM-backed commands (`heal`,
+`ask`, `author`) use the official Anthropic SDK — set `ANTHROPIC_API_KEY`
+(model via `SITEWISE_LLM_MODEL`, default `claude-opus-4-8`), or run via MCP so
+your agent supplies the intelligence. Everything else needs no key.
+
+**Never breaks — self-healing adapters.** When a browser adapter stops
+returning data, an LLM proposes new selectors; sitewise *verifies them against
+the live page* and only saves the fix if it actually extracts data.
+
+```bash
+sitewise heal producthunt today       # repair a broken adapter, save the fix
+```
+
+**Ask in plain English.**
+
+```bash
+sitewise ask "top hacker news stories"
+sitewise ask "cheapest usb-c cable on amazon" --dry-run
+```
+
+**Author a new site — no code.**
+
+```bash
+sitewise author mysite list https://mysite.com --want title,price,url
+```
+
+**Your daily briefing.**
+
+```bash
+sitewise dash init --city "San Francisco"
+sitewise dash                          # HN + weather + crypto + DEV, one command
+```
+
+**Watch the web; get pinged anywhere.**
+
+```bash
+sitewise watch add crypto price bitcoin --field price --below 60000 --webhook <slack-url>
+sitewise watch add reddit hot rust     # notify when the top post changes
+sitewise watch daemon                  # keep checking on an interval
+```
+
+**Keep a local data trail.**
+
+```bash
+export SITEWISE_HISTORY=1              # capture every run to ~/.sitewise/history
+sitewise history crypto top --grep bitcoin
+```
 
 ---
 

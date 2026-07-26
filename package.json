@@ -1,6 +1,6 @@
 {
   "name": "sitewise",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "Control the web from your terminal. Sites as commands, browser automation, and a native MCP server for AI agents.",
   "author": "Mehal Srivastava",
   "license": "MIT",
