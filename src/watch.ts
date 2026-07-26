@@ -1,6 +1,6 @@
 import type { WatchSpec, WatchState } from './config.js';
 import { loadConfig, loadWatchState, saveWatchState } from './config.js';
-import { notify } from './notify.js';
+import { notify, postWebhook } from './notify.js';
 import { findCommand } from './registry.js';
 
 /**
@@ -117,7 +117,10 @@ export async function runWatchesOnce(opts: { force?: boolean; defaultEveryMs?: n
       const rows = Array.isArray(result.data) ? (result.data as Record<string, unknown>[]) : [];
       const evaluation = evaluateWatch(w, rows, prev);
       state[w.id] = evaluation.state;
-      if (evaluation.triggered) notify(watchLabel(w), evaluation.message);
+      if (evaluation.triggered) {
+        notify(watchLabel(w), evaluation.message);
+        if (w.webhook) await postWebhook(w.webhook, watchLabel(w), evaluation.message);
+      }
       lines.push(`${w.id}: ${evaluation.message}`);
     } catch (err) {
       lines.push(`${w.id}: error — ${(err as Error).message}`);

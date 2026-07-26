@@ -24,6 +24,8 @@ export interface WatchSpec {
   /** re-run cadence like "5m", "1h"; daemon skips watches not yet due */
   every?: string;
   note?: string;
+  /** POST alerts here too (Slack/Discord/generic incoming webhook) */
+  webhook?: string;
 }
 
 export interface Config {

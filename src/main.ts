@@ -25,6 +25,7 @@ import { applyHeal, persistSpec } from './browser/heal-store.js';
 import { loadConfig, saveConfig } from './config.js';
 import { defaultPanels, panelLabel, renderDash } from './dash.js';
 import { renderDoctor, runDoctor } from './doctor.js';
+import { historyEnabled, readHistory, recordHistory } from './history.js';
 import { defaultLLM, llmAvailable } from './llm.js';
 import { render } from './output.js';
 import { readUrl } from './read.js';
@@ -62,7 +63,9 @@ function registerAdapterCommand(parent: Command, cmd: AdapterCommand): void {
     const args = invocation.slice(0, -2).map(String);
     const opts = invocation[invocation.length - 2] as Record<string, unknown>;
     try {
-      output(await cmd.run({ args, opts }));
+      const result = await cmd.run({ args, opts });
+      if (historyEnabled()) recordHistory(parent.name(), cmd.name, args, result.data);
+      output(result);
     } catch (err) {
       fail(err);
     }
@@ -205,12 +208,13 @@ watch
   .option('--above <n>', 'trigger when field > n')
   .option('--every <dur>', 'minimum re-check interval, e.g. 30s, 15m, 1h', '15m')
   .option('--note <text>', 'label used in notifications')
+  .option('--webhook <url>', 'also POST alerts to this Slack/Discord/generic webhook')
   .action(
     (
       site: string,
       command: string,
       args: string[],
-      opts: { field?: string; below?: string; above?: string; every: string; note?: string },
+      opts: { field?: string; below?: string; above?: string; every: string; note?: string; webhook?: string },
     ) => {
       const config = loadConfig();
       const id = `${site}-${command}-${config.watches.length + 1}`;
@@ -224,6 +228,7 @@ watch
         above: opts.above !== undefined ? Number(opts.above) : undefined,
         every: opts.every,
         note: opts.note,
+        webhook: opts.webhook,
       });
       saveConfig(config);
       console.log(
@@ -280,6 +285,32 @@ watch
       const lines = await runWatchesOnce({ defaultEveryMs: tick });
       for (const line of lines) console.log(pc.dim(`${new Date().toLocaleTimeString()}  ${line}`));
       await new Promise((r) => setTimeout(r, tick));
+    }
+  });
+
+// ---- history: your accumulated data trail ----
+program
+  .command('history')
+  .description('Show recorded runs of a command (enable capture with SITEWISE_HISTORY=1)')
+  .argument('<site>', 'adapter name')
+  .argument('<command>', 'command name')
+  .option('-l, --limit <n>', 'number of past runs', '10')
+  .option('-g, --grep <text>', 'only runs whose rows contain this text')
+  .action((site: string, command: string, opts: { limit: string; grep?: string }) => {
+    const entries = readHistory(site, command, { limit: Number(opts.limit), grep: opts.grep });
+    if (wantJson()) {
+      output({ data: entries });
+      return;
+    }
+    if (entries.length === 0) {
+      console.log(
+        `No history for ${site} ${command}.` +
+          (historyEnabled() ? '' : `\nEnable capture: ${pc.cyan('export SITEWISE_HISTORY=1')}`),
+      );
+      return;
+    }
+    for (const e of entries) {
+      console.log(`${pc.dim(new Date(e.ts).toLocaleString())}  ${pc.bold(`${e.rows.length} rows`)} ${pc.dim(e.args.join(' '))}`);
     }
   });
 
