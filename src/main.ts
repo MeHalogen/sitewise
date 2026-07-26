@@ -16,6 +16,7 @@ import {
   browserText,
   type BrowserOpts,
 } from './browser/commands.js';
+import { route } from './ask.js';
 import { runBrowserCommandDetailed } from './browser/adapter-runtime.js';
 import { resolveUrl } from './browser/declarative.js';
 import { countUsableRows, healAgainstHtml } from './browser/heal.js';
@@ -280,6 +281,39 @@ watch
       await new Promise((r) => setTimeout(r, tick));
     }
   });
+
+// ---- ask: natural language → the right command ----
+program
+  .command('ask')
+  .description('Ask in plain English; sitewise routes it to the right command and runs it')
+  .argument('<query...>', 'e.g. "top hacker news stories" or "weather in Tokyo"')
+  .option('--dry-run', 'show the resolved command without running it')
+  .action(async (queryParts: string[], opts: { dryRun?: boolean }) => {
+    try {
+      if (!llmAvailable()) {
+        fail(new Error('`ask` needs an LLM. Set ANTHROPIC_API_KEY (optionally SITEWISE_LLM_MODEL), then retry.'));
+      }
+      const query = queryParts.join(' ');
+      const chosen = await route(defaultLLM(), query, listCommands());
+      const line = `sitewise ${chosen.site} ${chosen.command}${chosen.args.length ? ' ' + chosen.args.join(' ') : ''}`;
+      if (opts.dryRun) {
+        console.log(line);
+        return;
+      }
+      console.error(pc.dim(`→ ${line}`));
+      const cmd = findCommandOrFail(chosen.site, chosen.command);
+      output(await cmd.run({ args: chosen.args, opts: {} }));
+    } catch (err) {
+      fail(err);
+    }
+  });
+
+function findCommandOrFail(site: string, command: string): AdapterCommand {
+  const adapter = adapters.find((a) => a.name === site);
+  const cmd = adapter?.commands.find((c) => c.name === command);
+  if (!cmd) fail(new Error(`Command ${site} ${command} not found.`));
+  return cmd!;
+}
 
 // ---- heal: repair a browser adapter whose selectors broke ----
 program
