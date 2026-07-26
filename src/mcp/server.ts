@@ -11,6 +11,9 @@ import {
   browserTabs,
   browserText,
 } from '../browser/commands.js';
+import { runBrowserCommandDetailed } from '../browser/adapter-runtime.js';
+import { verifyAndBuild } from '../browser/author.js';
+import { persistSpec } from '../browser/heal-store.js';
 import { readUrl } from '../read.js';
 import { findCommand, listCommands } from '../registry.js';
 import type { CommandResult } from '../adapter.js';
@@ -65,6 +68,34 @@ export async function runMcpServer(version: string): Promise<void> {
     async ({ url }) => {
       const article = await readUrl(url);
       return asText(`# ${article.title}\n\n${article.markdown}`);
+    },
+  );
+
+  server.tool(
+    'author_adapter',
+    'Create a new sitewise browser adapter for a site you have inspected. Provide the CSS selectors you found (use browser_goto + browser_text/browser_eval to inspect first). sitewise navigates the URL, VERIFIES your selectors extract data, and saves the adapter — so it appears in list_commands and works for everyone. Returns the extracted sample rows, or an error if the selectors matched nothing.',
+    {
+      site: z.string().describe('new adapter name, e.g. mysite'),
+      command: z.string().describe('command name, e.g. list'),
+      url: z.string().describe('page to scrape (may contain {query}/{0} placeholders)'),
+      itemSelector: z.string().describe('CSS selector matching each repeated item/row'),
+      fields: z
+        .record(z.object({ selector: z.string().optional(), attr: z.string().optional(), absolute: z.boolean().optional() }))
+        .describe('output field name -> how to read it: selector relative to the item (omit to use the item itself), attr for an attribute like href, absolute for absolute URLs'),
+      description: z.string().optional(),
+    },
+    async ({ site, command, url, itemSelector, fields, description }) => {
+      const req = { site, command, url, want: Object.keys(fields), description };
+      const { html } = await runBrowserCommandDetailed(
+        { name: command, description: '', url, list: { selector: itemSelector, fields } },
+        url,
+      );
+      const result = verifyAndBuild(req, { selector: itemSelector, fields }, html);
+      if (!result.ok) return asText(`Adapter not saved — ${result.reason}. Inspect the page and adjust your selectors.`);
+      const file = persistSpec(result.spec!);
+      return asText(
+        `Saved adapter "${site} ${command}" to ${file}. It now appears in list_commands.\nSample rows:\n${JSON.stringify(result.rows.slice(0, 3), null, 2)}`,
+      );
     },
   );
 

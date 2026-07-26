@@ -18,6 +18,7 @@ import {
 } from './browser/commands.js';
 import { route } from './ask.js';
 import { runBrowserCommandDetailed } from './browser/adapter-runtime.js';
+import { authorWithLLM, type AuthorRequest } from './browser/author.js';
 import { resolveUrl } from './browser/declarative.js';
 import { countUsableRows, healAgainstHtml } from './browser/heal.js';
 import { applyHeal, persistSpec } from './browser/heal-store.js';
@@ -314,6 +315,33 @@ function findCommandOrFail(site: string, command: string): AdapterCommand {
   if (!cmd) fail(new Error(`Command ${site} ${command} not found.`));
   return cmd!;
 }
+
+// ---- author: create a new browser adapter for any site ----
+program
+  .command('author')
+  .description('Create a new browser adapter for a site: an LLM proposes selectors, sitewise verifies them, and saves it')
+  .argument('<site>', 'new adapter name, e.g. mysite')
+  .argument('<command>', 'command name, e.g. list')
+  .argument('<url>', 'page to scrape')
+  .requiredOption('--want <fields>', 'comma-separated fields to extract, e.g. title,price,url')
+  .action(async (site: string, command: string, url: string, opts: { want: string }) => {
+    try {
+      if (!llmAvailable()) {
+        fail(new Error('`author` needs an LLM. Set ANTHROPIC_API_KEY (optionally SITEWISE_LLM_MODEL), then retry.'));
+      }
+      const req: AuthorRequest = { site, command, url: resolveUrl(url, []), want: opts.want.split(',').map((s) => s.trim()).filter(Boolean) };
+      console.log(pc.dim(`Loading ${req.url} …`));
+      const { html } = await runBrowserCommandDetailed({ name: command, description: '', url: req.url, list: { selector: 'body', fields: {} } }, req.url);
+      console.log(pc.yellow('Asking the model to write selectors …'));
+      const result = await authorWithLLM(defaultLLM(), req, html);
+      if (!result.ok) fail(new Error(`Could not author an adapter: ${result.reason}`));
+      const file = persistSpec(result.spec!);
+      console.log(pc.green(`✓ Created ${site} ${command} — extracts ${countUsableRows(result.rows)} rows.`));
+      console.log(pc.dim(`  saved to ${file}. Run it with:  sitewise ${site} ${command}`));
+    } catch (err) {
+      fail(err);
+    }
+  });
 
 // ---- heal: repair a browser adapter whose selectors broke ----
 program
