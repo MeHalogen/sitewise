@@ -13,6 +13,7 @@ const MAC_CANDIDATES = [
 
 const LINUX_CANDIDATES = [
   '/usr/bin/google-chrome',
+  '/usr/bin/microsoft-edge',
   '/usr/bin/google-chrome-stable',
   '/usr/bin/chromium',
   '/usr/bin/chromium-browser',
@@ -22,6 +23,10 @@ const LINUX_CANDIDATES = [
 const WIN_CANDIDATES = [
   'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe',
   'C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe',
+  path.join(process.env.LOCALAPPDATA ?? '', 'Google\\Chrome\\Application\\chrome.exe'),
+  // Edge ships with every Windows 10/11 install, so browser commands work out of the box.
+  'C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe',
+  'C:\\Program Files\\Microsoft\\Edge\\Application\\msedge.exe',
 ];
 
 export function findChrome(): string | null {

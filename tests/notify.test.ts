@@ -29,3 +29,31 @@ describe('postWebhook', () => {
     expect(await postWebhook('https://x', 't', 'm')).toBe(false);
   });
 });
+
+describe('notificationCommand', async () => {
+  const { notificationCommand } = await import('../src/notify.js');
+  const hostile = 'BTC $(touch /tmp/pwned) `id` "quoted" it\'s';
+
+  it('passes text as arguments, never through a shell (linux)', () => {
+    expect(notificationCommand('linux', 'Alert', hostile)).toEqual({ file: 'notify-send', args: ['--', 'Alert', hostile] });
+  });
+
+  it('escapes AppleScript strings (macOS)', () => {
+    const cmd = notificationCommand('darwin', 'T "x"', 'a\\b "c"')!;
+    expect(cmd.file).toBe('osascript');
+    expect(cmd.args[1]).toBe('display notification "a\\\\b \\"c\\"" with title "T \\"x\\"" sound name "Default"');
+  });
+
+  it('builds a PowerShell toast with single-quoted literals (Windows)', () => {
+    const cmd = notificationCommand('win32', 'Price', hostile)!;
+    expect(cmd.file).toBe('powershell.exe');
+    const script = cmd.args.at(-1)!;
+    expect(script).toContain("CreateTextNode('Price')");
+    expect(script).toContain(`CreateTextNode('BTC $(touch /tmp/pwned) \`id\` "quoted" it''s')`);
+    expect(script).toContain('ToastNotificationManager');
+  });
+
+  it('returns null on unsupported platforms', () => {
+    expect(notificationCommand('aix', 't', 'm')).toBeNull();
+  });
+});
