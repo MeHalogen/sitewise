@@ -51,6 +51,8 @@ export interface Adapter {
   mode?: 'api' | 'browser';
   /** selectors not yet verified against a live (logged-in) session */
   experimental?: boolean;
+  /** the site refuses cloud/datacenter IPs (e.g. CI runners) but works from home connections */
+  refusesDatacenters?: boolean;
   commands: AdapterCommand[];
 }
 

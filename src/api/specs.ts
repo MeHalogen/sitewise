@@ -158,6 +158,7 @@ export const builtinApiAdapters: ApiAdapterSpec[] = [
   {
     name: 'dictionary',
     description: 'Dictionary — English definitions',
+    refusesDatacenters: true,
     commands: [
       {
         name: 'define',
@@ -380,6 +381,7 @@ export const builtinApiAdapters: ApiAdapterSpec[] = [
   {
     name: 'brewery',
     description: 'Open Brewery DB — brewery search',
+    refusesDatacenters: true,
     commands: [
       {
         name: 'search',

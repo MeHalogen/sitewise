@@ -25,6 +25,9 @@ const TEXT_PATTERNS = [
   /verify (?:that )?you are (?:a )?human/i,
   /enable javascript and cookies to continue/i,
   /access to this page has been denied/i,
+  /enter the characters you see below/i,
+  /make sure you(?:'|’)re not a robot/i,
+  /automated access to amazon data/i,
 ];
 
 /** The page's visible text (scripts, styles and tags removed). */

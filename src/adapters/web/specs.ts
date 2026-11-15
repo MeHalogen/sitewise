@@ -276,6 +276,7 @@ export const builtinBrowserAdapters: BrowserAdapterSpec[] = [
   {
     name: 'amazon',
     description: '[browser] Amazon — product search',
+    refusesDatacenters: true,
     commands: [
       {
         name: 'search',

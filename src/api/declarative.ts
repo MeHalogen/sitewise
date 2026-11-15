@@ -36,6 +36,8 @@ export interface ApiCommandSpec {
 export interface ApiAdapterSpec {
   name: string;
   description: string;
+  /** refuses cloud/datacenter IPs (CI) but works from home connections */
+  refusesDatacenters?: boolean;
   commands: ApiCommandSpec[];
 }
 
@@ -77,6 +79,7 @@ export function loadApiAdapter(spec: ApiAdapterSpec): Adapter {
     name: spec.name,
     description: spec.description,
     mode: 'api',
+    refusesDatacenters: spec.refusesDatacenters,
     commands: spec.commands.map((cmd) => ({
       name: cmd.name,
       description: cmd.description,

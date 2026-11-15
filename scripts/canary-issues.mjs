@@ -32,7 +32,9 @@ export function bodyFor(r, checkedAt, version) {
 /** Pure planning step, so it can be tested without GitHub. */
 export function planIssues(report, openIssues) {
   const broken = report.results.filter((r) => r.status === 'fail' || r.status === 'empty');
-  const healthy = new Set(report.results.filter((r) => r.status === 'ok').map(titleFor));
+  // Close when the adapter works again, or when it turns out it cannot be judged
+  // from the runner's network (blocked), so no issue stays open for a site that works.
+  const resolved = new Map(report.results.filter((r) => r.status === 'ok' || r.status === 'blocked').map((r) => [titleFor(r), r]));
   const byTitle = new Map(openIssues.map((i) => [i.title, i]));
   const actions = [];
   for (const r of broken) {
@@ -42,7 +44,13 @@ export function planIssues(report, openIssues) {
     actions.push(existing ? { kind: 'update', number: existing.number, body } : { kind: 'open', title, body });
   }
   for (const issue of openIssues) {
-    if (healthy.has(issue.title)) actions.push({ kind: 'close', number: issue.number });
+    const r = resolved.get(issue.title);
+    if (!r) continue;
+    const comment =
+      r.status === 'ok'
+        ? `Healthy again as of ${report.checkedAt}.`
+        : `Closing: as of ${report.checkedAt} this site cannot be checked from GitHub's servers (${String(r.error ?? 'blocked').split('\n')[0]}). It is not counted as broken.`;
+    actions.push({ kind: 'close', number: issue.number, comment });
   }
   return actions;
 }
@@ -58,7 +66,7 @@ function main(file) {
   for (const a of planIssues(report, open)) {
     if (a.kind === 'open') gh('issue', 'create', '--title', a.title, '--body', a.body, '--label', LABEL);
     if (a.kind === 'update') gh('issue', 'edit', String(a.number), '--body', a.body);
-    if (a.kind === 'close') gh('issue', 'close', String(a.number), '--comment', `Healthy again as of ${report.checkedAt}.`);
+    if (a.kind === 'close') gh('issue', 'close', String(a.number), '--comment', a.comment);
     console.log(a.kind, a.number ?? a.title);
   }
 }

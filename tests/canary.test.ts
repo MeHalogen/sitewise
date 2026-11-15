@@ -28,4 +28,12 @@ describe('canary issue sync', () => {
     expect(actions[0].body).toContain('HTTP 403');
     expect(actions[0].body).toContain('sitewise art search monet');
   });
+
+  it('closes an issue whose site is now blocked from the runner, not broken', () => {
+    const blocked = { ...report, results: [{ site: 'brewery', command: 'search', args: ['dog'], status: 'blocked', error: 'brewery refuses requests from cloud/CI IP addresses' }] };
+    const actions = planIssues(blocked, [{ number: 2, title: titleFor({ site: 'brewery', command: 'search' }) }]);
+    expect(actions).toHaveLength(1);
+    expect(actions[0]).toMatchObject({ kind: 'close', number: 2 });
+    expect(actions[0].comment).toMatch(/cannot be checked from GitHub's servers.*not counted as broken/);
+  });
 });

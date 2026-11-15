@@ -1,5 +1,6 @@
 import { limitOverride, resolveOptions, type Adapter, type AdapterCommand, type CommandResult } from './adapter.js';
 import { BotWallError } from './browser/botwall.js';
+import { HttpError } from './http.js';
 import { reportUrl } from './report.js';
 
 /**
@@ -23,6 +24,13 @@ export interface HealthResult {
   /** failed on the first (parallel) try, passed on the confirming retry */
   flaky?: boolean;
 }
+
+/** CI runners (GitHub sets CI=true) run on datacenter IPs that some sites refuse. */
+export function onCi(): boolean {
+  return /^(1|true)$/i.test(process.env.CI ?? '');
+}
+
+const DATACENTER_NOTE = 'refuses requests from cloud/CI IP addresses (works from home connections)';
 
 export interface HealthOptions {
   /** include browser adapters (launches Chrome; use SITEWISE_HEADLESS=1 on servers) */
@@ -57,12 +65,19 @@ export async function checkCommand(adapter: Adapter, cmd: AdapterCommand): Promi
   try {
     const result = await cmd.run({ args, opts: resolveOptions(cmd, limitOverride(cmd, 3)) });
     const rows = resultSize(result);
+    if (rows === 0 && adapter.refusesDatacenters && onCi()) {
+      return { ...base, status: 'blocked', ms: Date.now() - started, rows: 0, error: `${adapter.name} ${DATACENTER_NOTE}` };
+    }
     return rows > 0
       ? { ...base, status: 'ok', ms: Date.now() - started, rows }
       : { ...base, status: 'empty', ms: Date.now() - started, rows: 0, error: 'returned no data', report: reportUrl(adapter.name, cmd.name, 'returned no data', args) };
   } catch (err) {
     const error = err instanceof Error ? err.message : String(err);
     if (err instanceof BotWallError) return { ...base, status: 'blocked', ms: Date.now() - started, error };
+    const refused = err instanceof HttpError && (err.status === 401 || err.status === 403);
+    if (refused && adapter.refusesDatacenters && onCi()) {
+      return { ...base, status: 'blocked', ms: Date.now() - started, error: `${adapter.name} ${DATACENTER_NOTE}` };
+    }
     return { ...base, status: 'fail', ms: Date.now() - started, error, report: reportUrl(adapter.name, cmd.name, error, args) };
   }
 }

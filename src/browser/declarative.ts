@@ -31,6 +31,8 @@ export interface BrowserAdapterSpec {
   description: string;
   /** needs a logged-in session and its selectors are not yet verified */
   experimental?: boolean;
+  /** refuses cloud/datacenter IPs (CI) but works from home connections */
+  refusesDatacenters?: boolean;
   commands: BrowserCommandSpec[];
 }
 
@@ -55,6 +57,7 @@ export function loadBrowserAdapter(spec: BrowserAdapterSpec, runner: BrowserRunn
     description: spec.description,
     mode: 'browser',
     experimental: spec.experimental,
+    refusesDatacenters: spec.refusesDatacenters,
     commands: spec.commands.map((cmd) => ({
       name: cmd.name,
       description: cmd.description,

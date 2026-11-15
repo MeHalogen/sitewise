@@ -133,3 +133,28 @@ describe('bot walls', async () => {
     expect(summarize(results)).toMatchObject({ total: 0, broken: 0, blocked: 1 });
   });
 });
+
+describe('sites that refuse datacenter IPs', async () => {
+  const { HttpError } = await import('../src/http.js');
+  const { vi } = await import('vitest');
+  const refusing = (flag: boolean): Adapter => ({
+    name: 'dict',
+    description: 'd',
+    refusesDatacenters: flag,
+    commands: [cmd('define', async () => { throw new HttpError(403, 'https://api.example.dev/x'); })],
+  });
+
+  it('counts a 403 as blocked on CI only, and only for flagged sites', async () => {
+    vi.stubEnv('CI', 'true');
+    expect((await runHealth([refusing(true)]))[0].status).toBe('blocked');
+    expect((await runHealth([refusing(false)]))[0].status).toBe('fail');
+    vi.stubEnv('CI', '');
+    expect((await runHealth([refusing(true)]))[0].status).toBe('fail');
+    vi.unstubAllEnvs();
+  });
+
+  it('recognises Amazon robot-check pages', async () => {
+    const { looksLikeBotWall } = await import('../src/browser/botwall.js');
+    expect(looksLikeBotWall('<title>Amazon.com</title><p>Enter the characters you see below</p><p>Sorry, we just need to make sure you\'re not a robot.</p>')).toBe(true);
+  });
+});
