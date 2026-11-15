@@ -1,4 +1,4 @@
-import type { BrowserCommandSpec, BrowserRunner } from './declarative.js';
+import type { BrowserCommandSpec } from './declarative.js';
 import { CdpSession, DEFAULT_CDP_PORT, evaluate, getBrowserWsUrl } from './cdp.js';
 import { launchChrome } from './chrome.js';
 import { BotWallError, looksLikeBotWall, pageTitle } from './botwall.js';
@@ -68,8 +68,4 @@ export async function runBrowserCommandDetailed(
     if (targetId) await session.send('Target.closeTarget', { targetId }).catch(() => {});
     session.close();
   }
-}
-
-export function createBrowserRunner(port = DEFAULT_CDP_PORT): BrowserRunner {
-  return async (spec: BrowserCommandSpec, url: string) => (await runBrowserCommandDetailed(spec, url, port)).rows;
 }

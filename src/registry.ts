@@ -1,7 +1,7 @@
 import { optionKey, type Adapter, type AdapterCommand } from './adapter.js';
 import { loadApiAdapter } from './api/declarative.js';
 import { builtinApiAdapters } from './api/specs.js';
-import { createBrowserRunner } from './browser/adapter-runtime.js';
+import { createHealingRunner } from './browser/autoheal.js';
 import { loadBrowserAdapter, type BrowserAdapterSpec } from './browser/declarative.js';
 import { arxiv } from './adapters/arxiv.js';
 import { crypto } from './adapters/crypto.js';
@@ -29,9 +29,9 @@ export function findBrowserSpec(name: string): BrowserAdapterSpec | undefined {
 }
 
 function buildAdapters(): Adapter[] {
-  const runner = createBrowserRunner();
   const apiAdapters = builtinApiAdapters.map(loadApiAdapter);
-  const browserAdapters = [...browserSpecs().values()].map((spec) => loadBrowserAdapter(spec, runner));
+  // One runner per adapter, so an inline repair knows which adapter to save.
+  const browserAdapters = [...browserSpecs().values()].map((spec) => loadBrowserAdapter(spec, createHealingRunner(spec)));
   return [...codeAdapters.map((a) => ({ ...a, mode: 'api' as const })), ...apiAdapters, ...browserAdapters].sort(
     (a, b) => a.name.localeCompare(b.name),
   );
