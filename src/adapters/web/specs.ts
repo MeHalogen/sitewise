@@ -117,6 +117,7 @@ export const builtinBrowserAdapters: BrowserAdapterSpec[] = [
       {
         name: 'search',
         description: 'Search videos',
+        example: ['lofi'],
         url: 'https://www.youtube.com/results?search_query={query}',
         waitFor: 'ytd-video-renderer',
         args: [{ name: '<query>', description: 'search terms' }],
@@ -142,6 +143,7 @@ export const builtinBrowserAdapters: BrowserAdapterSpec[] = [
       {
         name: 'search',
         description: 'Search recent tweets (requires being logged in)',
+        example: ['mcp'],
         url: 'https://x.com/search?q={query}&f=live',
         waitFor: 'article[data-testid="tweet"]',
         args: [{ name: '<query>', description: 'search terms' }],
@@ -159,6 +161,7 @@ export const builtinBrowserAdapters: BrowserAdapterSpec[] = [
       {
         name: 'profile',
         description: "A user's recent tweets",
+        example: ['anthropicai'],
         url: 'https://x.com/{0}',
         waitFor: 'article[data-testid="tweet"]',
         args: [{ name: '<handle>', description: 'username without @' }],
@@ -183,6 +186,7 @@ export const builtinBrowserAdapters: BrowserAdapterSpec[] = [
       {
         name: 'search',
         description: 'Search posts (requires being logged in)',
+        example: ['ai agents'],
         url: 'https://www.linkedin.com/search/results/content/?keywords={query}',
         waitFor: '.update-components-text',
         args: [{ name: '<query>', description: 'search terms' }],
@@ -228,6 +232,7 @@ export const builtinBrowserAdapters: BrowserAdapterSpec[] = [
       {
         name: 'search',
         description: 'Search the Steam store',
+        example: ['portal'],
         url: 'https://store.steampowered.com/search/?term={query}',
         waitFor: '#search_resultsRows a',
         args: [{ name: '<query>', description: 'game title' }],
@@ -252,6 +257,7 @@ export const builtinBrowserAdapters: BrowserAdapterSpec[] = [
       {
         name: 'search',
         description: 'Search movies and shows',
+        example: ['inception'],
         url: 'https://www.imdb.com/find/?q={query}&s=tt',
         waitFor: 'a.ipc-metadata-list-summary-item__t',
         args: [{ name: '<query>', description: 'title' }],
@@ -274,6 +280,7 @@ export const builtinBrowserAdapters: BrowserAdapterSpec[] = [
       {
         name: 'search',
         description: 'Search products',
+        example: ['mechanical keyboard'],
         url: 'https://www.amazon.com/s?k={query}',
         waitFor: 'div[data-component-type="s-search-result"]',
         args: [{ name: '<query>', description: 'search terms' }],

@@ -14,6 +14,7 @@ export const builtinApiAdapters: ApiAdapterSpec[] = [
       {
         name: 'search',
         description: 'Search npm packages',
+        example: ['react'],
         url: 'https://registry.npmjs.org/-/v1/search?text={query}&size={limit}',
         maxLimit: 250,
         root: 'objects',
@@ -30,6 +31,7 @@ export const builtinApiAdapters: ApiAdapterSpec[] = [
       {
         name: 'info',
         description: 'Package summary',
+        example: ['requests'],
         url: 'https://pypi.org/pypi/{0}/json',
         args: [{ name: '<package>', description: 'package name' }],
         text: [
@@ -50,6 +52,7 @@ export const builtinApiAdapters: ApiAdapterSpec[] = [
       {
         name: 'search',
         description: 'Search crates',
+        example: ['serde'],
         url: 'https://crates.io/api/v1/crates?q={query}&per_page={limit}',
         maxLimit: 100,
         root: 'crates',
@@ -66,6 +69,7 @@ export const builtinApiAdapters: ApiAdapterSpec[] = [
       {
         name: 'search',
         description: 'Search projects by stars',
+        example: ['gitlab-runner'],
         url: 'https://gitlab.com/api/v4/projects?search={query}&order_by=star_count&sort=desc&per_page={limit}',
         maxLimit: 100,
         args: [{ name: '<query>', description: 'search terms' }],
@@ -81,6 +85,7 @@ export const builtinApiAdapters: ApiAdapterSpec[] = [
       {
         name: 'search',
         description: 'Search questions by votes',
+        example: ['async await'],
         url: 'https://api.stackexchange.com/2.3/search/advanced?order=desc&sort=votes&q={query}&site=stackoverflow&pagesize={limit}',
         maxLimit: 100,
         root: 'items',
@@ -106,6 +111,7 @@ export const builtinApiAdapters: ApiAdapterSpec[] = [
       {
         name: 'search',
         description: 'Articles by tag',
+        example: ['rust'],
         url: 'https://dev.to/api/articles?tag={0}&per_page={limit}',
         maxLimit: 1000,
         args: [{ name: '<tag>', description: 'tag, e.g. rust' }],
@@ -123,6 +129,7 @@ export const builtinApiAdapters: ApiAdapterSpec[] = [
       {
         name: 'search',
         description: 'Search books',
+        example: ['dune'],
         url: 'https://openlibrary.org/search.json?q={query}&limit={limit}&fields=title,author_name,first_publish_year,key',
         root: 'docs',
         args: [{ name: '<query>', description: 'title or author' }],
@@ -138,6 +145,7 @@ export const builtinApiAdapters: ApiAdapterSpec[] = [
       {
         name: 'search',
         description: 'Search entities',
+        example: ['douglas adams'],
         url: 'https://www.wikidata.org/w/api.php?action=wbsearchentities&search={query}&language=en&format=json&limit={limit}',
         maxLimit: 50,
         root: 'search',
@@ -154,6 +162,7 @@ export const builtinApiAdapters: ApiAdapterSpec[] = [
       {
         name: 'define',
         description: 'Definitions of a word',
+        example: ['serendipity'],
         url: 'https://api.dictionaryapi.dev/api/v2/entries/en/{0}',
         args: [{ name: '<word>', description: 'the word' }],
         root: '0.meanings',
@@ -169,6 +178,7 @@ export const builtinApiAdapters: ApiAdapterSpec[] = [
       {
         name: 'define',
         description: 'Top definitions',
+        example: ['yeet'],
         url: 'https://api.urbandictionary.com/v0/define?term={query}',
         root: 'list',
         args: [{ name: '<term>', description: 'the term' }],
@@ -184,6 +194,7 @@ export const builtinApiAdapters: ApiAdapterSpec[] = [
       {
         name: 'like',
         description: 'Words with a similar meaning',
+        example: ['happy'],
         url: 'https://api.datamuse.com/words?ml={query}&max={limit}',
         limit: 25,
         maxLimit: 1000,
@@ -194,6 +205,7 @@ export const builtinApiAdapters: ApiAdapterSpec[] = [
       {
         name: 'rhymes',
         description: 'Words that rhyme',
+        example: ['orange'],
         url: 'https://api.datamuse.com/words?rel_rhy={0}&max={limit}',
         limit: 25,
         maxLimit: 1000,
@@ -226,6 +238,7 @@ export const builtinApiAdapters: ApiAdapterSpec[] = [
       {
         name: 'search',
         description: 'Search the iTunes catalog',
+        example: ['radiohead'],
         url: 'https://itunes.apple.com/search?term={query}&limit={limit}',
         maxLimit: 200,
         root: 'results',
@@ -242,6 +255,7 @@ export const builtinApiAdapters: ApiAdapterSpec[] = [
       {
         name: 'search',
         description: 'Search TV shows',
+        example: ['severance'],
         url: 'https://api.tvmaze.com/search/shows?q={query}',
         args: [{ name: '<query>', description: 'show name' }],
         columns: ['name', 'premiered', 'rating', 'network'],
@@ -261,6 +275,7 @@ export const builtinApiAdapters: ApiAdapterSpec[] = [
       {
         name: 'search',
         description: 'Search anime',
+        example: ['naruto'],
         url: 'https://kitsu.io/api/edge/anime?filter%5Btext%5D={query}&page%5Blimit%5D={limit}',
         maxLimit: 20,
         headers: { accept: 'application/vnd.api+json' },
@@ -283,6 +298,7 @@ export const builtinApiAdapters: ApiAdapterSpec[] = [
       {
         name: 'artist',
         description: 'Search artists',
+        example: ['radiohead'],
         url: 'https://musicbrainz.org/ws/2/artist?query={query}&fmt=json&limit={limit}',
         maxLimit: 100,
         root: 'artists',
@@ -299,6 +315,7 @@ export const builtinApiAdapters: ApiAdapterSpec[] = [
       {
         name: 'character',
         description: 'Search characters',
+        example: ['rick'],
         url: 'https://rickandmortyapi.com/api/character/?name={query}',
         root: 'results',
         args: [{ name: '<name>', description: 'character name' }],
@@ -314,6 +331,7 @@ export const builtinApiAdapters: ApiAdapterSpec[] = [
       {
         name: 'info',
         description: 'Base stats for a Pokémon',
+        example: ['pikachu'],
         url: 'https://pokeapi.co/api/v2/pokemon/{0}',
         args: [{ name: '<name>', description: 'name or id' }],
         text: ['Name:name', 'ID:id', 'Height:height', 'Weight:weight', 'Base XP:base_experience'],
@@ -329,6 +347,7 @@ export const builtinApiAdapters: ApiAdapterSpec[] = [
       {
         name: 'search',
         description: 'Search cocktails',
+        example: ['margarita'],
         url: 'https://www.thecocktaildb.com/api/json/v1/1/search.php?s={query}',
         root: 'drinks',
         args: [{ name: '<query>', description: 'drink name' }],
@@ -349,6 +368,7 @@ export const builtinApiAdapters: ApiAdapterSpec[] = [
       {
         name: 'search',
         description: 'Search meals',
+        example: ['curry'],
         url: 'https://www.themealdb.com/api/json/v1/1/search.php?s={query}',
         root: 'meals',
         args: [{ name: '<query>', description: 'meal name' }],
@@ -364,6 +384,7 @@ export const builtinApiAdapters: ApiAdapterSpec[] = [
       {
         name: 'search',
         description: 'Find breweries by name',
+        example: ['dog'],
         url: 'https://api.openbrewerydb.org/v1/breweries?by_name={query}&per_page={limit}',
         maxLimit: 200,
         args: [{ name: '<query>', description: 'brewery name' }],
@@ -379,6 +400,7 @@ export const builtinApiAdapters: ApiAdapterSpec[] = [
       {
         name: 'lookup',
         description: 'Locate an IP address',
+        example: ['8.8.8.8'],
         url: 'https://ipapi.co/{0}/json/',
         args: [{ name: '<ip>', description: 'IPv4/IPv6 address' }],
         text: ['IP:ip', 'City:city', 'Region:region', 'Country:country_name', 'Org:org', 'Timezone:timezone'],
@@ -445,6 +467,7 @@ export const builtinApiAdapters: ApiAdapterSpec[] = [
       {
         name: 'rate',
         description: 'Convert an amount between currencies',
+        example: ['100', 'USD', 'EUR'],
         url: 'https://api.frankfurter.app/latest?amount={0}&from={1}&to={2}',
         args: [
           { name: '<amount>', description: 'amount' },
@@ -464,6 +487,7 @@ export const builtinApiAdapters: ApiAdapterSpec[] = [
       {
         name: 'search',
         description: 'Search artworks',
+        example: ['monet'],
         // The AIC asks API clients to identify themselves with this header; without it, requests get a 403.
         headers: { 'AIC-User-Agent': 'sitewise (+https://github.com/MeHalogen/sitewise)' },
         url: 'https://api.artic.edu/api/v1/artworks/search?q={query}&limit={limit}&fields=title,artist_display,date_display',
@@ -499,6 +523,7 @@ export const builtinApiAdapters: ApiAdapterSpec[] = [
       {
         name: 'now',
         description: 'Current time in a timezone',
+        example: ['Europe/London'],
         url: 'https://timeapi.io/api/Time/current/zone?timeZone={0}',
         args: [{ name: '<timezone>', description: 'e.g. Europe/London, America/New_York' }],
         text: ['Timezone:timeZone', 'Date:date', 'Time:time', 'Day of week:dayOfWeek'],
@@ -541,6 +566,7 @@ export const builtinApiAdapters: ApiAdapterSpec[] = [
       {
         name: 'get',
         description: 'Lyrics for a song',
+        example: ['coldplay', 'yellow'],
         url: 'https://api.lyrics.ovh/v1/{0}/{1}',
         args: [
           { name: '<artist>', description: 'artist name' },

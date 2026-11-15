@@ -21,6 +21,7 @@ export const wikipedia: Adapter = {
     {
       name: 'summary',
       description: 'Summary of an article',
+      example: ['Alan Turing'],
       args: [{ name: '<title>', description: 'article title, e.g. "Alan Turing"' }],
       async run(ctx) {
         const title = encodeURIComponent(ctx.args[0].replace(/ /g, '_'));
@@ -38,6 +39,7 @@ export const wikipedia: Adapter = {
     {
       name: 'search',
       description: 'Search articles',
+      example: ['turing machine'],
       args: [{ name: '<query>', description: 'search terms' }],
       options: [{ flags: '-l, --limit <n>', description: 'number of results', default: 10 }],
       async run(ctx) {

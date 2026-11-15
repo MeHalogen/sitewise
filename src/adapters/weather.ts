@@ -43,6 +43,7 @@ export const weather: Adapter = {
     {
       name: 'now',
       description: 'Current conditions and 7-day forecast',
+      example: ['London'],
       args: [{ name: '<city>', description: 'city name, e.g. "San Francisco"' }],
       async run(ctx) {
         const geo = await getJSON<GeoResult>(

@@ -70,6 +70,7 @@ export const hackernews: Adapter = {
     {
       name: 'search',
       description: 'Search stories by relevance',
+      example: ['rust'],
       args: [{ name: '<query>', description: 'search terms' }],
       options: [{ flags: '-l, --limit <n>', description: 'number of results', default: 15 }],
       async run(ctx) {

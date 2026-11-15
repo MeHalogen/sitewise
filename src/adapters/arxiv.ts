@@ -57,6 +57,7 @@ export const arxiv: Adapter = {
     {
       name: 'search',
       description: 'Search papers across all fields',
+      example: ['diffusion models'],
       args: [{ name: '<query>', description: 'search terms' }],
       options: [{ flags: '-l, --limit <n>', description: 'number of papers', default: 10 }],
       async run(ctx) {
@@ -67,6 +68,7 @@ export const arxiv: Adapter = {
     {
       name: 'recent',
       description: 'Most recent submissions in a category',
+      example: ['cs.LG'],
       args: [{ name: '<category>', description: 'e.g. cs.AI, cs.CL, math.CO' }],
       options: [{ flags: '-l, --limit <n>', description: 'number of papers', default: 10 }],
       async run(ctx) {
@@ -77,6 +79,7 @@ export const arxiv: Adapter = {
     {
       name: 'abstract',
       description: 'Full abstract of a paper',
+      example: ['1706.03762'],
       args: [{ name: '<id>', description: 'arXiv ID, e.g. 2401.00001' }],
       async run(ctx) {
         const papers = await query(`id:${ctx.args[0]}`, 1, false);

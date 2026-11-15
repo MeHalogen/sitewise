@@ -32,6 +32,9 @@ import { readUrl } from './read.js';
 import { adapters, findBrowserSpec, listCommands } from './registry.js';
 import { parseEvery, runWatchesOnce, watchLabel } from './watch.js';
 import { VERSION } from './version.js';
+import { writeFileSync } from 'node:fs';
+import { badgeFor, runHealth, summarize } from './health.js';
+import { reportUrl } from './report.js';
 
 
 const program = new Command('sitewise')
@@ -54,10 +57,20 @@ function fail(err: unknown): never {
   process.exit(1);
 }
 
+/** An adapter command failed: say why, and offer a prefilled issue for the site. */
+function failAdapter(site: string, command: string, args: string[], err: unknown): never {
+  const message = err instanceof Error ? err.message : String(err);
+  console.error(pc.red('error:') + ' ' + message);
+  console.error(pc.dim(`If this keeps happening, report it (prefilled, nothing is sent until you submit):\n  ${reportUrl(site, command, message, args)}`));
+  process.exit(1);
+}
+
 function registerAdapterCommand(parent: Command, cmd: AdapterCommand): void {
   const sub = parent.command(cmd.name).description(cmd.description);
   for (const arg of cmd.args ?? []) sub.argument(arg.name, arg.description);
   for (const opt of cmd.options ?? []) sub.option(opt.flags, opt.description, opt.default as string | undefined);
+  const example = ['sitewise', parent.name(), cmd.name, ...(cmd.example ?? []).map((a) => (/\s/.test(a) ? JSON.stringify(a) : a))];
+  sub.addHelpText('after', `\nExample:\n  ${example.join(' ')}`);
   sub.action(async (...invocation) => {
     // commander passes (args..., options, command)
     const args = invocation.slice(0, -2).map(String);
@@ -67,7 +80,7 @@ function registerAdapterCommand(parent: Command, cmd: AdapterCommand): void {
       if (historyEnabled()) recordHistory(parent.name(), cmd.name, args, result.data);
       output(result);
     } catch (err) {
-      fail(err);
+      failAdapter(parent.name(), cmd.name, args, err);
     }
   });
 }
@@ -116,12 +129,52 @@ program
 
 program
   .command('doctor')
-  .description('Check that sitewise is healthy (node, network, browser)')
-  .action(async () => {
-    const result = await runDoctor();
-    if (wantJson()) output({ data: result });
-    else console.log(renderDoctor(result));
-    if (!result.healthy) process.exitCode = 1;
+  .description('Check that sitewise is healthy (node, network, browser); --adapters checks every site')
+  .option('-a, --adapters', 'run every command\'s example and report which sites work')
+  .option('-b, --browser', 'with --adapters: include browser adapters (launches Chrome; SITEWISE_HEADLESS=1 for no window)')
+  .option('--only <sites>', 'with --adapters: comma-separated site names')
+  .option('--badge <file>', 'with --adapters: also write a shields.io endpoint badge JSON')
+  .action(async (opts: { adapters?: boolean; browser?: boolean; only?: string; badge?: string }) => {
+    if (!opts.adapters) {
+      const result = await runDoctor();
+      if (wantJson()) output({ data: result });
+      else console.log(renderDoctor(result));
+      if (!result.healthy) process.exitCode = 1;
+      return;
+    }
+    const only = opts.only?.split(',').map((s) => s.trim()).filter(Boolean);
+    if (!wantJson()) console.error(pc.dim(`Checking ${only?.join(', ') ?? 'every'} adapter${opts.browser ? ' (including browser)' : ''} …`));
+    const results = await runHealth(adapters, { browser: opts.browser, only });
+    const summary = summarize(results);
+    if (opts.badge) writeFileSync(opts.badge, JSON.stringify(badgeFor(results), null, 2) + '\n');
+    if (wantJson()) {
+      output({ data: { checkedAt: new Date().toISOString(), version: VERSION, summary, results } });
+    } else {
+      const mark = { ok: '✓ ok', empty: '∅ empty', fail: '✗ FAIL', skipped: '- skipped' };
+      output({
+        data: results,
+        table: {
+          columns: [
+            { key: 'site', header: 'Site' },
+            { key: 'command', header: 'Command' },
+            { key: 'state', header: 'Status' },
+            { key: 'time', header: 'Time', align: 'right' },
+            { key: 'detail', header: 'Detail', maxWidth: 70 },
+          ],
+          rows: results.map((r) => ({
+            ...r,
+            state: mark[r.status],
+            time: r.ms ? `${(r.ms / 1000).toFixed(1)}s` : '',
+            detail: r.error?.split('\n')[0] ?? `${r.rows} rows${r.flaky ? ' (passed on retry)' : ''}`,
+          })),
+        },
+      });
+      console.log(
+        `\n${summary.broken === 0 ? pc.green(`All ${summary.total} commands healthy.`) : pc.yellow(`${summary.ok}/${summary.total} healthy, ${summary.broken} broken.`)}` +
+          (summary.broken ? pc.dim(' Run with --json for prefilled issue links.') : ''),
+      );
+    }
+    if (summary.broken > 0) process.exitCode = 1;
   });
 
 program

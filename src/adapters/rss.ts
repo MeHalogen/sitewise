@@ -53,6 +53,7 @@ export const rss: Adapter = {
     {
       name: 'read',
       description: 'List the latest items in a feed',
+      example: ['https://hnrss.org/frontpage'],
       args: [{ name: '<url>', description: 'feed URL' }],
       options: [{ flags: '-l, --limit <n>', description: 'number of items', default: 15 }],
       async run(ctx) {

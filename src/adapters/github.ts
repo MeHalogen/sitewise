@@ -53,6 +53,7 @@ export const github: Adapter = {
     {
       name: 'search',
       description: 'Search repositories, sorted by stars',
+      example: ['mcp server'],
       args: [{ name: '<query>', description: 'search terms (supports GitHub qualifiers like language:rust)' }],
       options: [{ flags: '-l, --limit <n>', description: 'number of results', default: 10 }],
       async run(ctx) {
@@ -68,6 +69,7 @@ export const github: Adapter = {
     {
       name: 'repo',
       description: 'Details for a single repository',
+      example: ['nodejs/node'],
       args: [{ name: '<owner/repo>', description: 'e.g. facebook/react' }],
       async run(ctx) {
         const r = await getJSON<GhRepo>(`${API}/repos/${ctx.args[0]}`, HEADERS);
@@ -86,6 +88,7 @@ export const github: Adapter = {
     {
       name: 'releases',
       description: 'Recent releases of a repository',
+      example: ['nodejs/node'],
       args: [{ name: '<owner/repo>', description: 'e.g. nodejs/node' }],
       options: [{ flags: '-l, --limit <n>', description: 'number of releases', default: 10 }],
       async run(ctx) {

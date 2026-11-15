@@ -58,6 +58,7 @@ export const crypto: Adapter = {
     {
       name: 'price',
       description: 'Price of specific coins',
+      example: ['bitcoin', 'ethereum'],
       args: [{ name: '<coins...>', description: 'CoinGecko ids, e.g. bitcoin ethereum solana' }],
       async run(ctx) {
         const ids = ctx.args.join(',');
