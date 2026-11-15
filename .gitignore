@@ -6,3 +6,4 @@ dist/
 *.tsbuildinfo
 *.tgz
 *.mp4
+launch/
