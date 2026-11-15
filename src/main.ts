@@ -165,7 +165,7 @@ program
             ...r,
             state: mark[r.status],
             time: r.ms ? `${(r.ms / 1000).toFixed(1)}s` : '',
-            detail: r.error?.split('\n')[0] ?? `${r.rows} rows${r.flaky ? ' (passed on retry)' : ''}`,
+            detail: r.error?.split('\n')[0] ?? `${r.rows} row${r.rows === 1 ? '' : 's'}${r.flaky ? ' (passed on retry)' : ''}`,
           })),
         },
       });

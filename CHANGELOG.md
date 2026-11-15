@@ -3,6 +3,59 @@
 All notable changes to sitewise are documented here. This project follows
 [Semantic Versioning](https://semver.org).
 
+## [1.3.0] — 2026-11-15
+
+The reliability release: sitewise now tells you when a site breaks, repairs
+what it can, and every command does what its flags say.
+
+### Added
+
+- **`sitewise doctor --adapters`**: runs every command's example and prints a
+  health table (`--json`, `--browser`, `--only <sites>`, `--badge <file>`).
+- **Nightly canary**: a GitHub Action checks every adapter, publishes the
+  result and a live health badge, and opens (and later closes) one issue per
+  broken adapter.
+- **Inline auto-heal**: when a browser adapter returns nothing and
+  `ANTHROPIC_API_KEY` is set, its selectors are repaired and verified mid-run.
+  Opt out with `SITEWISE_AUTOHEAL=0`.
+- **MCP `run_command` takes `options`** (e.g. `{"time": "week"}`), validated
+  against the command; `list_commands` now returns each command's arguments,
+  options, defaults and an example.
+- **Examples on every command**, shown under `--help`.
+- **Prefilled issue links** when a command fails (nothing is sent unless you
+  submit it; there is no telemetry), plus issue forms for broken adapters and
+  site requests.
+- `SITEWISE_HEADLESS=1` runs the managed browser without a window.
+- Windows desktop notifications; Microsoft Edge is used when Chrome is absent.
+- `NASA_API_KEY` for `nasa apod`.
+
+### Changed
+
+- **`reddit` moved to the browser engine** and runs in your own logged-in
+  session (Reddit now refuses its JSON API to non-browser clients). It is
+  marked experimental, as are `twitter` and `linkedin`, until their selectors
+  are verified against a logged-in session.
+- Network errors explain themselves (rate-limited, blocked, down, unreachable)
+  and say what to do next; 429, 5xx and timeouts are retried once.
+- Pages that show a bot check now fail with a plain explanation instead of
+  returning no data. sitewise does not try to get past them.
+- The version comes from `package.json` everywhere (CLI, MCP, user-agent).
+
+### Fixed
+
+- `ask` ran code adapters with `limit=NaN`; every non-CLI path (ask, dash,
+  watch, MCP) now applies command defaults the same way.
+- `--limit` above 20 silently returned 20 rows for 18 API commands; the limit
+  now reaches the API (capped at each API's own maximum).
+- `art` returned 403; it now sends the identifying header the Art Institute's
+  API asks for.
+- Watch notifications on Linux and macOS passed web text through a shell; all
+  platforms now pass it as plain arguments.
+
+### Removed
+
+- `gutenberg`: the Gutendex API no longer responds. Use `openlibrary`.
+
 ## [1.2.0] — 2026-07-26
 
 The intelligence + engagement release — features that make sitewise a daily

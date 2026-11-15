@@ -1,0 +1,43 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+  "name": "io.github.MeHalogen/sitewise",
+  "title": "sitewise",
+  "description": "50 websites as tools that return clean JSON, plus article reading and real browser control.",
+  "websiteUrl": "https://github.com/MeHalogen/sitewise#readme",
+  "repository": {
+    "url": "https://github.com/MeHalogen/sitewise",
+    "source": "github"
+  },
+  "version": "1.3.0",
+  "packages": [
+    {
+      "registryType": "npm",
+      "identifier": "sitewise",
+      "version": "1.3.0",
+      "transport": {
+        "type": "stdio"
+      },
+      "packageArguments": [
+        {
+          "type": "positional",
+          "value": "mcp"
+        }
+      ],
+      "environmentVariables": [
+        {
+          "name": "SITEWISE_HEADLESS",
+          "description": "Set to 1 to run the managed browser without a window",
+          "isRequired": false,
+          "format": "string"
+        },
+        {
+          "name": "NASA_API_KEY",
+          "description": "Your own NASA API key for the nasa apod command (the shared DEMO_KEY is rate-limited)",
+          "isRequired": false,
+          "isSecret": true,
+          "format": "string"
+        }
+      ]
+    }
+  ]
+}

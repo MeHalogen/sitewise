@@ -21,7 +21,7 @@ Sleep 1s
 Show
 
 # --- intro ---
-Type "# sitewise — control the web from your terminal"
+Type "# sitewise: the web as tools for your AI agent (and you)"
 Enter
 Sleep 800ms
 
@@ -41,8 +41,14 @@ Sleep 400ms
 Enter
 Sleep 3s
 
+# --- every site is health-checked; it tells you when one breaks ---
+Type "sitewise doctor --adapters --only hackernews,npm,github,wikipedia"
+Sleep 400ms
+Enter
+Sleep 12s
+
 # --- watch the web; get pinged when it changes ---
-Type "# watch anything — desktop + Slack/Discord webhook"
+Type "# watch anything: desktop + Slack/Discord webhook"
 Enter
 Sleep 600ms
 Type "sitewise watch add crypto price bitcoin --field price --below 60000"
@@ -55,6 +61,6 @@ Enter
 Sleep 2.5s
 
 # --- the rest ---
-Type "# also: sitewise dash · ask · heal · author · read · mcp"
+Type "# for agents:  claude mcp add sitewise -- npx -y sitewise mcp"
 Enter
-Sleep 2.5s
+Sleep 3s

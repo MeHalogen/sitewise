@@ -1,7 +1,7 @@
 {
   "name": "sitewise",
-  "version": "1.2.0",
-  "description": "Control the web from your terminal. Sites as commands, browser automation, and a native MCP server for AI agents.",
+  "version": "1.3.0",
+  "description": "Give your AI agent the web: 50 sites as tools that return clean JSON, browser control, and a native MCP server. Also a CLI.",
   "author": "Mehal Srivastava",
   "license": "MIT",
   "type": "module",
@@ -20,18 +20,22 @@
   ],
   "scripts": {
     "dev": "tsx src/main.ts",
-    "build": "tsc --build && node -e \"require('fs').chmodSync('dist/main.js', 0o755)\"",
+    "build": "node -e \"require('fs').rmSync('dist',{recursive:true,force:true})\" && tsc --build --force && node -e \"require('fs').chmodSync('dist/main.js', 0o755)\"",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
     "prepublishOnly": "npm run build"
   },
   "keywords": [
-    "cli",
-    "browser",
-    "automation",
     "mcp",
-    "agents",
-    "web"
+    "mcp-server",
+    "model-context-protocol",
+    "ai-agents",
+    "claude",
+    "cli",
+    "web-scraping",
+    "browser-automation",
+    "json",
+    "agents"
   ],
   "repository": {
     "type": "git",
@@ -64,5 +68,6 @@
     "tsx": "^4.19.3",
     "typescript": "^5.8.0",
     "vitest": "^4.1.0"
-  }
+  },
+  "mcpName": "io.github.MeHalogen/sitewise"
 }
