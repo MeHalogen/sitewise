@@ -1,4 +1,4 @@
-import type { Adapter, AdapterCommand } from './adapter.js';
+import { optionKey, type Adapter, type AdapterCommand } from './adapter.js';
 import { loadApiAdapter } from './api/declarative.js';
 import { builtinApiAdapters } from './api/specs.js';
 import { createBrowserRunner } from './browser/adapter-runtime.js';
@@ -7,14 +7,13 @@ import { arxiv } from './adapters/arxiv.js';
 import { crypto } from './adapters/crypto.js';
 import { github } from './adapters/github.js';
 import { hackernews } from './adapters/hackernews.js';
-import { reddit } from './adapters/reddit.js';
 import { rss } from './adapters/rss.js';
 import { weather } from './adapters/weather.js';
 import { builtinBrowserAdapters } from './adapters/web/specs.js';
 import { loadUserAdapterSpecs } from './adapters/web/user-adapters.js';
 import { wikipedia } from './adapters/wikipedia.js';
 
-const codeAdapters: Adapter[] = [arxiv, crypto, github, hackernews, reddit, rss, weather, wikipedia];
+const codeAdapters: Adapter[] = [arxiv, crypto, github, hackernews, rss, weather, wikipedia];
 
 /** Built-in specs merged with user overrides (~/.sitewise/adapters/*.yaml win by name). */
 export function browserSpecs(): Map<string, BrowserAdapterSpec> {
@@ -48,9 +47,42 @@ export function findCommand(adapterName: string, commandName: string): AdapterCo
   return findAdapter(adapterName)?.commands.find((c) => c.name === commandName);
 }
 
+function modeLabel(a: Adapter): string {
+  return `${a.mode ?? 'api'}${a.experimental ? ' (experimental)' : ''}`;
+}
+
 /** Flat listing of every command, for `sitewise list` and the MCP server. */
 export function listCommands(): { site: string; mode: string; command: string; description: string }[] {
   return adapters.flatMap((a) =>
-    a.commands.map((c) => ({ site: a.name, mode: a.mode ?? 'api', command: c.name, description: c.description })),
+    a.commands.map((c) => ({ site: a.name, mode: modeLabel(a), command: c.name, description: c.description })),
+  );
+}
+
+export interface CommandDescription {
+  site: string;
+  mode: string;
+  command: string;
+  description: string;
+  args: { name: string; required: boolean; description: string }[];
+  options: { name: string; description: string; default?: string | number | boolean }[];
+  example?: string[];
+}
+
+/** Everything an agent needs to call a command correctly (MCP `list_commands`). */
+export function describeCommands(): CommandDescription[] {
+  return adapters.flatMap((a) =>
+    a.commands.map((c) => ({
+      site: a.name,
+      mode: modeLabel(a),
+      command: c.name,
+      description: c.description,
+      args: (c.args ?? []).map((arg) => ({
+        name: arg.name.replace(/[<>[\]]/g, ''),
+        required: arg.name.startsWith('<'),
+        description: arg.description,
+      })),
+      options: (c.options ?? []).map((o) => ({ name: optionKey(o.flags), description: o.description, default: o.default })),
+      ...(c.example ? { example: c.example } : {}),
+    })),
   );
 }

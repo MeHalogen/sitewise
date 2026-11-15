@@ -1,4 +1,4 @@
-import type { Adapter, CommandContext, CommandResult } from '../adapter.js';
+import type { Adapter, CommandContext, CommandResult, OptionSpec } from '../adapter.js';
 import { resolveUrl } from '../template.js';
 import type { ListSpec } from './extract.js';
 
@@ -20,11 +20,17 @@ export interface BrowserCommandSpec {
   args?: { name: string; description: string }[];
   /** field order for the human table; defaults to the field keys */
   columns?: string[];
+  /** extra options beyond --limit; each value fills `{name}` in the URL */
+  options?: OptionSpec[];
+  /** positional args for a representative call (help text + health check) */
+  example?: string[];
 }
 
 export interface BrowserAdapterSpec {
   name: string;
   description: string;
+  /** needs a logged-in session and its selectors are not yet verified */
+  experimental?: boolean;
   commands: BrowserCommandSpec[];
 }
 
@@ -48,13 +54,15 @@ export function loadBrowserAdapter(spec: BrowserAdapterSpec, runner: BrowserRunn
     name: spec.name,
     description: spec.description,
     mode: 'browser',
+    experimental: spec.experimental,
     commands: spec.commands.map((cmd) => ({
       name: cmd.name,
       description: cmd.description,
       args: cmd.args,
-      options: [{ flags: '-l, --limit <n>', description: 'max rows', default: cmd.list.limit ?? 25 }],
+      example: cmd.example,
+      options: [{ flags: '-l, --limit <n>', description: 'max rows', default: cmd.list.limit ?? 25 }, ...(cmd.options ?? [])],
       async run(ctx: CommandContext): Promise<CommandResult> {
-        const url = resolveUrl(cmd.url, ctx.args);
+        const url = resolveUrl(cmd.url, ctx.args, ctx.opts as Record<string, string | number | boolean | undefined>);
         const limit = ctx.opts.limit !== undefined ? Number(ctx.opts.limit) : cmd.list.limit;
         const effective: BrowserCommandSpec = { ...cmd, list: { ...cmd.list, limit } };
         const rows = await runner(effective, url);

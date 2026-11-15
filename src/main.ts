@@ -2,7 +2,7 @@
 /** sitewise — control the web from your terminal. */
 import { Command } from 'commander';
 import pc from 'picocolors';
-import type { Adapter, AdapterCommand } from './adapter.js';
+import { resolveOptions, type Adapter, type AdapterCommand } from './adapter.js';
 import {
   browserClick,
   browserEval,
@@ -31,8 +31,8 @@ import { render } from './output.js';
 import { readUrl } from './read.js';
 import { adapters, findBrowserSpec, listCommands } from './registry.js';
 import { parseEvery, runWatchesOnce, watchLabel } from './watch.js';
+import { VERSION } from './version.js';
 
-const VERSION = '1.2.0';
 
 const program = new Command('sitewise')
   .description('Control the web from your terminal — sites as commands, browser automation, MCP for agents.')
@@ -334,7 +334,7 @@ program
       }
       console.error(pc.dim(`→ ${line}`));
       const cmd = findCommandOrFail(chosen.site, chosen.command);
-      output(await cmd.run({ args: chosen.args, opts: {} }));
+      output(await cmd.run({ args: chosen.args, opts: resolveOptions(cmd) }));
     } catch (err) {
       fail(err);
     }

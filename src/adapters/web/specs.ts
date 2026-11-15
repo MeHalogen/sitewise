@@ -8,7 +8,63 @@ import type { BrowserAdapterSpec } from '../../browser/declarative.js';
  * live DOM every run, and specs are plain data so they (or user overrides in
  * ~/.sitewise/adapters/*.yaml) can be fixed without touching engine code.
  */
+/** Reddit renders each post as a <shreddit-post> whose attributes carry the data. */
+const redditPosts = {
+  selector: 'shreddit-post',
+  limit: 15,
+  fields: {
+    score: { attr: 'score' },
+    title: { attr: 'post-title' },
+    subreddit: { attr: 'subreddit-prefixed-name' },
+    comments: { attr: 'comment-count' },
+    author: { attr: 'author' },
+    url: { selector: 'a[slot="full-post-link"]', attr: 'href', absolute: true },
+  },
+};
+
 export const builtinBrowserAdapters: BrowserAdapterSpec[] = [
+  {
+    name: 'reddit',
+    description: '[browser] Reddit — hot/top/new posts and search, in your own browser session',
+    experimental: true,
+    commands: [
+      ...(['hot', 'new'] as const).map((sort) => ({
+        name: sort,
+        description: `${sort === 'hot' ? 'Hot' : 'Newest'} posts from a subreddit (or r/all)`,
+        url: `https://www.reddit.com/r/{0|all}/${sort}/`,
+        waitFor: 'shreddit-post',
+        args: [{ name: '[subreddit]', description: 'subreddit name, defaults to all' }],
+        example: ['programming'],
+        columns: ['score', 'title', 'subreddit', 'comments'],
+        list: redditPosts,
+      })),
+      {
+        name: 'top',
+        description: 'Top posts from a subreddit over a time window',
+        url: 'https://www.reddit.com/r/{0|all}/top/?t={time}',
+        waitFor: 'shreddit-post',
+        args: [{ name: '[subreddit]', description: 'subreddit name, defaults to all' }],
+        options: [{ flags: '-t, --time <window>', description: 'hour|day|week|month|year|all', default: 'day' }],
+        example: ['programming'],
+        columns: ['score', 'title', 'subreddit', 'comments'],
+        list: redditPosts,
+      },
+      {
+        name: 'search',
+        description: 'Search posts across Reddit',
+        url: 'https://www.reddit.com/search/?q={query}&type=posts',
+        waitFor: 'a[data-testid="post-title"]',
+        args: [{ name: '<query>', description: 'search terms' }],
+        example: ['rust async'],
+        columns: ['title', 'url'],
+        list: {
+          selector: 'a[data-testid="post-title"]',
+          limit: 15,
+          fields: { title: {}, url: { attr: 'href', absolute: true } },
+        },
+      },
+    ],
+  },
   {
     name: 'producthunt',
     description: '[browser] Product Hunt — today\'s launches',
@@ -81,6 +137,7 @@ export const builtinBrowserAdapters: BrowserAdapterSpec[] = [
   {
     name: 'twitter',
     description: '[browser] Twitter/X — uses your logged-in session',
+    experimental: true,
     commands: [
       {
         name: 'search',
@@ -121,6 +178,7 @@ export const builtinBrowserAdapters: BrowserAdapterSpec[] = [
   {
     name: 'linkedin',
     description: '[browser] LinkedIn — uses your logged-in session',
+    experimental: true,
     commands: [
       {
         name: 'search',

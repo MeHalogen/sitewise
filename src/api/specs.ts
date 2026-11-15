@@ -14,7 +14,8 @@ export const builtinApiAdapters: ApiAdapterSpec[] = [
       {
         name: 'search',
         description: 'Search npm packages',
-        url: 'https://registry.npmjs.org/-/v1/search?text={query}&size=20',
+        url: 'https://registry.npmjs.org/-/v1/search?text={query}&size={limit}',
+        maxLimit: 250,
         root: 'objects',
         args: [{ name: '<query>', description: 'search terms' }],
         columns: ['name', 'version', 'description'],
@@ -49,7 +50,8 @@ export const builtinApiAdapters: ApiAdapterSpec[] = [
       {
         name: 'search',
         description: 'Search crates',
-        url: 'https://crates.io/api/v1/crates?q={query}&per_page=20',
+        url: 'https://crates.io/api/v1/crates?q={query}&per_page={limit}',
+        maxLimit: 100,
         root: 'crates',
         args: [{ name: '<query>', description: 'search terms' }],
         columns: ['name', 'version', 'downloads', 'description'],
@@ -64,7 +66,8 @@ export const builtinApiAdapters: ApiAdapterSpec[] = [
       {
         name: 'search',
         description: 'Search projects by stars',
-        url: 'https://gitlab.com/api/v4/projects?search={query}&order_by=star_count&sort=desc&per_page=20',
+        url: 'https://gitlab.com/api/v4/projects?search={query}&order_by=star_count&sort=desc&per_page={limit}',
+        maxLimit: 100,
         args: [{ name: '<query>', description: 'search terms' }],
         columns: ['name', 'stars', 'description'],
         item: { name: 'path_with_namespace', stars: 'star_count', description: 'description', url: 'web_url' },
@@ -78,7 +81,8 @@ export const builtinApiAdapters: ApiAdapterSpec[] = [
       {
         name: 'search',
         description: 'Search questions by votes',
-        url: 'https://api.stackexchange.com/2.3/search/advanced?order=desc&sort=votes&q={query}&site=stackoverflow',
+        url: 'https://api.stackexchange.com/2.3/search/advanced?order=desc&sort=votes&q={query}&site=stackoverflow&pagesize={limit}',
+        maxLimit: 100,
         root: 'items',
         args: [{ name: '<query>', description: 'search terms' }],
         columns: ['score', 'answers', 'title'],
@@ -93,7 +97,8 @@ export const builtinApiAdapters: ApiAdapterSpec[] = [
       {
         name: 'top',
         description: 'Popular articles',
-        url: 'https://dev.to/api/articles?per_page=20&top=7',
+        url: 'https://dev.to/api/articles?per_page={limit}&top=7',
+        maxLimit: 1000,
         args: [],
         columns: ['reactions', 'title', 'author'],
         item: { reactions: 'positive_reactions_count', title: 'title', author: 'user.name', url: 'url' },
@@ -101,7 +106,8 @@ export const builtinApiAdapters: ApiAdapterSpec[] = [
       {
         name: 'search',
         description: 'Articles by tag',
-        url: 'https://dev.to/api/articles?tag={0}&per_page=20',
+        url: 'https://dev.to/api/articles?tag={0}&per_page={limit}',
+        maxLimit: 1000,
         args: [{ name: '<tag>', description: 'tag, e.g. rust' }],
         columns: ['reactions', 'title', 'author'],
         item: { reactions: 'positive_reactions_count', title: 'title', author: 'user.name', url: 'url' },
@@ -117,26 +123,11 @@ export const builtinApiAdapters: ApiAdapterSpec[] = [
       {
         name: 'search',
         description: 'Search books',
-        url: 'https://openlibrary.org/search.json?q={query}&limit=20&fields=title,author_name,first_publish_year,key',
+        url: 'https://openlibrary.org/search.json?q={query}&limit={limit}&fields=title,author_name,first_publish_year,key',
         root: 'docs',
         args: [{ name: '<query>', description: 'title or author' }],
         columns: ['title', 'author', 'year'],
         item: { title: 'title', author: 'author_name.0', year: 'first_publish_year' },
-      },
-    ],
-  },
-  {
-    name: 'gutenberg',
-    description: 'Project Gutenberg — free ebooks',
-    commands: [
-      {
-        name: 'search',
-        description: 'Search public-domain books',
-        url: 'https://gutendex.com/books?search={query}',
-        root: 'results',
-        args: [{ name: '<query>', description: 'title or author' }],
-        columns: ['title', 'author', 'downloads'],
-        item: { title: 'title', author: 'authors.0.name', downloads: 'download_count', id: 'id' },
       },
     ],
   },
@@ -147,7 +138,8 @@ export const builtinApiAdapters: ApiAdapterSpec[] = [
       {
         name: 'search',
         description: 'Search entities',
-        url: 'https://www.wikidata.org/w/api.php?action=wbsearchentities&search={query}&language=en&format=json&limit=20',
+        url: 'https://www.wikidata.org/w/api.php?action=wbsearchentities&search={query}&language=en&format=json&limit={limit}',
+        maxLimit: 50,
         root: 'search',
         args: [{ name: '<query>', description: 'search terms' }],
         columns: ['id', 'label', 'description'],
@@ -192,7 +184,9 @@ export const builtinApiAdapters: ApiAdapterSpec[] = [
       {
         name: 'like',
         description: 'Words with a similar meaning',
-        url: 'https://api.datamuse.com/words?ml={query}&max=25',
+        url: 'https://api.datamuse.com/words?ml={query}&max={limit}',
+        limit: 25,
+        maxLimit: 1000,
         args: [{ name: '<query>', description: 'meaning' }],
         columns: ['word', 'score'],
         item: { word: 'word', score: 'score' },
@@ -200,7 +194,9 @@ export const builtinApiAdapters: ApiAdapterSpec[] = [
       {
         name: 'rhymes',
         description: 'Words that rhyme',
-        url: 'https://api.datamuse.com/words?rel_rhy={0}&max=25',
+        url: 'https://api.datamuse.com/words?rel_rhy={0}&max={limit}',
+        limit: 25,
+        maxLimit: 1000,
         args: [{ name: '<word>', description: 'the word' }],
         columns: ['word'],
         item: { word: 'word' },
@@ -230,7 +226,8 @@ export const builtinApiAdapters: ApiAdapterSpec[] = [
       {
         name: 'search',
         description: 'Search the iTunes catalog',
-        url: 'https://itunes.apple.com/search?term={query}&limit=20',
+        url: 'https://itunes.apple.com/search?term={query}&limit={limit}',
+        maxLimit: 200,
         root: 'results',
         args: [{ name: '<query>', description: 'search terms' }],
         columns: ['kind', 'name', 'artist'],
@@ -264,7 +261,8 @@ export const builtinApiAdapters: ApiAdapterSpec[] = [
       {
         name: 'search',
         description: 'Search anime',
-        url: 'https://kitsu.io/api/edge/anime?filter%5Btext%5D={query}&page%5Blimit%5D=20',
+        url: 'https://kitsu.io/api/edge/anime?filter%5Btext%5D={query}&page%5Blimit%5D={limit}',
+        maxLimit: 20,
         headers: { accept: 'application/vnd.api+json' },
         root: 'data',
         args: [{ name: '<query>', description: 'title' }],
@@ -285,7 +283,8 @@ export const builtinApiAdapters: ApiAdapterSpec[] = [
       {
         name: 'artist',
         description: 'Search artists',
-        url: 'https://musicbrainz.org/ws/2/artist?query={query}&fmt=json&limit=20',
+        url: 'https://musicbrainz.org/ws/2/artist?query={query}&fmt=json&limit={limit}',
+        maxLimit: 100,
         root: 'artists',
         args: [{ name: '<query>', description: 'artist name' }],
         columns: ['name', 'country', 'type'],
@@ -365,7 +364,8 @@ export const builtinApiAdapters: ApiAdapterSpec[] = [
       {
         name: 'search',
         description: 'Find breweries by name',
-        url: 'https://api.openbrewerydb.org/v1/breweries?by_name={query}&per_page=20',
+        url: 'https://api.openbrewerydb.org/v1/breweries?by_name={query}&per_page={limit}',
+        maxLimit: 200,
         args: [{ name: '<query>', description: 'brewery name' }],
         columns: ['name', 'brewery_type', 'city', 'state'],
         item: { name: 'name', brewery_type: 'brewery_type', city: 'city', state: 'state_province' },
@@ -394,7 +394,7 @@ export const builtinApiAdapters: ApiAdapterSpec[] = [
       {
         name: 'top',
         description: 'Top coins by rank',
-        url: 'https://api.coinpaprika.com/v1/tickers?limit=20',
+        url: 'https://api.coinpaprika.com/v1/tickers?limit={limit}',
         root: '',
         args: [],
         columns: ['rank', 'symbol', 'name', 'price'],
@@ -409,7 +409,8 @@ export const builtinApiAdapters: ApiAdapterSpec[] = [
       {
         name: 'top',
         description: 'Top coins',
-        url: 'https://api.coinlore.net/api/tickers/?limit=20',
+        url: 'https://api.coinlore.net/api/tickers/?limit={limit}',
+        maxLimit: 100,
         root: 'data',
         args: [],
         columns: ['rank', 'symbol', 'name', 'price_usd', 'percent_change_24h'],
@@ -463,7 +464,10 @@ export const builtinApiAdapters: ApiAdapterSpec[] = [
       {
         name: 'search',
         description: 'Search artworks',
-        url: 'https://api.artic.edu/api/v1/artworks/search?q={query}&limit=20&fields=title,artist_display,date_display',
+        // The AIC asks API clients to identify themselves with this header; without it, requests get a 403.
+        headers: { 'AIC-User-Agent': 'sitewise (+https://github.com/MeHalogen/sitewise)' },
+        url: 'https://api.artic.edu/api/v1/artworks/search?q={query}&limit={limit}&fields=title,artist_display,date_display',
+        maxLimit: 100,
         root: 'data',
         args: [{ name: '<query>', description: 'search terms' }],
         columns: ['title', 'artist_display', 'date_display'],
@@ -478,7 +482,12 @@ export const builtinApiAdapters: ApiAdapterSpec[] = [
       {
         name: 'apod',
         description: "Today's astronomy picture and explanation",
-        url: 'https://api.nasa.gov/planetary/apod?api_key=DEMO_KEY',
+        url: 'https://api.nasa.gov/planetary/apod?api_key={key}',
+        key: {
+          env: 'NASA_API_KEY',
+          fallback: 'DEMO_KEY',
+          hint: "NASA's shared DEMO_KEY is rate-limited. Get a free key at https://api.nasa.gov and set NASA_API_KEY.",
+        },
         text: ['Title:title', 'Date:date', 'Media:media_type', 'URL:url', '', 'Explanation:explanation'],
       },
     ],
@@ -503,7 +512,9 @@ export const builtinApiAdapters: ApiAdapterSpec[] = [
       {
         name: 'random',
         description: 'Random trivia questions',
-        url: 'https://opentdb.com/api.php?amount=10',
+        url: 'https://opentdb.com/api.php?amount={limit}',
+        limit: 10,
+        maxLimit: 50,
         root: 'results',
         args: [],
         columns: ['category', 'difficulty', 'question'],

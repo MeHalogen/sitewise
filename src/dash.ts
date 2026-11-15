@@ -2,6 +2,7 @@ import pc from 'picocolors';
 import type { DashPanel } from './config.js';
 import { loadConfig } from './config.js';
 import { render } from './output.js';
+import { limitOverride, resolveOptions } from './adapter.js';
 import { findCommand } from './registry.js';
 
 /** The personal terminal dashboard: run every configured panel, render stacked sections. */
@@ -35,7 +36,7 @@ export async function renderDash(): Promise<string> {
     dash.map(async (panel) => {
       const cmd = findCommand(panel.site, panel.command);
       if (!cmd) throw new Error(`unknown command ${panel.site}/${panel.command}`);
-      return cmd.run({ args: panel.args ?? [], opts: { limit: panel.limit ?? 5 } });
+      return cmd.run({ args: panel.args ?? [], opts: resolveOptions(cmd, limitOverride(cmd, panel.limit ?? 5)) });
     }),
   );
 

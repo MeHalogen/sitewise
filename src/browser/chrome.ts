@@ -30,6 +30,17 @@ export function findChrome(): string | null {
   return candidates.find((p) => existsSync(p)) ?? null;
 }
 
+/** SITEWISE_HEADLESS=1 runs the managed browser without a window (CI, servers, the canary). */
+export function headless(): boolean {
+  return /^(1|true|yes)$/i.test(process.env.SITEWISE_HEADLESS ?? '');
+}
+
+export function chromeArgs(port: number): string[] {
+  const args = [`--remote-debugging-port=${port}`, `--user-data-dir=${profileDir()}`, '--no-first-run', '--no-default-browser-check'];
+  if (headless()) args.push('--headless=new', '--window-size=1280,2000');
+  return args;
+}
+
 export function profileDir(): string {
   return path.join(homedir(), '.sitewise', 'browser-profile');
 }
@@ -49,7 +60,7 @@ export async function launchChrome(port = DEFAULT_CDP_PORT): Promise<{ alreadyRu
 
   const child = spawn(
     binary,
-    [`--remote-debugging-port=${port}`, `--user-data-dir=${profileDir()}`, '--no-first-run', '--no-default-browser-check'],
+    chromeArgs(port),
     { detached: true, stdio: 'ignore' },
   );
   child.unref();

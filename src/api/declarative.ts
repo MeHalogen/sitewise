@@ -9,7 +9,7 @@ import { getPath, resolveUrl, toCell } from '../template.js';
 export interface ApiCommandSpec {
   name: string;
   description: string;
-  /** URL template; `{query}` = args joined, `{0}`,`{1}` = positional (URL-encoded) */
+  /** URL template; `{query}` = args joined, `{0}`,`{1}` = positional (URL-encoded), `{limit}` = page size */
   url: string;
   headers?: Record<string, string>;
   /** dot path to the array of items in the response; omit if the response IS the array */
@@ -23,8 +23,14 @@ export interface ApiCommandSpec {
   text?: string[];
   columns?: string[];
   args?: { name: string; description: string }[];
-  /** max rows (client-side slice) */
+  /** default row count (also the `{limit}` value when --limit is not given) */
   limit?: number;
+  /** the API's own page-size cap; `{limit}` never exceeds it */
+  maxLimit?: number;
+  /** an API key read from the environment, filling `{key}`; `fallback` is a shared public key */
+  key?: { env: string; fallback?: string; hint?: string };
+  /** positional args for a representative call (help text + health check) */
+  example?: string[];
 }
 
 export interface ApiAdapterSpec {
@@ -75,12 +81,24 @@ export function loadApiAdapter(spec: ApiAdapterSpec): Adapter {
       name: cmd.name,
       description: cmd.description,
       args: cmd.args,
+      example: cmd.example,
       options: cmd.text ? [] : [{ flags: '-l, --limit <n>', description: 'max rows', default: cmd.limit ?? 20 }],
       async run(ctx: CommandContext): Promise<CommandResult> {
-        const url = resolveUrl(cmd.url, ctx.args);
-        const limit = ctx.opts.limit !== undefined ? Number(ctx.opts.limit) : (cmd.limit ?? 20);
-        const payload = await getJSON(url, cmd.headers);
-        return buildApiResult(cmd, payload, limit);
+        const requested = ctx.opts.limit !== undefined ? Number(ctx.opts.limit) : NaN;
+        const limit = Number.isFinite(requested) && requested > 0 ? requested : (cmd.limit ?? 20);
+        const ownKey = cmd.key ? process.env[cmd.key.env] : undefined;
+        const url = resolveUrl(cmd.url, ctx.args, {
+          limit: Math.min(limit, cmd.maxLimit ?? Infinity),
+          key: cmd.key ? ownKey || cmd.key.fallback : undefined,
+        });
+        try {
+          const payload = await getJSON(url, cmd.headers);
+          return buildApiResult(cmd, payload, limit);
+        } catch (err) {
+          // On the shared fallback key, the likely cause is its rate limit: say how to fix it.
+          if (cmd.key?.hint && !ownKey && err instanceof Error) err.message = `${err.message}\n${cmd.key.hint}`;
+          throw err;
+        }
       },
     })),
   };

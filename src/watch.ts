@@ -1,6 +1,7 @@
 import type { WatchSpec, WatchState } from './config.js';
 import { loadConfig, loadWatchState, saveWatchState } from './config.js';
 import { notify, postWebhook } from './notify.js';
+import { limitOverride, resolveOptions } from './adapter.js';
 import { findCommand } from './registry.js';
 
 /**
@@ -113,7 +114,7 @@ export async function runWatchesOnce(opts: { force?: boolean; defaultEveryMs?: n
       continue;
     }
     try {
-      const result = await cmd.run({ args: w.args ?? [], opts: { limit: 5 } });
+      const result = await cmd.run({ args: w.args ?? [], opts: resolveOptions(cmd, limitOverride(cmd, 5)) });
       const rows = Array.isArray(result.data) ? (result.data as Record<string, unknown>[]) : [];
       const evaluation = evaluateWatch(w, rows, prev);
       state[w.id] = evaluation.state;

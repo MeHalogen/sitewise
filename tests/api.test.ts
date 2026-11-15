@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { buildApiResult } from '../src/api/declarative.js';
+import { buildApiResult, loadApiAdapter } from '../src/api/declarative.js';
 import { builtinApiAdapters } from '../src/api/specs.js';
 import { getPath, resolveUrl, toCell } from '../src/template.js';
 
@@ -20,6 +20,44 @@ describe('toCell', () => {
 describe('resolveUrl', () => {
   it('fills query and positional slots', () => {
     expect(resolveUrl('https://api/{0}?q={query}', ['pkg name'])).toBe('https://api/pkg%20name?q=pkg%20name');
+  });
+
+  it('fills {limit} with a positive integer', () => {
+    expect(resolveUrl('https://api?n={limit}', [], { limit: 50 })).toBe('https://api?n=50');
+    expect(resolveUrl('https://api?n={limit}', [], { limit: 7.9 })).toBe('https://api?n=7');
+    expect(resolveUrl('https://api?n={limit}', [], { limit: 0 })).toBe('https://api?n=1');
+  });
+});
+
+describe('API --limit reaches the request', () => {
+  it('no spec hard-codes a page size', () => {
+    for (const a of builtinApiAdapters) {
+      for (const c of a.commands) {
+        expect(c.url, `${a.name} ${c.name}`).not.toMatch(/[?&](size|per_page|limit|max|amount|pagesize|page%5Blimit%5D)=\d/);
+      }
+    }
+  });
+
+  it('requests the asked-for count, capped at the API maximum', async () => {
+    const seen: string[] = [];
+    const realFetch = globalThis.fetch;
+    globalThis.fetch = (async (url: string) => {
+      seen.push(String(url));
+      return new Response('{"objects":[],"data":[]}', { status: 200 });
+    }) as typeof fetch;
+    try {
+      const adapters = builtinApiAdapters.map(loadApiAdapter);
+      const npm = adapters.find((a) => a.name === 'npm')!.commands[0];
+      await npm.run({ args: ['react'], opts: { limit: 60 } });
+      const anime = adapters.find((a) => a.name === 'anime')!.commands[0];
+      await anime.run({ args: ['x'], opts: { limit: 60 } });
+      await npm.run({ args: ['react'], opts: {} });
+    } finally {
+      globalThis.fetch = realFetch;
+    }
+    expect(seen[0]).toContain('size=60');
+    expect(seen[1]).toContain('page%5Blimit%5D=20');
+    expect(seen[2]).toContain('size=20');
   });
 });
 

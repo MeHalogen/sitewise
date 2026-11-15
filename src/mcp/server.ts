@@ -15,8 +15,8 @@ import { runBrowserCommandDetailed } from '../browser/adapter-runtime.js';
 import { verifyAndBuild } from '../browser/author.js';
 import { persistSpec } from '../browser/heal-store.js';
 import { readUrl } from '../read.js';
-import { findCommand, listCommands } from '../registry.js';
-import type { CommandResult } from '../adapter.js';
+import { describeCommands, findCommand } from '../registry.js';
+import { limitOverride, resolveOptions, type CommandResult } from '../adapter.js';
 
 function asContent(result: CommandResult) {
   return { content: [{ type: 'text' as const, text: JSON.stringify(result.data, null, 2) }] };
@@ -32,9 +32,9 @@ export async function runMcpServer(version: string): Promise<void> {
 
   server.tool(
     'list_commands',
-    'List every available site command (site, command, description). Call this first to discover what sitewise can do.',
+    'List every available site command with its positional args, options (name, description, default) and an example. Call this first to discover what sitewise can do and how to call it.',
     {},
-    async () => asText(JSON.stringify(listCommands(), null, 2)),
+    async () => asText(JSON.stringify(describeCommands(), null, 2)),
   );
 
   server.tool(
@@ -44,20 +44,26 @@ export async function runMcpServer(version: string): Promise<void> {
       site: z.string().describe('adapter name, e.g. hackernews, reddit, github'),
       command: z.string().describe('command name, e.g. top, search'),
       args: z.array(z.string()).optional().describe('positional arguments, e.g. the search query'),
-      limit: z.number().optional().describe('max results, when the command supports it'),
+      limit: z.number().optional().describe('max results, when the command supports it (shorthand for options.limit)'),
+      options: z
+        .record(z.union([z.string(), z.number(), z.boolean()]))
+        .optional()
+        .describe('any of the command\'s options by name, e.g. {"time": "week"} for reddit top; see list_commands'),
     },
-    async ({ site, command, args, limit }) => {
+    async ({ site, command, args, limit, options }) => {
       const cmd = findCommand(site, command);
       if (!cmd) return asText(`Unknown command ${site}/${command}. Use list_commands to see what exists.`);
-      const opts: Record<string, unknown> = {};
-      for (const o of cmd.options ?? []) {
-        if (o.default !== undefined) {
-          const key = o.flags.match(/--([a-z-]+)/)?.[1] ?? '';
-          opts[key.replace(/-([a-z])/g, (_, c) => c.toUpperCase())] = o.default;
-        }
+      let opts: Record<string, unknown>;
+      try {
+        opts = resolveOptions(cmd, { ...limitOverride(cmd, limit), ...options });
+      } catch (err) {
+        return asText(`Invalid options for ${site}/${command}: ${(err as Error).message}`);
       }
-      if (limit !== undefined) opts.limit = limit;
-      return asContent(await cmd.run({ args: args ?? [], opts }));
+      try {
+        return asContent(await cmd.run({ args: args ?? [], opts }));
+      } catch (err) {
+        return asText(`${site}/${command} failed: ${(err as Error).message}`);
+      }
     },
   );
 
