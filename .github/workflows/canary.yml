@@ -19,11 +19,13 @@ jobs:
   health:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
         with:
           node-version: 22
           cache: npm
+      # The lockfile is written by npm 11; npm 10 (bundled with Node 20/22) rejects it.
+      - run: npm install -g npm@11
       - run: npm ci
       - run: npm run build
 
