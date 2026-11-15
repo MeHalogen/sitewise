@@ -1,7 +1,7 @@
 import type { BrowserCommandSpec } from './declarative.js';
 import { CdpSession, DEFAULT_CDP_PORT, evaluate, getBrowserWsUrl } from './cdp.js';
 import { launchChrome } from './chrome.js';
-import { BotWallError, looksLikeBotWall, pageTitle } from './botwall.js';
+import { BotWallError, looksLikeBotWall, pageTitle, visibleText } from './botwall.js';
 import { extractRows } from './extract.js';
 
 /** How long to wait for `waitFor` selectors on JS-rendered pages. */
@@ -62,7 +62,9 @@ export async function runBrowserCommandDetailed(
     const expr = `(${extractRows.toString()})(document, ${JSON.stringify(spec.list)})`;
     const rows = await evaluate<Record<string, string>[]>(session, expr, sessionId);
     const html = await evaluate<string>(session, 'document.documentElement.outerHTML', sessionId);
-    if (rows.length === 0 && looksLikeBotWall(html)) throw new BotWallError(new URL(url).host, pageTitle(html));
+    if (rows.length === 0 && looksLikeBotWall(html)) {
+      throw new BotWallError(new URL(url).host, pageTitle(html) || visibleText(html).slice(0, 60));
+    }
     return { rows, html };
   } finally {
     if (targetId) await session.send('Target.closeTarget', { targetId }).catch(() => {});

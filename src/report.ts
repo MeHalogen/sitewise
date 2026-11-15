@@ -8,14 +8,8 @@ export const REPO_URL = 'https://github.com/MeHalogen/sitewise';
  */
 export function reportUrl(site: string, command: string, error: string, args: string[] = []): string {
   const body = [
-    `**Command:** \`sitewise ${[site, command, ...args].join(' ')}\``,
-    `**Version:** ${VERSION}`,
-    `**Platform:** ${process.platform} / Node ${process.versions.node}`,
-    '',
-    '**Error:**',
-    '```',
-    error.slice(0, 1500),
-    '```',
+    `Command: \`sitewise ${[site, command, ...args].join(' ')}\``,
+    `Platform: ${process.platform} / Node ${process.versions.node}`,
   ].join('\n');
   const params = new URLSearchParams({
     template: 'broken-adapter.yml',

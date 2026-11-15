@@ -114,6 +114,11 @@ describe('bot walls', async () => {
     expect(looksLikeBotWall('<html><head><title>Just a moment...</title></head></html>')).toBe(true);
     expect(looksLikeBotWall('<html><head><title>403 Forbidden</title></head></html>')).toBe(true);
     expect(looksLikeBotWall('<title>Reddit - Prove your humanity</title>')).toBe(true);
+    // Reddit's network block: no title, huge inline image, a single sentence of text
+    const block = `<html><head></head><body><img src="data:image/png;base64,${'A'.repeat(150_000)}"><p>You've been blocked by network security.</p></body></html>`;
+    expect(looksLikeBotWall(block)).toBe(true);
+    // a real article that mentions being blocked is not a bot wall
+    expect(looksLikeBotWall(`<title>News</title><p>${'Users were blocked by network security teams. '.repeat(60)}</p>`)).toBe(false);
     expect(looksLikeBotWall('<html><head><title>Lobsters</title></head><body>' + 'x'.repeat(100) + '</body></html>')).toBe(false);
   });
   it('counts a bot-walled command as blocked, not broken', async () => {

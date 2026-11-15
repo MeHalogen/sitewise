@@ -35,6 +35,8 @@ import { VERSION } from './version.js';
 import { writeFileSync } from 'node:fs';
 import { badgeFor, runHealth, summarize } from './health.js';
 import { reportUrl } from './report.js';
+import { BotWallError } from './browser/botwall.js';
+import { HttpError } from './http.js';
 
 
 const program = new Command('sitewise')
@@ -61,7 +63,12 @@ function fail(err: unknown): never {
 function failAdapter(site: string, command: string, args: string[], err: unknown): never {
   const message = err instanceof Error ? err.message : String(err);
   console.error(pc.red('error:') + ' ' + message);
-  console.error(pc.dim(`If this keeps happening, report it (prefilled, nothing is sent until you submit):\n  ${reportUrl(site, command, message, args)}`));
+  // A bot check (the site refusing automation) or a 404 (usually a mistyped argument)
+  // is not a broken adapter, so there is nothing to report.
+  const notOurs = err instanceof BotWallError || (err instanceof HttpError && err.status === 404);
+  if (!notOurs) {
+    console.error(pc.dim(`If this keeps happening, report it (prefilled, nothing is sent until you submit):\n  ${reportUrl(site, command, message, args)}`));
+  }
   process.exit(1);
 }
 
