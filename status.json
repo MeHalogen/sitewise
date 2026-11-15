@@ -1,0 +1,620 @@
+{
+  "checkedAt": "2026-11-15T18:44:21.999Z",
+  "version": "1.3.0",
+  "summary": {
+    "total": 55,
+    "ok": 51,
+    "broken": 4,
+    "blocked": 2,
+    "skipped": 0
+  },
+  "results": [
+    {
+      "site": "amazon",
+      "command": "search",
+      "mode": "browser",
+      "args": [
+        "mechanical keyboard"
+      ],
+      "status": "empty",
+      "ms": 12594,
+      "rows": 0,
+      "error": "returned no data",
+      "report": "https://github.com/MeHalogen/sitewise/issues/new?template=broken-adapter.yml&title=%5Bbroken%5D+amazon+search&labels=broken-adapter&site=amazon&command=search&version=1.3.0&error=returned+no+data&body=Command%3A+%60sitewise+amazon+search+mechanical+keyboard%60%0APlatform%3A+linux+%2F+Node+22.23.4"
+    },
+    {
+      "site": "anime",
+      "command": "search",
+      "mode": "api",
+      "args": [
+        "naruto"
+      ],
+      "status": "ok",
+      "ms": 663,
+      "rows": 3
+    },
+    {
+      "site": "art",
+      "command": "search",
+      "mode": "api",
+      "args": [
+        "monet"
+      ],
+      "status": "ok",
+      "ms": 437,
+      "rows": 3
+    },
+    {
+      "site": "arxiv",
+      "command": "abstract",
+      "mode": "api",
+      "args": [
+        "1706.03762"
+      ],
+      "status": "ok",
+      "ms": 203,
+      "rows": 1
+    },
+    {
+      "site": "arxiv",
+      "command": "recent",
+      "mode": "api",
+      "args": [
+        "cs.LG"
+      ],
+      "status": "ok",
+      "ms": 193,
+      "rows": 3
+    },
+    {
+      "site": "arxiv",
+      "command": "search",
+      "mode": "api",
+      "args": [
+        "diffusion models"
+      ],
+      "status": "ok",
+      "ms": 186,
+      "rows": 3
+    },
+    {
+      "site": "brewery",
+      "command": "search",
+      "mode": "api",
+      "args": [
+        "dog"
+      ],
+      "status": "fail",
+      "ms": 44,
+      "error": "api.openbrewerydb.org refused the request (HTTP 403). The site may have started blocking automated clients. Run `sitewise doctor --adapters` to see which sites are affected.",
+      "report": "https://github.com/MeHalogen/sitewise/issues/new?template=broken-adapter.yml&title=%5Bbroken%5D+brewery+search&labels=broken-adapter&site=brewery&command=search&version=1.3.0&error=api.openbrewerydb.org+refused+the+request+%28HTTP+403%29.+The+site+may+have+started+blocking+automated+clients.+Run+%60sitewise+doctor+--adapters%60+to+see+which+sites+are+affected.&body=Command%3A+%60sitewise+brewery+search+dog%60%0APlatform%3A+linux+%2F+Node+22.23.4"
+    },
+    {
+      "site": "cocktail",
+      "command": "search",
+      "mode": "api",
+      "args": [
+        "margarita"
+      ],
+      "status": "ok",
+      "ms": 641,
+      "rows": 3
+    },
+    {
+      "site": "coinlore",
+      "command": "top",
+      "mode": "api",
+      "args": [],
+      "status": "ok",
+      "ms": 633,
+      "rows": 3
+    },
+    {
+      "site": "coinpaprika",
+      "command": "top",
+      "mode": "api",
+      "args": [],
+      "status": "ok",
+      "ms": 446,
+      "rows": 3
+    },
+    {
+      "site": "crates",
+      "command": "search",
+      "mode": "api",
+      "args": [
+        "serde"
+      ],
+      "status": "ok",
+      "ms": 290,
+      "rows": 3
+    },
+    {
+      "site": "crypto",
+      "command": "price",
+      "mode": "api",
+      "args": [
+        "bitcoin",
+        "ethereum"
+      ],
+      "status": "ok",
+      "ms": 149,
+      "rows": 2
+    },
+    {
+      "site": "crypto",
+      "command": "top",
+      "mode": "api",
+      "args": [],
+      "status": "ok",
+      "ms": 248,
+      "rows": 3
+    },
+    {
+      "site": "defillama",
+      "command": "top",
+      "mode": "api",
+      "args": [],
+      "status": "ok",
+      "ms": 264,
+      "rows": 3
+    },
+    {
+      "site": "devto",
+      "command": "search",
+      "mode": "api",
+      "args": [
+        "rust"
+      ],
+      "status": "ok",
+      "ms": 183,
+      "rows": 3
+    },
+    {
+      "site": "devto",
+      "command": "top",
+      "mode": "api",
+      "args": [],
+      "status": "ok",
+      "ms": 195,
+      "rows": 3
+    },
+    {
+      "site": "dictionary",
+      "command": "define",
+      "mode": "api",
+      "args": [
+        "serendipity"
+      ],
+      "status": "fail",
+      "ms": 48,
+      "error": "api.dictionaryapi.dev refused the request (HTTP 403). The site may have started blocking automated clients. Run `sitewise doctor --adapters` to see which sites are affected.",
+      "report": "https://github.com/MeHalogen/sitewise/issues/new?template=broken-adapter.yml&title=%5Bbroken%5D+dictionary+define&labels=broken-adapter&site=dictionary&command=define&version=1.3.0&error=api.dictionaryapi.dev+refused+the+request+%28HTTP+403%29.+The+site+may+have+started+blocking+automated+clients.+Run+%60sitewise+doctor+--adapters%60+to+see+which+sites+are+affected.&body=Command%3A+%60sitewise+dictionary+define+serendipity%60%0APlatform%3A+linux+%2F+Node+22.23.4"
+    },
+    {
+      "site": "fx",
+      "command": "rate",
+      "mode": "api",
+      "args": [
+        "100",
+        "USD",
+        "EUR"
+      ],
+      "status": "ok",
+      "ms": 549,
+      "rows": 1
+    },
+    {
+      "site": "github",
+      "command": "releases",
+      "mode": "api",
+      "args": [
+        "nodejs/node"
+      ],
+      "status": "ok",
+      "ms": 222,
+      "rows": 3
+    },
+    {
+      "site": "github",
+      "command": "repo",
+      "mode": "api",
+      "args": [
+        "nodejs/node"
+      ],
+      "status": "ok",
+      "ms": 211,
+      "rows": 1
+    },
+    {
+      "site": "github",
+      "command": "search",
+      "mode": "api",
+      "args": [
+        "mcp server"
+      ],
+      "status": "ok",
+      "ms": 303,
+      "rows": 3
+    },
+    {
+      "site": "githubtrending",
+      "command": "today",
+      "mode": "browser",
+      "args": [],
+      "status": "ok",
+      "ms": 1678,
+      "rows": 3
+    },
+    {
+      "site": "gitlab",
+      "command": "search",
+      "mode": "api",
+      "args": [
+        "gitlab-runner"
+      ],
+      "status": "ok",
+      "ms": 3026,
+      "rows": 3
+    },
+    {
+      "site": "hackernews",
+      "command": "new",
+      "mode": "api",
+      "args": [],
+      "status": "ok",
+      "ms": 296,
+      "rows": 3
+    },
+    {
+      "site": "hackernews",
+      "command": "search",
+      "mode": "api",
+      "args": [
+        "rust"
+      ],
+      "status": "ok",
+      "ms": 321,
+      "rows": 3
+    },
+    {
+      "site": "hackernews",
+      "command": "top",
+      "mode": "api",
+      "args": [],
+      "status": "ok",
+      "ms": 296,
+      "rows": 3
+    },
+    {
+      "site": "imdb",
+      "command": "search",
+      "mode": "browser",
+      "args": [
+        "inception"
+      ],
+      "status": "blocked",
+      "ms": 12313,
+      "error": "www.imdb.com showed a bot check (\"403 Forbidden\") instead of the page. Run `sitewise browser start`, open www.imdb.com in that window and complete it once; headless and server environments are often blocked outright."
+    },
+    {
+      "site": "ip",
+      "command": "lookup",
+      "mode": "api",
+      "args": [
+        "8.8.8.8"
+      ],
+      "status": "ok",
+      "ms": 54,
+      "rows": 1
+    },
+    {
+      "site": "itunes",
+      "command": "search",
+      "mode": "api",
+      "args": [
+        "radiohead"
+      ],
+      "status": "ok",
+      "ms": 246,
+      "rows": 3
+    },
+    {
+      "site": "joke",
+      "command": "random",
+      "mode": "api",
+      "args": [],
+      "status": "ok",
+      "ms": 287,
+      "rows": 1
+    },
+    {
+      "site": "lobsters",
+      "command": "hot",
+      "mode": "browser",
+      "args": [],
+      "status": "ok",
+      "ms": 550,
+      "rows": 3
+    },
+    {
+      "site": "lyrics",
+      "command": "get",
+      "mode": "api",
+      "args": [
+        "coldplay",
+        "yellow"
+      ],
+      "status": "ok",
+      "ms": 600,
+      "rows": 1
+    },
+    {
+      "site": "meal",
+      "command": "search",
+      "mode": "api",
+      "args": [
+        "curry"
+      ],
+      "status": "ok",
+      "ms": 278,
+      "rows": 3
+    },
+    {
+      "site": "musicbrainz",
+      "command": "artist",
+      "mode": "api",
+      "args": [
+        "radiohead"
+      ],
+      "status": "ok",
+      "ms": 502,
+      "rows": 3,
+      "flaky": true
+    },
+    {
+      "site": "nasa",
+      "command": "apod",
+      "mode": "api",
+      "args": [],
+      "status": "fail",
+      "ms": 1681,
+      "error": "api.nasa.gov is having trouble on its side (HTTP 500). Try again shortly. Run `sitewise doctor --adapters` to see which sites are affected.\nNASA's shared DEMO_KEY is rate-limited. Get a free key at https://api.nasa.gov and set NASA_API_KEY.",
+      "report": "https://github.com/MeHalogen/sitewise/issues/new?template=broken-adapter.yml&title=%5Bbroken%5D+nasa+apod&labels=broken-adapter&site=nasa&command=apod&version=1.3.0&error=api.nasa.gov+is+having+trouble+on+its+side+%28HTTP+500%29.+Try+again+shortly.+Run+%60sitewise+doctor+--adapters%60+to+see+which+sites+are+affected.%0ANASA%27s+shared+DEMO_KEY+is+rate-limited.+Get+a+free+key+at+https%3A%2F%2Fapi.nasa.gov+and+set+NASA_API_KEY.&body=Command%3A+%60sitewise+nasa+apod%60%0APlatform%3A+linux+%2F+Node+22.23.4"
+    },
+    {
+      "site": "npm",
+      "command": "search",
+      "mode": "api",
+      "args": [
+        "react"
+      ],
+      "status": "ok",
+      "ms": 200,
+      "rows": 3
+    },
+    {
+      "site": "openlibrary",
+      "command": "search",
+      "mode": "api",
+      "args": [
+        "dune"
+      ],
+      "status": "ok",
+      "ms": 188,
+      "rows": 3
+    },
+    {
+      "site": "pokemon",
+      "command": "info",
+      "mode": "api",
+      "args": [
+        "pikachu"
+      ],
+      "status": "ok",
+      "ms": 28,
+      "rows": 1
+    },
+    {
+      "site": "producthunt",
+      "command": "today",
+      "mode": "browser",
+      "args": [],
+      "status": "blocked",
+      "ms": 12826,
+      "error": "www.producthunt.com showed a bot check (\"Just a moment...\") instead of the page. Run `sitewise browser start`, open www.producthunt.com in that window and complete it once; headless and server environments are often blocked outright."
+    },
+    {
+      "site": "pypi",
+      "command": "info",
+      "mode": "api",
+      "args": [
+        "requests"
+      ],
+      "status": "ok",
+      "ms": 23,
+      "rows": 1
+    },
+    {
+      "site": "quotes",
+      "command": "random",
+      "mode": "api",
+      "args": [],
+      "status": "ok",
+      "ms": 14044,
+      "rows": 3
+    },
+    {
+      "site": "rickandmorty",
+      "command": "character",
+      "mode": "api",
+      "args": [
+        "rick"
+      ],
+      "status": "ok",
+      "ms": 260,
+      "rows": 3
+    },
+    {
+      "site": "rss",
+      "command": "read",
+      "mode": "api",
+      "args": [
+        "https://hnrss.org/frontpage"
+      ],
+      "status": "ok",
+      "ms": 379,
+      "rows": 1
+    },
+    {
+      "site": "stackoverflow",
+      "command": "search",
+      "mode": "api",
+      "args": [
+        "async await"
+      ],
+      "status": "ok",
+      "ms": 129,
+      "rows": 3
+    },
+    {
+      "site": "steam",
+      "command": "search",
+      "mode": "browser",
+      "args": [
+        "portal"
+      ],
+      "status": "ok",
+      "ms": 1035,
+      "rows": 3
+    },
+    {
+      "site": "trending",
+      "command": "coins",
+      "mode": "api",
+      "args": [],
+      "status": "ok",
+      "ms": 13,
+      "rows": 3
+    },
+    {
+      "site": "trivia",
+      "command": "random",
+      "mode": "api",
+      "args": [],
+      "status": "ok",
+      "ms": 323,
+      "rows": 3
+    },
+    {
+      "site": "tvmaze",
+      "command": "search",
+      "mode": "api",
+      "args": [
+        "severance"
+      ],
+      "status": "ok",
+      "ms": 536,
+      "rows": 3
+    },
+    {
+      "site": "urban",
+      "command": "define",
+      "mode": "api",
+      "args": [
+        "yeet"
+      ],
+      "status": "ok",
+      "ms": 282,
+      "rows": 3
+    },
+    {
+      "site": "weather",
+      "command": "now",
+      "mode": "api",
+      "args": [
+        "London"
+      ],
+      "status": "ok",
+      "ms": 767,
+      "rows": 1
+    },
+    {
+      "site": "wikidata",
+      "command": "search",
+      "mode": "api",
+      "args": [
+        "douglas adams"
+      ],
+      "status": "ok",
+      "ms": 144,
+      "rows": 3
+    },
+    {
+      "site": "wikipedia",
+      "command": "search",
+      "mode": "api",
+      "args": [
+        "turing machine"
+      ],
+      "status": "ok",
+      "ms": 209,
+      "rows": 3
+    },
+    {
+      "site": "wikipedia",
+      "command": "summary",
+      "mode": "api",
+      "args": [
+        "Alan Turing"
+      ],
+      "status": "ok",
+      "ms": 62,
+      "rows": 1
+    },
+    {
+      "site": "words",
+      "command": "like",
+      "mode": "api",
+      "args": [
+        "happy"
+      ],
+      "status": "ok",
+      "ms": 166,
+      "rows": 3
+    },
+    {
+      "site": "words",
+      "command": "rhymes",
+      "mode": "api",
+      "args": [
+        "orange"
+      ],
+      "status": "ok",
+      "ms": 131,
+      "rows": 1
+    },
+    {
+      "site": "worldtime",
+      "command": "now",
+      "mode": "api",
+      "args": [
+        "Europe/London"
+      ],
+      "status": "ok",
+      "ms": 691,
+      "rows": 1
+    },
+    {
+      "site": "youtube",
+      "command": "search",
+      "mode": "browser",
+      "args": [
+        "lofi"
+      ],
+      "status": "ok",
+      "ms": 2624,
+      "rows": 3
+    }
+  ]
+}
