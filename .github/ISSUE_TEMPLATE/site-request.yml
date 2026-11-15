@@ -1,0 +1,34 @@
+name: Site request
+description: Ask for a new site, or offer one you have built
+title: '[site] '
+labels: [site-request]
+body:
+  - type: input
+    id: site
+    attributes:
+      label: Site
+      placeholder: https://example.com
+    validations:
+      required: true
+  - type: textarea
+    id: want
+    attributes:
+      label: What should the command return?
+      placeholder: 'e.g. `sitewise example top` → title, author, url for the front page'
+    validations:
+      required: true
+  - type: dropdown
+    id: access
+    attributes:
+      label: How can it be read?
+      options:
+        - A public JSON API (no key)
+        - A public page (browser adapter)
+        - Only when logged in
+        - Not sure
+  - type: checkboxes
+    id: contribute
+    attributes:
+      label: Contributing
+      options:
+        - label: I can open a PR with the adapter (see CONTRIBUTING.md)

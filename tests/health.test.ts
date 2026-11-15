@@ -33,7 +33,7 @@ describe('runHealth', () => {
     expect(by.broken.report).toContain('issues/new');
     expect(by.noexample.status).toBe('skipped');
     expect(by.text.status).toBe('ok');
-    expect(summarize(results)).toEqual({ total: 4, ok: 2, broken: 2, skipped: 1 });
+    expect(summarize(results)).toEqual({ total: 4, ok: 2, broken: 2, blocked: 0, skipped: 1 });
   });
 
   it('passes the example args and a small limit', async () => {
@@ -105,5 +105,26 @@ describe('reportUrl', () => {
     expect(url.searchParams.get('template')).toBe('broken-adapter.yml');
     expect(url.searchParams.get('title')).toBe('[broken] npm search');
     expect(url.searchParams.get('body')).toContain('sitewise npm search react');
+  });
+});
+
+describe('bot walls', async () => {
+  const { BotWallError, looksLikeBotWall } = await import('../src/browser/botwall.js');
+  it('recognises challenge pages but not real ones', () => {
+    expect(looksLikeBotWall('<html><head><title>Just a moment...</title></head></html>')).toBe(true);
+    expect(looksLikeBotWall('<html><head><title>403 Forbidden</title></head></html>')).toBe(true);
+    expect(looksLikeBotWall('<title>Reddit - Prove your humanity</title>')).toBe(true);
+    expect(looksLikeBotWall('<html><head><title>Lobsters</title></head><body>' + 'x'.repeat(100) + '</body></html>')).toBe(false);
+  });
+  it('counts a bot-walled command as blocked, not broken', async () => {
+    const site: Adapter = {
+      name: 'w',
+      description: 'w',
+      mode: 'browser',
+      commands: [cmd('x', async () => { throw new BotWallError('www.example.com', 'Just a moment...'); })],
+    };
+    const results = await runHealth([site], { browser: true });
+    expect(results[0].status).toBe('blocked');
+    expect(summarize(results)).toMatchObject({ total: 0, broken: 0, blocked: 1 });
   });
 });

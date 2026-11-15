@@ -1,0 +1,39 @@
+name: Broken adapter
+description: A site command fails or returns nothing
+title: '[broken] '
+labels: [broken-adapter]
+body:
+  - type: input
+    id: site
+    attributes:
+      label: Site
+      placeholder: reddit
+    validations:
+      required: true
+  - type: input
+    id: command
+    attributes:
+      label: Command
+      placeholder: hot
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: sitewise version
+      description: Output of `sitewise --version`
+    validations:
+      required: true
+  - type: textarea
+    id: error
+    attributes:
+      label: What happened
+      description: The error message, or what you expected to see instead.
+      render: text
+    validations:
+      required: true
+  - type: textarea
+    id: body
+    attributes:
+      label: Anything else
+      description: The full command you ran, your OS, and whether `sitewise doctor --adapters --only <site>` fails too.

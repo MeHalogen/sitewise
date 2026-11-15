@@ -1,0 +1,59 @@
+name: canary
+
+# Every night: run every adapter's example, publish the health report and
+# badge to the `status` branch, and keep one issue per broken adapter.
+on:
+  schedule:
+    - cron: '17 6 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  issues: write
+
+concurrency:
+  group: canary
+  cancel-in-progress: false
+
+jobs:
+  health:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run build
+
+      - name: Check every adapter
+        env:
+          SITEWISE_HEADLESS: '1'
+          NASA_API_KEY: ${{ secrets.NASA_API_KEY }}
+        # A broken adapter is a finding, not a failed job: the report below records it.
+        run: |
+          mkdir -p out
+          node dist/main.js doctor --adapters --browser --json --badge out/badge.json > out/status.json || true
+          node -e "const r=require('./out/status.json');console.log(JSON.stringify(r.summary))"
+
+      - name: Sync issues
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: node scripts/canary-issues.mjs out/status.json
+
+      - name: Publish to the status branch
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          if git ls-remote --exit-code --heads origin status >/dev/null; then
+            git fetch --depth 1 origin status
+            git worktree add ../status-branch status
+          else
+            git worktree add --orphan -b status ../status-branch
+          fi
+          cp out/status.json out/badge.json ../status-branch/
+          cd ../status-branch
+          git add status.json badge.json
+          git commit -m "canary: $(node -e "const r=require('./status.json');console.log(r.summary.ok+'/'+r.summary.total+' healthy')")" || exit 0
+          git push origin status

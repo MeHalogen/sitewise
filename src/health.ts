@@ -1,4 +1,5 @@
 import { limitOverride, resolveOptions, type Adapter, type AdapterCommand, type CommandResult } from './adapter.js';
+import { BotWallError } from './browser/botwall.js';
 import { reportUrl } from './report.js';
 
 /**
@@ -6,7 +7,8 @@ import { reportUrl } from './report.js';
  * data. Powers `sitewise doctor --adapters` and the nightly canary.
  */
 
-export type HealthStatus = 'ok' | 'empty' | 'fail' | 'skipped';
+/** `blocked`: the site showed a bot check, so this environment cannot judge it (not counted as broken). */
+export type HealthStatus = 'ok' | 'empty' | 'fail' | 'blocked' | 'skipped';
 
 export interface HealthResult {
   site: string;
@@ -60,6 +62,7 @@ export async function checkCommand(adapter: Adapter, cmd: AdapterCommand): Promi
       : { ...base, status: 'empty', ms: Date.now() - started, rows: 0, error: 'returned no data', report: reportUrl(adapter.name, cmd.name, 'returned no data', args) };
   } catch (err) {
     const error = err instanceof Error ? err.message : String(err);
+    if (err instanceof BotWallError) return { ...base, status: 'blocked', ms: Date.now() - started, error };
     return { ...base, status: 'fail', ms: Date.now() - started, error, report: reportUrl(adapter.name, cmd.name, error, args) };
   }
 }
@@ -101,10 +104,11 @@ export async function runHealth(adapters: Adapter[], opts: HealthOptions = {}): 
   return results.sort((x, y) => x.site.localeCompare(y.site) || x.command.localeCompare(y.command));
 }
 
-export function summarize(results: HealthResult[]): { total: number; ok: number; broken: number; skipped: number } {
-  const checked = results.filter((r) => r.status !== 'skipped');
+export function summarize(results: HealthResult[]): { total: number; ok: number; broken: number; blocked: number; skipped: number } {
+  const checked = results.filter((r) => r.status !== 'skipped' && r.status !== 'blocked');
   const ok = checked.filter((r) => r.status === 'ok').length;
-  return { total: checked.length, ok, broken: checked.length - ok, skipped: results.length - checked.length };
+  const blocked = results.filter((r) => r.status === 'blocked').length;
+  return { total: checked.length, ok, broken: checked.length - ok, blocked, skipped: results.length - checked.length - blocked };
 }
 
 /** A shields.io endpoint badge: https://shields.io/badges/endpoint-badge */

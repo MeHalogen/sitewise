@@ -150,7 +150,7 @@ program
     if (wantJson()) {
       output({ data: { checkedAt: new Date().toISOString(), version: VERSION, summary, results } });
     } else {
-      const mark = { ok: '✓ ok', empty: '∅ empty', fail: '✗ FAIL', skipped: '- skipped' };
+      const mark = { ok: '✓ ok', empty: '∅ empty', fail: '✗ FAIL', blocked: '⊘ blocked', skipped: '- skipped' };
       output({
         data: results,
         table: {
@@ -171,6 +171,7 @@ program
       });
       console.log(
         `\n${summary.broken === 0 ? pc.green(`All ${summary.total} commands healthy.`) : pc.yellow(`${summary.ok}/${summary.total} healthy, ${summary.broken} broken.`)}` +
+          (summary.blocked ? pc.dim(` ${summary.blocked} blocked by a bot check here (not counted).`) : '') +
           (summary.broken ? pc.dim(' Run with --json for prefilled issue links.') : ''),
       );
     }
