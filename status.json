@@ -1,10 +1,10 @@
 {
-  "checkedAt": "2026-11-17T16:00:33.550Z",
+  "checkedAt": "2026-11-18T15:42:37.770Z",
   "version": "1.3.0",
   "summary": {
     "total": 52,
-    "ok": 52,
-    "broken": 0,
+    "ok": 49,
+    "broken": 3,
     "blocked": 5,
     "skipped": 0
   },
@@ -17,7 +17,7 @@
         "mechanical keyboard"
       ],
       "status": "blocked",
-      "ms": 20419,
+      "ms": 21325,
       "rows": 0,
       "error": "amazon refuses requests from cloud/CI IP addresses (works from home connections)"
     },
@@ -29,7 +29,7 @@
         "naruto"
       ],
       "status": "ok",
-      "ms": 715,
+      "ms": 607,
       "rows": 3
     },
     {
@@ -40,7 +40,7 @@
         "monet"
       ],
       "status": "ok",
-      "ms": 302,
+      "ms": 450,
       "rows": 3
     },
     {
@@ -51,7 +51,7 @@
         "1706.03762"
       ],
       "status": "ok",
-      "ms": 311,
+      "ms": 518,
       "rows": 1
     },
     {
@@ -62,7 +62,7 @@
         "cs.LG"
       ],
       "status": "ok",
-      "ms": 377,
+      "ms": 558,
       "rows": 3
     },
     {
@@ -73,7 +73,7 @@
         "diffusion models"
       ],
       "status": "ok",
-      "ms": 629,
+      "ms": 1167,
       "rows": 3
     },
     {
@@ -84,7 +84,7 @@
         "dog"
       ],
       "status": "blocked",
-      "ms": 210,
+      "ms": 478,
       "error": "brewery refuses requests from cloud/CI IP addresses (works from home connections)"
     },
     {
@@ -95,7 +95,7 @@
         "margarita"
       ],
       "status": "ok",
-      "ms": 594,
+      "ms": 788,
       "rows": 3
     },
     {
@@ -104,7 +104,7 @@
       "mode": "api",
       "args": [],
       "status": "ok",
-      "ms": 476,
+      "ms": 797,
       "rows": 3
     },
     {
@@ -113,7 +113,7 @@
       "mode": "api",
       "args": [],
       "status": "ok",
-      "ms": 90,
+      "ms": 432,
       "rows": 3
     },
     {
@@ -124,7 +124,7 @@
         "serde"
       ],
       "status": "ok",
-      "ms": 363,
+      "ms": 632,
       "rows": 3
     },
     {
@@ -136,7 +136,7 @@
         "ethereum"
       ],
       "status": "ok",
-      "ms": 117,
+      "ms": 111,
       "rows": 2
     },
     {
@@ -145,7 +145,7 @@
       "mode": "api",
       "args": [],
       "status": "ok",
-      "ms": 135,
+      "ms": 1320,
       "rows": 3
     },
     {
@@ -154,7 +154,7 @@
       "mode": "api",
       "args": [],
       "status": "ok",
-      "ms": 447,
+      "ms": 505,
       "rows": 3
     },
     {
@@ -165,7 +165,7 @@
         "rust"
       ],
       "status": "ok",
-      "ms": 68,
+      "ms": 156,
       "rows": 3
     },
     {
@@ -174,7 +174,7 @@
       "mode": "api",
       "args": [],
       "status": "ok",
-      "ms": 79,
+      "ms": 125,
       "rows": 3
     },
     {
@@ -185,7 +185,7 @@
         "serendipity"
       ],
       "status": "blocked",
-      "ms": 346,
+      "ms": 378,
       "error": "dictionary refuses requests from cloud/CI IP addresses (works from home connections)"
     },
     {
@@ -198,7 +198,7 @@
         "EUR"
       ],
       "status": "ok",
-      "ms": 618,
+      "ms": 803,
       "rows": 1
     },
     {
@@ -209,7 +209,7 @@
         "nodejs/node"
       ],
       "status": "ok",
-      "ms": 206,
+      "ms": 224,
       "rows": 3
     },
     {
@@ -220,7 +220,7 @@
         "nodejs/node"
       ],
       "status": "ok",
-      "ms": 233,
+      "ms": 244,
       "rows": 1
     },
     {
@@ -231,7 +231,7 @@
         "mcp server"
       ],
       "status": "ok",
-      "ms": 323,
+      "ms": 413,
       "rows": 3
     },
     {
@@ -240,7 +240,7 @@
       "mode": "browser",
       "args": [],
       "status": "ok",
-      "ms": 3393,
+      "ms": 2720,
       "rows": 3
     },
     {
@@ -251,7 +251,7 @@
         "gitlab-runner"
       ],
       "status": "ok",
-      "ms": 1181,
+      "ms": 1210,
       "rows": 3
     },
     {
@@ -260,7 +260,7 @@
       "mode": "api",
       "args": [],
       "status": "ok",
-      "ms": 208,
+      "ms": 711,
       "rows": 3
     },
     {
@@ -271,7 +271,7 @@
         "rust"
       ],
       "status": "ok",
-      "ms": 220,
+      "ms": 366,
       "rows": 3
     },
     {
@@ -280,7 +280,7 @@
       "mode": "api",
       "args": [],
       "status": "ok",
-      "ms": 319,
+      "ms": 750,
       "rows": 3
     },
     {
@@ -291,7 +291,7 @@
         "inception"
       ],
       "status": "blocked",
-      "ms": 12214,
+      "ms": 12320,
       "error": "www.imdb.com showed a bot check (\"403 Forbidden\") instead of the page. Run `sitewise browser start`, open www.imdb.com in that window and complete it once; headless and server environments are often blocked outright."
     },
     {
@@ -302,7 +302,7 @@
         "8.8.8.8"
       ],
       "status": "ok",
-      "ms": 166,
+      "ms": 53,
       "rows": 1
     },
     {
@@ -313,7 +313,7 @@
         "radiohead"
       ],
       "status": "ok",
-      "ms": 238,
+      "ms": 384,
       "rows": 3
     },
     {
@@ -322,7 +322,7 @@
       "mode": "api",
       "args": [],
       "status": "ok",
-      "ms": 387,
+      "ms": 370,
       "rows": 1
     },
     {
@@ -331,7 +331,7 @@
       "mode": "browser",
       "args": [],
       "status": "ok",
-      "ms": 442,
+      "ms": 514,
       "rows": 3
     },
     {
@@ -343,7 +343,7 @@
         "yellow"
       ],
       "status": "ok",
-      "ms": 461,
+      "ms": 755,
       "rows": 1
     },
     {
@@ -354,7 +354,7 @@
         "curry"
       ],
       "status": "ok",
-      "ms": 233,
+      "ms": 686,
       "rows": 3
     },
     {
@@ -365,7 +365,7 @@
         "radiohead"
       ],
       "status": "ok",
-      "ms": 1741,
+      "ms": 701,
       "rows": 3
     },
     {
@@ -373,9 +373,10 @@
       "command": "apod",
       "mode": "api",
       "args": [],
-      "status": "ok",
-      "ms": 911,
-      "rows": 1
+      "status": "fail",
+      "ms": 6517,
+      "error": "api.nasa.gov is having trouble on its side (HTTP 500). Try again shortly. Run `sitewise doctor --adapters` to see which sites are affected.\nNASA's shared DEMO_KEY is rate-limited. Get a free key at https://api.nasa.gov and set NASA_API_KEY.",
+      "report": "https://github.com/MeHalogen/sitewise/issues/new?template=broken-adapter.yml&title=%5Bbroken%5D+nasa+apod&labels=broken-adapter&site=nasa&command=apod&version=1.3.0&error=api.nasa.gov+is+having+trouble+on+its+side+%28HTTP+500%29.+Try+again+shortly.+Run+%60sitewise+doctor+--adapters%60+to+see+which+sites+are+affected.%0ANASA%27s+shared+DEMO_KEY+is+rate-limited.+Get+a+free+key+at+https%3A%2F%2Fapi.nasa.gov+and+set+NASA_API_KEY.&body=Command%3A+%60sitewise+nasa+apod%60%0APlatform%3A+linux+%2F+Node+22.23.4"
     },
     {
       "site": "npm",
@@ -385,7 +386,7 @@
         "react"
       ],
       "status": "ok",
-      "ms": 867,
+      "ms": 620,
       "rows": 3
     },
     {
@@ -396,9 +397,8 @@
         "dune"
       ],
       "status": "ok",
-      "ms": 5059,
-      "rows": 3,
-      "flaky": true
+      "ms": 529,
+      "rows": 3
     },
     {
       "site": "pokemon",
@@ -408,7 +408,7 @@
         "pikachu"
       ],
       "status": "ok",
-      "ms": 285,
+      "ms": 212,
       "rows": 1
     },
     {
@@ -417,7 +417,7 @@
       "mode": "browser",
       "args": [],
       "status": "blocked",
-      "ms": 12834,
+      "ms": 13294,
       "error": "www.producthunt.com showed a bot check (\"Just a moment...\") instead of the page. Run `sitewise browser start`, open www.producthunt.com in that window and complete it once; headless and server environments are often blocked outright."
     },
     {
@@ -428,7 +428,7 @@
         "requests"
       ],
       "status": "ok",
-      "ms": 158,
+      "ms": 31,
       "rows": 1
     },
     {
@@ -436,9 +436,10 @@
       "command": "random",
       "mode": "api",
       "args": [],
-      "status": "ok",
-      "ms": 126,
-      "rows": 3
+      "status": "fail",
+      "ms": 21985,
+      "error": "Could not reach zenquotes.io. Check your internet connection, then try again.",
+      "report": "https://github.com/MeHalogen/sitewise/issues/new?template=broken-adapter.yml&title=%5Bbroken%5D+quotes+random&labels=broken-adapter&site=quotes&command=random&version=1.3.0&error=Could+not+reach+zenquotes.io.+Check+your+internet+connection%2C+then+try+again.&body=Command%3A+%60sitewise+quotes+random%60%0APlatform%3A+linux+%2F+Node+22.23.4"
     },
     {
       "site": "rickandmorty",
@@ -448,7 +449,7 @@
         "rick"
       ],
       "status": "ok",
-      "ms": 118,
+      "ms": 372,
       "rows": 3
     },
     {
@@ -459,7 +460,7 @@
         "https://hnrss.org/frontpage"
       ],
       "status": "ok",
-      "ms": 270,
+      "ms": 3775,
       "rows": 1
     },
     {
@@ -470,7 +471,7 @@
         "async await"
       ],
       "status": "ok",
-      "ms": 150,
+      "ms": 225,
       "rows": 3
     },
     {
@@ -481,7 +482,7 @@
         "portal"
       ],
       "status": "ok",
-      "ms": 8017,
+      "ms": 1087,
       "rows": 3
     },
     {
@@ -490,7 +491,7 @@
       "mode": "api",
       "args": [],
       "status": "ok",
-      "ms": 24,
+      "ms": 22,
       "rows": 3
     },
     {
@@ -499,7 +500,7 @@
       "mode": "api",
       "args": [],
       "status": "ok",
-      "ms": 107,
+      "ms": 306,
       "rows": 3
     },
     {
@@ -510,7 +511,7 @@
         "severance"
       ],
       "status": "ok",
-      "ms": 331,
+      "ms": 551,
       "rows": 3
     },
     {
@@ -521,7 +522,7 @@
         "yeet"
       ],
       "status": "ok",
-      "ms": 192,
+      "ms": 251,
       "rows": 3
     },
     {
@@ -531,9 +532,10 @@
       "args": [
         "London"
       ],
-      "status": "ok",
-      "ms": 648,
-      "rows": 1
+      "status": "fail",
+      "ms": 34105,
+      "error": "Could not reach api.open-meteo.com. Check your internet connection, then try again.",
+      "report": "https://github.com/MeHalogen/sitewise/issues/new?template=broken-adapter.yml&title=%5Bbroken%5D+weather+now&labels=broken-adapter&site=weather&command=now&version=1.3.0&error=Could+not+reach+api.open-meteo.com.+Check+your+internet+connection%2C+then+try+again.&body=Command%3A+%60sitewise+weather+now+London%60%0APlatform%3A+linux+%2F+Node+22.23.4"
     },
     {
       "site": "wikidata",
@@ -543,7 +545,7 @@
         "douglas adams"
       ],
       "status": "ok",
-      "ms": 124,
+      "ms": 226,
       "rows": 3
     },
     {
@@ -554,7 +556,7 @@
         "turing machine"
       ],
       "status": "ok",
-      "ms": 269,
+      "ms": 305,
       "rows": 3
     },
     {
@@ -565,7 +567,7 @@
         "Alan Turing"
       ],
       "status": "ok",
-      "ms": 62,
+      "ms": 180,
       "rows": 1
     },
     {
@@ -576,7 +578,7 @@
         "happy"
       ],
       "status": "ok",
-      "ms": 93,
+      "ms": 206,
       "rows": 3
     },
     {
@@ -587,7 +589,7 @@
         "orange"
       ],
       "status": "ok",
-      "ms": 46,
+      "ms": 227,
       "rows": 1
     },
     {
@@ -598,7 +600,7 @@
         "Europe/London"
       ],
       "status": "ok",
-      "ms": 843,
+      "ms": 823,
       "rows": 1
     },
     {
@@ -609,7 +611,7 @@
         "lofi"
       ],
       "status": "ok",
-      "ms": 2472,
+      "ms": 2640,
       "rows": 3
     }
   ]
