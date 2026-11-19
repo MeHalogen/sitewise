@@ -1,5 +1,5 @@
 {
-  "checkedAt": "2026-11-18T15:42:37.770Z",
+  "checkedAt": "2026-11-19T15:46:24.743Z",
   "version": "1.3.0",
   "summary": {
     "total": 52,
@@ -17,7 +17,7 @@
         "mechanical keyboard"
       ],
       "status": "blocked",
-      "ms": 21325,
+      "ms": 22010,
       "rows": 0,
       "error": "amazon refuses requests from cloud/CI IP addresses (works from home connections)"
     },
@@ -29,7 +29,7 @@
         "naruto"
       ],
       "status": "ok",
-      "ms": 607,
+      "ms": 1202,
       "rows": 3
     },
     {
@@ -40,7 +40,7 @@
         "monet"
       ],
       "status": "ok",
-      "ms": 450,
+      "ms": 317,
       "rows": 3
     },
     {
@@ -51,7 +51,7 @@
         "1706.03762"
       ],
       "status": "ok",
-      "ms": 518,
+      "ms": 13117,
       "rows": 1
     },
     {
@@ -61,9 +61,10 @@
       "args": [
         "cs.LG"
       ],
-      "status": "ok",
-      "ms": 558,
-      "rows": 3
+      "status": "fail",
+      "ms": 31002,
+      "error": "export.arxiv.org did not respond within 15s. It may be slow or down. Run `sitewise doctor --adapters` to see which sites are affected.",
+      "report": "https://github.com/MeHalogen/sitewise/issues/new?template=broken-adapter.yml&title=%5Bbroken%5D+arxiv+recent&labels=broken-adapter&site=arxiv&command=recent&version=1.3.0&error=export.arxiv.org+did+not+respond+within+15s.+It+may+be+slow+or+down.+Run+%60sitewise+doctor+--adapters%60+to+see+which+sites+are+affected.&body=Command%3A+%60sitewise+arxiv+recent+cs.LG%60%0APlatform%3A+linux+%2F+Node+22.23.5"
     },
     {
       "site": "arxiv",
@@ -72,9 +73,10 @@
       "args": [
         "diffusion models"
       ],
-      "status": "ok",
-      "ms": 1167,
-      "rows": 3
+      "status": "fail",
+      "ms": 16168,
+      "error": "export.arxiv.org did not respond within 15s. It may be slow or down. Run `sitewise doctor --adapters` to see which sites are affected.",
+      "report": "https://github.com/MeHalogen/sitewise/issues/new?template=broken-adapter.yml&title=%5Bbroken%5D+arxiv+search&labels=broken-adapter&site=arxiv&command=search&version=1.3.0&error=export.arxiv.org+did+not+respond+within+15s.+It+may+be+slow+or+down.+Run+%60sitewise+doctor+--adapters%60+to+see+which+sites+are+affected.&body=Command%3A+%60sitewise+arxiv+search+diffusion+models%60%0APlatform%3A+linux+%2F+Node+22.23.5"
     },
     {
       "site": "brewery",
@@ -84,7 +86,7 @@
         "dog"
       ],
       "status": "blocked",
-      "ms": 478,
+      "ms": 332,
       "error": "brewery refuses requests from cloud/CI IP addresses (works from home connections)"
     },
     {
@@ -95,7 +97,7 @@
         "margarita"
       ],
       "status": "ok",
-      "ms": 788,
+      "ms": 2247,
       "rows": 3
     },
     {
@@ -104,7 +106,7 @@
       "mode": "api",
       "args": [],
       "status": "ok",
-      "ms": 797,
+      "ms": 662,
       "rows": 3
     },
     {
@@ -113,7 +115,7 @@
       "mode": "api",
       "args": [],
       "status": "ok",
-      "ms": 432,
+      "ms": 299,
       "rows": 3
     },
     {
@@ -124,7 +126,7 @@
         "serde"
       ],
       "status": "ok",
-      "ms": 632,
+      "ms": 333,
       "rows": 3
     },
     {
@@ -136,7 +138,7 @@
         "ethereum"
       ],
       "status": "ok",
-      "ms": 111,
+      "ms": 95,
       "rows": 2
     },
     {
@@ -145,7 +147,7 @@
       "mode": "api",
       "args": [],
       "status": "ok",
-      "ms": 1320,
+      "ms": 253,
       "rows": 3
     },
     {
@@ -154,7 +156,7 @@
       "mode": "api",
       "args": [],
       "status": "ok",
-      "ms": 505,
+      "ms": 632,
       "rows": 3
     },
     {
@@ -165,7 +167,7 @@
         "rust"
       ],
       "status": "ok",
-      "ms": 156,
+      "ms": 106,
       "rows": 3
     },
     {
@@ -174,7 +176,7 @@
       "mode": "api",
       "args": [],
       "status": "ok",
-      "ms": 125,
+      "ms": 116,
       "rows": 3
     },
     {
@@ -185,7 +187,7 @@
         "serendipity"
       ],
       "status": "blocked",
-      "ms": 378,
+      "ms": 182,
       "error": "dictionary refuses requests from cloud/CI IP addresses (works from home connections)"
     },
     {
@@ -198,7 +200,7 @@
         "EUR"
       ],
       "status": "ok",
-      "ms": 803,
+      "ms": 690,
       "rows": 1
     },
     {
@@ -209,7 +211,7 @@
         "nodejs/node"
       ],
       "status": "ok",
-      "ms": 224,
+      "ms": 282,
       "rows": 3
     },
     {
@@ -220,7 +222,7 @@
         "nodejs/node"
       ],
       "status": "ok",
-      "ms": 244,
+      "ms": 333,
       "rows": 1
     },
     {
@@ -231,7 +233,7 @@
         "mcp server"
       ],
       "status": "ok",
-      "ms": 413,
+      "ms": 358,
       "rows": 3
     },
     {
@@ -240,7 +242,7 @@
       "mode": "browser",
       "args": [],
       "status": "ok",
-      "ms": 2720,
+      "ms": 1960,
       "rows": 3
     },
     {
@@ -251,7 +253,7 @@
         "gitlab-runner"
       ],
       "status": "ok",
-      "ms": 1210,
+      "ms": 1227,
       "rows": 3
     },
     {
@@ -260,7 +262,7 @@
       "mode": "api",
       "args": [],
       "status": "ok",
-      "ms": 711,
+      "ms": 406,
       "rows": 3
     },
     {
@@ -271,7 +273,7 @@
         "rust"
       ],
       "status": "ok",
-      "ms": 366,
+      "ms": 340,
       "rows": 3
     },
     {
@@ -280,7 +282,7 @@
       "mode": "api",
       "args": [],
       "status": "ok",
-      "ms": 750,
+      "ms": 259,
       "rows": 3
     },
     {
@@ -291,7 +293,7 @@
         "inception"
       ],
       "status": "blocked",
-      "ms": 12320,
+      "ms": 12412,
       "error": "www.imdb.com showed a bot check (\"403 Forbidden\") instead of the page. Run `sitewise browser start`, open www.imdb.com in that window and complete it once; headless and server environments are often blocked outright."
     },
     {
@@ -302,7 +304,7 @@
         "8.8.8.8"
       ],
       "status": "ok",
-      "ms": 53,
+      "ms": 184,
       "rows": 1
     },
     {
@@ -313,7 +315,7 @@
         "radiohead"
       ],
       "status": "ok",
-      "ms": 384,
+      "ms": 466,
       "rows": 3
     },
     {
@@ -322,7 +324,7 @@
       "mode": "api",
       "args": [],
       "status": "ok",
-      "ms": 370,
+      "ms": 307,
       "rows": 1
     },
     {
@@ -331,7 +333,7 @@
       "mode": "browser",
       "args": [],
       "status": "ok",
-      "ms": 514,
+      "ms": 302,
       "rows": 3
     },
     {
@@ -343,7 +345,7 @@
         "yellow"
       ],
       "status": "ok",
-      "ms": 755,
+      "ms": 503,
       "rows": 1
     },
     {
@@ -354,7 +356,7 @@
         "curry"
       ],
       "status": "ok",
-      "ms": 686,
+      "ms": 431,
       "rows": 3
     },
     {
@@ -365,7 +367,7 @@
         "radiohead"
       ],
       "status": "ok",
-      "ms": 701,
+      "ms": 592,
       "rows": 3
     },
     {
@@ -374,9 +376,9 @@
       "mode": "api",
       "args": [],
       "status": "fail",
-      "ms": 6517,
+      "ms": 2818,
       "error": "api.nasa.gov is having trouble on its side (HTTP 500). Try again shortly. Run `sitewise doctor --adapters` to see which sites are affected.\nNASA's shared DEMO_KEY is rate-limited. Get a free key at https://api.nasa.gov and set NASA_API_KEY.",
-      "report": "https://github.com/MeHalogen/sitewise/issues/new?template=broken-adapter.yml&title=%5Bbroken%5D+nasa+apod&labels=broken-adapter&site=nasa&command=apod&version=1.3.0&error=api.nasa.gov+is+having+trouble+on+its+side+%28HTTP+500%29.+Try+again+shortly.+Run+%60sitewise+doctor+--adapters%60+to+see+which+sites+are+affected.%0ANASA%27s+shared+DEMO_KEY+is+rate-limited.+Get+a+free+key+at+https%3A%2F%2Fapi.nasa.gov+and+set+NASA_API_KEY.&body=Command%3A+%60sitewise+nasa+apod%60%0APlatform%3A+linux+%2F+Node+22.23.4"
+      "report": "https://github.com/MeHalogen/sitewise/issues/new?template=broken-adapter.yml&title=%5Bbroken%5D+nasa+apod&labels=broken-adapter&site=nasa&command=apod&version=1.3.0&error=api.nasa.gov+is+having+trouble+on+its+side+%28HTTP+500%29.+Try+again+shortly.+Run+%60sitewise+doctor+--adapters%60+to+see+which+sites+are+affected.%0ANASA%27s+shared+DEMO_KEY+is+rate-limited.+Get+a+free+key+at+https%3A%2F%2Fapi.nasa.gov+and+set+NASA_API_KEY.&body=Command%3A+%60sitewise+nasa+apod%60%0APlatform%3A+linux+%2F+Node+22.23.5"
     },
     {
       "site": "npm",
@@ -386,7 +388,7 @@
         "react"
       ],
       "status": "ok",
-      "ms": 620,
+      "ms": 260,
       "rows": 3
     },
     {
@@ -397,7 +399,7 @@
         "dune"
       ],
       "status": "ok",
-      "ms": 529,
+      "ms": 3794,
       "rows": 3
     },
     {
@@ -408,7 +410,7 @@
         "pikachu"
       ],
       "status": "ok",
-      "ms": 212,
+      "ms": 153,
       "rows": 1
     },
     {
@@ -417,7 +419,7 @@
       "mode": "browser",
       "args": [],
       "status": "blocked",
-      "ms": 13294,
+      "ms": 12861,
       "error": "www.producthunt.com showed a bot check (\"Just a moment...\") instead of the page. Run `sitewise browser start`, open www.producthunt.com in that window and complete it once; headless and server environments are often blocked outright."
     },
     {
@@ -428,7 +430,7 @@
         "requests"
       ],
       "status": "ok",
-      "ms": 31,
+      "ms": 62,
       "rows": 1
     },
     {
@@ -436,10 +438,9 @@
       "command": "random",
       "mode": "api",
       "args": [],
-      "status": "fail",
-      "ms": 21985,
-      "error": "Could not reach zenquotes.io. Check your internet connection, then try again.",
-      "report": "https://github.com/MeHalogen/sitewise/issues/new?template=broken-adapter.yml&title=%5Bbroken%5D+quotes+random&labels=broken-adapter&site=quotes&command=random&version=1.3.0&error=Could+not+reach+zenquotes.io.+Check+your+internet+connection%2C+then+try+again.&body=Command%3A+%60sitewise+quotes+random%60%0APlatform%3A+linux+%2F+Node+22.23.4"
+      "status": "ok",
+      "ms": 237,
+      "rows": 3
     },
     {
       "site": "rickandmorty",
@@ -449,7 +450,7 @@
         "rick"
       ],
       "status": "ok",
-      "ms": 372,
+      "ms": 203,
       "rows": 3
     },
     {
@@ -460,7 +461,7 @@
         "https://hnrss.org/frontpage"
       ],
       "status": "ok",
-      "ms": 3775,
+      "ms": 243,
       "rows": 1
     },
     {
@@ -471,7 +472,7 @@
         "async await"
       ],
       "status": "ok",
-      "ms": 225,
+      "ms": 185,
       "rows": 3
     },
     {
@@ -482,7 +483,7 @@
         "portal"
       ],
       "status": "ok",
-      "ms": 1087,
+      "ms": 766,
       "rows": 3
     },
     {
@@ -491,7 +492,7 @@
       "mode": "api",
       "args": [],
       "status": "ok",
-      "ms": 22,
+      "ms": 48,
       "rows": 3
     },
     {
@@ -500,7 +501,7 @@
       "mode": "api",
       "args": [],
       "status": "ok",
-      "ms": 306,
+      "ms": 280,
       "rows": 3
     },
     {
@@ -511,7 +512,7 @@
         "severance"
       ],
       "status": "ok",
-      "ms": 551,
+      "ms": 468,
       "rows": 3
     },
     {
@@ -522,7 +523,7 @@
         "yeet"
       ],
       "status": "ok",
-      "ms": 251,
+      "ms": 276,
       "rows": 3
     },
     {
@@ -532,10 +533,9 @@
       "args": [
         "London"
       ],
-      "status": "fail",
-      "ms": 34105,
-      "error": "Could not reach api.open-meteo.com. Check your internet connection, then try again.",
-      "report": "https://github.com/MeHalogen/sitewise/issues/new?template=broken-adapter.yml&title=%5Bbroken%5D+weather+now&labels=broken-adapter&site=weather&command=now&version=1.3.0&error=Could+not+reach+api.open-meteo.com.+Check+your+internet+connection%2C+then+try+again.&body=Command%3A+%60sitewise+weather+now+London%60%0APlatform%3A+linux+%2F+Node+22.23.4"
+      "status": "ok",
+      "ms": 844,
+      "rows": 1
     },
     {
       "site": "wikidata",
@@ -545,7 +545,7 @@
         "douglas adams"
       ],
       "status": "ok",
-      "ms": 226,
+      "ms": 195,
       "rows": 3
     },
     {
@@ -556,7 +556,7 @@
         "turing machine"
       ],
       "status": "ok",
-      "ms": 305,
+      "ms": 202,
       "rows": 3
     },
     {
@@ -567,7 +567,7 @@
         "Alan Turing"
       ],
       "status": "ok",
-      "ms": 180,
+      "ms": 107,
       "rows": 1
     },
     {
@@ -578,7 +578,7 @@
         "happy"
       ],
       "status": "ok",
-      "ms": 206,
+      "ms": 154,
       "rows": 3
     },
     {
@@ -589,7 +589,7 @@
         "orange"
       ],
       "status": "ok",
-      "ms": 227,
+      "ms": 208,
       "rows": 1
     },
     {
@@ -600,7 +600,7 @@
         "Europe/London"
       ],
       "status": "ok",
-      "ms": 823,
+      "ms": 646,
       "rows": 1
     },
     {
@@ -611,7 +611,7 @@
         "lofi"
       ],
       "status": "ok",
-      "ms": 2640,
+      "ms": 2199,
       "rows": 3
     }
   ]
