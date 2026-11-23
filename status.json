@@ -1,10 +1,10 @@
 {
-  "checkedAt": "2026-11-22T14:36:19.354Z",
+  "checkedAt": "2026-11-23T18:08:18.871Z",
   "version": "1.3.0",
   "summary": {
     "total": 52,
-    "ok": 51,
-    "broken": 1,
+    "ok": 52,
+    "broken": 0,
     "blocked": 5,
     "skipped": 0
   },
@@ -17,7 +17,7 @@
         "mechanical keyboard"
       ],
       "status": "blocked",
-      "ms": 25400,
+      "ms": 26453,
       "rows": 0,
       "error": "amazon refuses requests from cloud/CI IP addresses (works from home connections)"
     },
@@ -29,7 +29,7 @@
         "naruto"
       ],
       "status": "ok",
-      "ms": 639,
+      "ms": 1099,
       "rows": 3
     },
     {
@@ -40,7 +40,7 @@
         "monet"
       ],
       "status": "ok",
-      "ms": 179,
+      "ms": 538,
       "rows": 3
     },
     {
@@ -51,7 +51,7 @@
         "1706.03762"
       ],
       "status": "ok",
-      "ms": 168,
+      "ms": 216,
       "rows": 1
     },
     {
@@ -62,7 +62,7 @@
         "cs.LG"
       ],
       "status": "ok",
-      "ms": 614,
+      "ms": 66,
       "rows": 3
     },
     {
@@ -73,7 +73,7 @@
         "diffusion models"
       ],
       "status": "ok",
-      "ms": 620,
+      "ms": 1082,
       "rows": 3
     },
     {
@@ -84,7 +84,7 @@
         "dog"
       ],
       "status": "blocked",
-      "ms": 97,
+      "ms": 1076,
       "error": "brewery refuses requests from cloud/CI IP addresses (works from home connections)"
     },
     {
@@ -95,7 +95,7 @@
         "margarita"
       ],
       "status": "ok",
-      "ms": 168,
+      "ms": 1084,
       "rows": 3
     },
     {
@@ -104,7 +104,7 @@
       "mode": "api",
       "args": [],
       "status": "ok",
-      "ms": 618,
+      "ms": 1183,
       "rows": 3
     },
     {
@@ -113,7 +113,7 @@
       "mode": "api",
       "args": [],
       "status": "ok",
-      "ms": 527,
+      "ms": 456,
       "rows": 3
     },
     {
@@ -124,7 +124,7 @@
         "serde"
       ],
       "status": "ok",
-      "ms": 454,
+      "ms": 168,
       "rows": 3
     },
     {
@@ -136,7 +136,7 @@
         "ethereum"
       ],
       "status": "ok",
-      "ms": 435,
+      "ms": 980,
       "rows": 2
     },
     {
@@ -145,7 +145,7 @@
       "mode": "api",
       "args": [],
       "status": "ok",
-      "ms": 454,
+      "ms": 690,
       "rows": 3
     },
     {
@@ -154,7 +154,7 @@
       "mode": "api",
       "args": [],
       "status": "ok",
-      "ms": 208,
+      "ms": 1433,
       "rows": 3
     },
     {
@@ -165,7 +165,7 @@
         "rust"
       ],
       "status": "ok",
-      "ms": 45,
+      "ms": 62,
       "rows": 3
     },
     {
@@ -174,7 +174,7 @@
       "mode": "api",
       "args": [],
       "status": "ok",
-      "ms": 53,
+      "ms": 51,
       "rows": 3
     },
     {
@@ -185,7 +185,7 @@
         "serendipity"
       ],
       "status": "blocked",
-      "ms": 40,
+      "ms": 628,
       "error": "dictionary refuses requests from cloud/CI IP addresses (works from home connections)"
     },
     {
@@ -198,7 +198,7 @@
         "EUR"
       ],
       "status": "ok",
-      "ms": 200,
+      "ms": 1446,
       "rows": 1
     },
     {
@@ -209,9 +209,8 @@
         "nodejs/node"
       ],
       "status": "ok",
-      "ms": 115,
-      "rows": 3,
-      "flaky": true
+      "ms": 169,
+      "rows": 3
     },
     {
       "site": "github",
@@ -221,9 +220,8 @@
         "nodejs/node"
       ],
       "status": "ok",
-      "ms": 149,
-      "rows": 1,
-      "flaky": true
+      "ms": 192,
+      "rows": 1
     },
     {
       "site": "github",
@@ -233,9 +231,8 @@
         "mcp server"
       ],
       "status": "ok",
-      "ms": 345,
-      "rows": 3,
-      "flaky": true
+      "ms": 249,
+      "rows": 3
     },
     {
       "site": "githubtrending",
@@ -243,7 +240,7 @@
       "mode": "browser",
       "args": [],
       "status": "ok",
-      "ms": 1810,
+      "ms": 1529,
       "rows": 3
     },
     {
@@ -254,7 +251,7 @@
         "gitlab-runner"
       ],
       "status": "ok",
-      "ms": 2941,
+      "ms": 1412,
       "rows": 3
     },
     {
@@ -263,7 +260,7 @@
       "mode": "api",
       "args": [],
       "status": "ok",
-      "ms": 177,
+      "ms": 224,
       "rows": 3
     },
     {
@@ -274,7 +271,7 @@
         "rust"
       ],
       "status": "ok",
-      "ms": 197,
+      "ms": 228,
       "rows": 3
     },
     {
@@ -283,7 +280,7 @@
       "mode": "api",
       "args": [],
       "status": "ok",
-      "ms": 166,
+      "ms": 178,
       "rows": 3
     },
     {
@@ -294,7 +291,7 @@
         "inception"
       ],
       "status": "blocked",
-      "ms": 12172,
+      "ms": 12179,
       "error": "www.imdb.com showed a bot check (\"403 Forbidden\") instead of the page. Run `sitewise browser start`, open www.imdb.com in that window and complete it once; headless and server environments are often blocked outright."
     },
     {
@@ -305,7 +302,7 @@
         "8.8.8.8"
       ],
       "status": "ok",
-      "ms": 160,
+      "ms": 637,
       "rows": 1
     },
     {
@@ -316,7 +313,7 @@
         "radiohead"
       ],
       "status": "ok",
-      "ms": 201,
+      "ms": 224,
       "rows": 3
     },
     {
@@ -325,7 +322,7 @@
       "mode": "api",
       "args": [],
       "status": "ok",
-      "ms": 237,
+      "ms": 860,
       "rows": 1
     },
     {
@@ -334,7 +331,7 @@
       "mode": "browser",
       "args": [],
       "status": "ok",
-      "ms": 347,
+      "ms": 214,
       "rows": 3
     },
     {
@@ -346,7 +343,7 @@
         "yellow"
       ],
       "status": "ok",
-      "ms": 447,
+      "ms": 684,
       "rows": 1
     },
     {
@@ -357,7 +354,7 @@
         "curry"
       ],
       "status": "ok",
-      "ms": 231,
+      "ms": 891,
       "rows": 3
     },
     {
@@ -368,7 +365,7 @@
         "radiohead"
       ],
       "status": "ok",
-      "ms": 460,
+      "ms": 1621,
       "rows": 3
     },
     {
@@ -377,7 +374,7 @@
       "mode": "api",
       "args": [],
       "status": "ok",
-      "ms": 5737,
+      "ms": 307,
       "rows": 1,
       "flaky": true
     },
@@ -389,7 +386,7 @@
         "react"
       ],
       "status": "ok",
-      "ms": 484,
+      "ms": 360,
       "rows": 3
     },
     {
@@ -400,7 +397,7 @@
         "dune"
       ],
       "status": "ok",
-      "ms": 7588,
+      "ms": 1836,
       "rows": 3
     },
     {
@@ -411,7 +408,7 @@
         "pikachu"
       ],
       "status": "ok",
-      "ms": 28,
+      "ms": 557,
       "rows": 1
     },
     {
@@ -420,7 +417,7 @@
       "mode": "browser",
       "args": [],
       "status": "blocked",
-      "ms": 12488,
+      "ms": 12576,
       "error": "www.producthunt.com showed a bot check (\"Just a moment...\") instead of the page. Run `sitewise browser start`, open www.producthunt.com in that window and complete it once; headless and server environments are often blocked outright."
     },
     {
@@ -431,7 +428,7 @@
         "requests"
       ],
       "status": "ok",
-      "ms": 27,
+      "ms": 44,
       "rows": 1
     },
     {
@@ -440,7 +437,7 @@
       "mode": "api",
       "args": [],
       "status": "ok",
-      "ms": 8800,
+      "ms": 3454,
       "rows": 3
     },
     {
@@ -451,7 +448,7 @@
         "rick"
       ],
       "status": "ok",
-      "ms": 65,
+      "ms": 838,
       "rows": 3
     },
     {
@@ -462,7 +459,7 @@
         "https://hnrss.org/frontpage"
       ],
       "status": "ok",
-      "ms": 2114,
+      "ms": 1076,
       "rows": 1
     },
     {
@@ -473,7 +470,7 @@
         "async await"
       ],
       "status": "ok",
-      "ms": 115,
+      "ms": 143,
       "rows": 3
     },
     {
@@ -484,7 +481,7 @@
         "portal"
       ],
       "status": "ok",
-      "ms": 573,
+      "ms": 800,
       "rows": 3
     },
     {
@@ -493,7 +490,7 @@
       "mode": "api",
       "args": [],
       "status": "ok",
-      "ms": 15,
+      "ms": 22,
       "rows": 3
     },
     {
@@ -501,10 +498,9 @@
       "command": "random",
       "mode": "api",
       "args": [],
-      "status": "fail",
-      "ms": 21983,
-      "error": "Could not reach opentdb.com. Check your internet connection, then try again.",
-      "report": "https://github.com/MeHalogen/sitewise/issues/new?template=broken-adapter.yml&title=%5Bbroken%5D+trivia+random&labels=broken-adapter&site=trivia&command=random&version=1.3.0&error=Could+not+reach+opentdb.com.+Check+your+internet+connection%2C+then+try+again.&body=Command%3A+%60sitewise+trivia+random%60%0APlatform%3A+linux+%2F+Node+22.23.5"
+      "status": "ok",
+      "ms": 122,
+      "rows": 3
     },
     {
       "site": "tvmaze",
@@ -514,7 +510,7 @@
         "severance"
       ],
       "status": "ok",
-      "ms": 320,
+      "ms": 316,
       "rows": 3
     },
     {
@@ -525,7 +521,7 @@
         "yeet"
       ],
       "status": "ok",
-      "ms": 409,
+      "ms": 37,
       "rows": 3
     },
     {
@@ -536,7 +532,7 @@
         "London"
       ],
       "status": "ok",
-      "ms": 487,
+      "ms": 482,
       "rows": 1
     },
     {
@@ -547,7 +543,7 @@
         "douglas adams"
       ],
       "status": "ok",
-      "ms": 129,
+      "ms": 112,
       "rows": 3
     },
     {
@@ -558,7 +554,7 @@
         "turing machine"
       ],
       "status": "ok",
-      "ms": 200,
+      "ms": 251,
       "rows": 3
     },
     {
@@ -569,7 +565,7 @@
         "Alan Turing"
       ],
       "status": "ok",
-      "ms": 12,
+      "ms": 11,
       "rows": 1
     },
     {
@@ -580,7 +576,7 @@
         "happy"
       ],
       "status": "ok",
-      "ms": 93,
+      "ms": 56,
       "rows": 3
     },
     {
@@ -591,7 +587,7 @@
         "orange"
       ],
       "status": "ok",
-      "ms": 28,
+      "ms": 15,
       "rows": 1
     },
     {
@@ -602,7 +598,7 @@
         "Europe/London"
       ],
       "status": "ok",
-      "ms": 2855,
+      "ms": 8052,
       "rows": 1
     },
     {
@@ -613,7 +609,7 @@
         "lofi"
       ],
       "status": "ok",
-      "ms": 2071,
+      "ms": 2348,
       "rows": 3
     }
   ]
