@@ -1,5 +1,5 @@
 {
-  "checkedAt": "2026-11-23T18:08:18.871Z",
+  "checkedAt": "2026-11-24T17:44:56.549Z",
   "version": "1.3.0",
   "summary": {
     "total": 52,
@@ -17,7 +17,7 @@
         "mechanical keyboard"
       ],
       "status": "blocked",
-      "ms": 26453,
+      "ms": 21324,
       "rows": 0,
       "error": "amazon refuses requests from cloud/CI IP addresses (works from home connections)"
     },
@@ -29,7 +29,7 @@
         "naruto"
       ],
       "status": "ok",
-      "ms": 1099,
+      "ms": 292,
       "rows": 3
     },
     {
@@ -40,7 +40,7 @@
         "monet"
       ],
       "status": "ok",
-      "ms": 538,
+      "ms": 374,
       "rows": 3
     },
     {
@@ -51,7 +51,7 @@
         "1706.03762"
       ],
       "status": "ok",
-      "ms": 216,
+      "ms": 367,
       "rows": 1
     },
     {
@@ -62,7 +62,7 @@
         "cs.LG"
       ],
       "status": "ok",
-      "ms": 66,
+      "ms": 392,
       "rows": 3
     },
     {
@@ -73,7 +73,7 @@
         "diffusion models"
       ],
       "status": "ok",
-      "ms": 1082,
+      "ms": 611,
       "rows": 3
     },
     {
@@ -84,7 +84,7 @@
         "dog"
       ],
       "status": "blocked",
-      "ms": 1076,
+      "ms": 265,
       "error": "brewery refuses requests from cloud/CI IP addresses (works from home connections)"
     },
     {
@@ -95,7 +95,7 @@
         "margarita"
       ],
       "status": "ok",
-      "ms": 1084,
+      "ms": 616,
       "rows": 3
     },
     {
@@ -104,7 +104,7 @@
       "mode": "api",
       "args": [],
       "status": "ok",
-      "ms": 1183,
+      "ms": 613,
       "rows": 3
     },
     {
@@ -113,7 +113,7 @@
       "mode": "api",
       "args": [],
       "status": "ok",
-      "ms": 456,
+      "ms": 247,
       "rows": 3
     },
     {
@@ -124,7 +124,7 @@
         "serde"
       ],
       "status": "ok",
-      "ms": 168,
+      "ms": 379,
       "rows": 3
     },
     {
@@ -136,7 +136,7 @@
         "ethereum"
       ],
       "status": "ok",
-      "ms": 980,
+      "ms": 96,
       "rows": 2
     },
     {
@@ -145,7 +145,7 @@
       "mode": "api",
       "args": [],
       "status": "ok",
-      "ms": 690,
+      "ms": 107,
       "rows": 3
     },
     {
@@ -154,7 +154,7 @@
       "mode": "api",
       "args": [],
       "status": "ok",
-      "ms": 1433,
+      "ms": 364,
       "rows": 3
     },
     {
@@ -165,7 +165,7 @@
         "rust"
       ],
       "status": "ok",
-      "ms": 62,
+      "ms": 287,
       "rows": 3
     },
     {
@@ -174,7 +174,7 @@
       "mode": "api",
       "args": [],
       "status": "ok",
-      "ms": 51,
+      "ms": 175,
       "rows": 3
     },
     {
@@ -185,7 +185,7 @@
         "serendipity"
       ],
       "status": "blocked",
-      "ms": 628,
+      "ms": 142,
       "error": "dictionary refuses requests from cloud/CI IP addresses (works from home connections)"
     },
     {
@@ -198,7 +198,7 @@
         "EUR"
       ],
       "status": "ok",
-      "ms": 1446,
+      "ms": 544,
       "rows": 1
     },
     {
@@ -209,7 +209,7 @@
         "nodejs/node"
       ],
       "status": "ok",
-      "ms": 169,
+      "ms": 377,
       "rows": 3
     },
     {
@@ -220,7 +220,7 @@
         "nodejs/node"
       ],
       "status": "ok",
-      "ms": 192,
+      "ms": 407,
       "rows": 1
     },
     {
@@ -231,7 +231,7 @@
         "mcp server"
       ],
       "status": "ok",
-      "ms": 249,
+      "ms": 467,
       "rows": 3
     },
     {
@@ -240,7 +240,7 @@
       "mode": "browser",
       "args": [],
       "status": "ok",
-      "ms": 1529,
+      "ms": 2236,
       "rows": 3
     },
     {
@@ -251,7 +251,7 @@
         "gitlab-runner"
       ],
       "status": "ok",
-      "ms": 1412,
+      "ms": 3863,
       "rows": 3
     },
     {
@@ -260,7 +260,7 @@
       "mode": "api",
       "args": [],
       "status": "ok",
-      "ms": 224,
+      "ms": 250,
       "rows": 3
     },
     {
@@ -271,7 +271,7 @@
         "rust"
       ],
       "status": "ok",
-      "ms": 228,
+      "ms": 323,
       "rows": 3
     },
     {
@@ -280,7 +280,7 @@
       "mode": "api",
       "args": [],
       "status": "ok",
-      "ms": 178,
+      "ms": 314,
       "rows": 3
     },
     {
@@ -291,7 +291,7 @@
         "inception"
       ],
       "status": "blocked",
-      "ms": 12179,
+      "ms": 12269,
       "error": "www.imdb.com showed a bot check (\"403 Forbidden\") instead of the page. Run `sitewise browser start`, open www.imdb.com in that window and complete it once; headless and server environments are often blocked outright."
     },
     {
@@ -302,7 +302,7 @@
         "8.8.8.8"
       ],
       "status": "ok",
-      "ms": 637,
+      "ms": 130,
       "rows": 1
     },
     {
@@ -313,7 +313,7 @@
         "radiohead"
       ],
       "status": "ok",
-      "ms": 224,
+      "ms": 269,
       "rows": 3
     },
     {
@@ -322,7 +322,7 @@
       "mode": "api",
       "args": [],
       "status": "ok",
-      "ms": 860,
+      "ms": 231,
       "rows": 1
     },
     {
@@ -331,7 +331,7 @@
       "mode": "browser",
       "args": [],
       "status": "ok",
-      "ms": 214,
+      "ms": 290,
       "rows": 3
     },
     {
@@ -343,7 +343,7 @@
         "yellow"
       ],
       "status": "ok",
-      "ms": 684,
+      "ms": 523,
       "rows": 1
     },
     {
@@ -354,7 +354,7 @@
         "curry"
       ],
       "status": "ok",
-      "ms": 891,
+      "ms": 535,
       "rows": 3
     },
     {
@@ -365,7 +365,7 @@
         "radiohead"
       ],
       "status": "ok",
-      "ms": 1621,
+      "ms": 524,
       "rows": 3
     },
     {
@@ -374,9 +374,8 @@
       "mode": "api",
       "args": [],
       "status": "ok",
-      "ms": 307,
-      "rows": 1,
-      "flaky": true
+      "ms": 18713,
+      "rows": 1
     },
     {
       "site": "npm",
@@ -386,7 +385,7 @@
         "react"
       ],
       "status": "ok",
-      "ms": 360,
+      "ms": 483,
       "rows": 3
     },
     {
@@ -397,7 +396,7 @@
         "dune"
       ],
       "status": "ok",
-      "ms": 1836,
+      "ms": 1746,
       "rows": 3
     },
     {
@@ -408,7 +407,7 @@
         "pikachu"
       ],
       "status": "ok",
-      "ms": 557,
+      "ms": 98,
       "rows": 1
     },
     {
@@ -417,7 +416,7 @@
       "mode": "browser",
       "args": [],
       "status": "blocked",
-      "ms": 12576,
+      "ms": 12942,
       "error": "www.producthunt.com showed a bot check (\"Just a moment...\") instead of the page. Run `sitewise browser start`, open www.producthunt.com in that window and complete it once; headless and server environments are often blocked outright."
     },
     {
@@ -428,7 +427,7 @@
         "requests"
       ],
       "status": "ok",
-      "ms": 44,
+      "ms": 76,
       "rows": 1
     },
     {
@@ -437,7 +436,7 @@
       "mode": "api",
       "args": [],
       "status": "ok",
-      "ms": 3454,
+      "ms": 220,
       "rows": 3
     },
     {
@@ -448,7 +447,7 @@
         "rick"
       ],
       "status": "ok",
-      "ms": 838,
+      "ms": 161,
       "rows": 3
     },
     {
@@ -459,7 +458,7 @@
         "https://hnrss.org/frontpage"
       ],
       "status": "ok",
-      "ms": 1076,
+      "ms": 1238,
       "rows": 1
     },
     {
@@ -470,7 +469,7 @@
         "async await"
       ],
       "status": "ok",
-      "ms": 143,
+      "ms": 242,
       "rows": 3
     },
     {
@@ -481,7 +480,7 @@
         "portal"
       ],
       "status": "ok",
-      "ms": 800,
+      "ms": 936,
       "rows": 3
     },
     {
@@ -490,7 +489,7 @@
       "mode": "api",
       "args": [],
       "status": "ok",
-      "ms": 22,
+      "ms": 36,
       "rows": 3
     },
     {
@@ -499,7 +498,7 @@
       "mode": "api",
       "args": [],
       "status": "ok",
-      "ms": 122,
+      "ms": 253,
       "rows": 3
     },
     {
@@ -510,7 +509,7 @@
         "severance"
       ],
       "status": "ok",
-      "ms": 316,
+      "ms": 465,
       "rows": 3
     },
     {
@@ -521,7 +520,7 @@
         "yeet"
       ],
       "status": "ok",
-      "ms": 37,
+      "ms": 261,
       "rows": 3
     },
     {
@@ -532,7 +531,7 @@
         "London"
       ],
       "status": "ok",
-      "ms": 482,
+      "ms": 704,
       "rows": 1
     },
     {
@@ -543,7 +542,7 @@
         "douglas adams"
       ],
       "status": "ok",
-      "ms": 112,
+      "ms": 162,
       "rows": 3
     },
     {
@@ -554,7 +553,7 @@
         "turing machine"
       ],
       "status": "ok",
-      "ms": 251,
+      "ms": 335,
       "rows": 3
     },
     {
@@ -565,7 +564,7 @@
         "Alan Turing"
       ],
       "status": "ok",
-      "ms": 11,
+      "ms": 65,
       "rows": 1
     },
     {
@@ -576,7 +575,7 @@
         "happy"
       ],
       "status": "ok",
-      "ms": 56,
+      "ms": 157,
       "rows": 3
     },
     {
@@ -587,7 +586,7 @@
         "orange"
       ],
       "status": "ok",
-      "ms": 15,
+      "ms": 149,
       "rows": 1
     },
     {
@@ -598,8 +597,9 @@
         "Europe/London"
       ],
       "status": "ok",
-      "ms": 8052,
-      "rows": 1
+      "ms": 3832,
+      "rows": 1,
+      "flaky": true
     },
     {
       "site": "youtube",
@@ -609,7 +609,7 @@
         "lofi"
       ],
       "status": "ok",
-      "ms": 2348,
+      "ms": 2857,
       "rows": 3
     }
   ]
