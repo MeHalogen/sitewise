@@ -81,10 +81,10 @@ export async function runMcpServer(version: string): Promise<void> {
       inputSchema: {
       site: z.string().describe('adapter name, e.g. hackernews, reddit, github'),
       command: z.string().describe('command name, e.g. top, search'),
-      args: z.array(z.string()).optional().describe('positional arguments, e.g. the search query'),
+      args: z.array(z.string().max(2000)).max(20).optional().describe('positional arguments, e.g. the search query'),
       limit: z.number().optional().describe('max results, when the command supports it (shorthand for options.limit)'),
       options: z
-        .record(z.union([z.string(), z.number(), z.boolean()]))
+        .record(z.string().max(64), z.union([z.string().max(2000), z.number(), z.boolean()]))
         .optional()
         .describe('any of the command\'s options by name, e.g. {"time": "week"} for reddit top; see list_commands'),
       },
@@ -133,7 +133,7 @@ export async function runMcpServer(version: string): Promise<void> {
       url: z.string().describe('page to scrape (may contain {query}/{0} placeholders)'),
       itemSelector: z.string().describe('CSS selector matching each repeated item/row'),
       fields: z
-        .record(z.object({ selector: z.string().optional(), attr: z.string().optional(), absolute: z.boolean().optional() }))
+        .record(z.string().max(64), z.object({ selector: z.string().max(500).optional(), attr: z.string().max(64).optional(), absolute: z.boolean().optional() }))
         .describe('output field name -> how to read it: selector relative to the item (omit to use the item itself), attr for an attribute like href, absolute for absolute URLs'),
       description: z.string().optional(),
     },

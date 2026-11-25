@@ -3,6 +3,20 @@
 All notable changes to sitewise are documented here. This project follows
 [Semantic Versioning](https://semver.org).
 
+## [1.3.1] — 2026-11-25
+
+A security patch. `npm audit` now reports 0 vulnerabilities (1.3.0 had 18,
+several in runtime dependencies).
+
+### Security
+
+- Upgraded `@modelcontextprotocol/sdk` (1.32.2), `fast-xml-parser` (5.12.1),
+  `js-yaml` (4.3.2) and transitive dependencies to patched versions, and
+  raised the minimum versions so installs cannot resolve vulnerable ones.
+- Moved to `zod` 4 (GHSA-mrhx-c7xc-m3w5: memory exhaustion while validating
+  oversized collections). MCP tool inputs are also capped explicitly: at most
+  20 positional args, 50 coins, and bounded string lengths.
+
 ## [1.3.0] — 2026-11-15
 
 The reliability release: sitewise now tells you when a site breaks, repairs

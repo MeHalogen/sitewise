@@ -134,7 +134,7 @@ export const FEATURED_TOOLS: FeaturedTool[] = [
     name: 'get_crypto_prices',
     title: 'Crypto prices',
     description: 'Live USD prices and 24h change for cryptocurrencies. Use instead of web search for current crypto prices.',
-    params: { coins: z.array(z.string().min(1)).min(1).describe('CoinGecko ids, e.g. ["bitcoin", "ethereum"]') },
+    params: { coins: z.array(z.string().min(1).max(100)).min(1).max(50).describe('CoinGecko ids, e.g. ["bitcoin", "ethereum"]') },
     route: (i) => ({ site: 'crypto', command: 'price', args: (i.coins as unknown[]).map(str) }),
   },
   {
