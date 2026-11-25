@@ -31,7 +31,7 @@ sitewise read https://some-article.com
 
 One clean surface over the web, three ways:
 
-1. **A native MCP server.** `sitewise mcp` exposes everything below as tools for AI agents (Claude Code, Cursor, or any MCP client). Every tool returns structured JSON, and `list_commands` tells the agent each command's arguments and options, so it calls correctly the first time.
+1. **A native MCP server.** `sitewise mcp` gives AI agents (Claude Code, Cursor, or any MCP client) dedicated tools like `search_github`, `search_npm` and `hacker_news`, each described so the agent knows when it beats a web search, plus every other site via `run_command`. Results are exact, compact JSON from the source's own API, not a paraphrased web page.
 2. **Site commands.** 40 sites over their public APIs: no keys, no browser, no setup. `sitewise hackernews top` just works, even on a server or in CI.
 3. **Browser automation.** Drive a real Chrome-family browser over the DevTools Protocol (no extension), with a persistent profile where your logins stick. This also powers adapters for sites without a usable API.
 
@@ -156,7 +156,19 @@ claude mcp add sitewise -- npx -y sitewise mcp
 
 If you installed it globally: `claude mcp add -s user sitewise -- sitewise mcp`. For any other MCP client, run the command `npx -y sitewise mcp` over stdio.
 
-Your agent then gets these tools:
+Your agent then gets **dedicated tools for the questions it gets most**. Each one says in its description when it beats a general web search, so agents reach for it on their own:
+
+| Tool | What it returns |
+|------|-----------------|
+| `search_github` · `get_github_repo` · `get_github_releases` | repos ranked by stars; one repo's stars, issues, license, last push; latest releases |
+| `search_npm` · `get_pypi_package` · `search_crates` | packages with current versions, downloads, descriptions |
+| `search_stackoverflow` | top-voted questions for an error or how-to |
+| `hacker_news` | the front page, or stories matching a query |
+| `search_arxiv` · `latest_arxiv_papers` | papers on a topic; newest papers in a category |
+| `wikipedia_summary` | the lead summary of an article |
+| `get_weather` · `get_crypto_prices` · `convert_currency` | current conditions, live prices, ECB exchange rates |
+
+Results are compact JSON rows (or a short summary for single items), so they cost few tokens. All data tools are marked read-only. Everything else is one step away:
 
 | Tool | What it does |
 |------|--------------|

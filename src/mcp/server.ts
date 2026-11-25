@@ -17,6 +17,7 @@ import { persistSpec } from '../browser/heal-store.js';
 import { readUrl } from '../read.js';
 import { describeCommands, findCommand } from '../registry.js';
 import { limitOverride, resolveOptions, type CommandResult } from '../adapter.js';
+import { FEATURED_TOOLS, inputSchema, planCall, toolText } from './featured.js';
 
 function asContent(result: CommandResult) {
   return { content: [{ type: 'text' as const, text: JSON.stringify(result.data, null, 2) }] };
@@ -26,21 +27,58 @@ function asText(text: string) {
   return { content: [{ type: 'text' as const, text }] };
 }
 
+function asError(text: string) {
+  return { content: [{ type: 'text' as const, text }], isError: true };
+}
+
+/** Read-only tools that fetch from the open web: safe to call, results vary over time. */
+const READ_ONLY = { readOnlyHint: true, openWorldHint: true, destructiveHint: false } as const;
+
+export const SERVER_INSTRUCTIONS = [
+  'sitewise returns exact, structured data straight from the sources developers rely on (GitHub, npm, PyPI, crates.io, Stack Overflow, Hacker News, arXiv, Wikipedia, weather, crypto and currency rates) as JSON.',
+  'Prefer its dedicated tools (search_github, get_github_repo, search_npm, get_pypi_package, hacker_news, search_arxiv, get_weather, ...) over general web search whenever the user needs current numbers (stars, versions, downloads, prices, temperatures), a list to compare or rank, or the latest papers or posts: they are faster, cheaper in tokens, and not paraphrased.',
+  'For ~50 more sites, call list_commands once, then run_command. Use read_url to read an article as Markdown.',
+  'The browser_* tools drive a real browser with the user\'s own logged-in sessions; use them only for pages no other tool covers, and never to submit forms or post content without the user\'s explicit approval.',
+].join(' ');
+
 /** Run sitewise as an MCP server over stdio, exposing adapters + browser control as tools. */
 export async function runMcpServer(version: string): Promise<void> {
-  const server = new McpServer({ name: 'sitewise', version });
+  const server = new McpServer({ name: 'sitewise', version }, { instructions: SERVER_INSTRUCTIONS });
 
-  server.tool(
+  for (const tool of FEATURED_TOOLS) {
+    server.registerTool(
+      tool.name,
+      { title: tool.title, description: tool.description, inputSchema: inputSchema(tool), annotations: { title: tool.title, ...READ_ONLY } },
+      async (input: Record<string, unknown>) => {
+        try {
+          const call = planCall(tool, input, findCommand);
+          return asText(toolText(await call.cmd.run({ args: call.args, opts: call.opts })));
+        } catch (err) {
+          return asError(`${tool.name} failed: ${(err as Error).message}`);
+        }
+      },
+    );
+  }
+
+  server.registerTool(
     'list_commands',
-    'List every available site command with its positional args, options (name, description, default) and an example. Call this first to discover what sitewise can do and how to call it.',
-    {},
-    async () => asText(JSON.stringify(describeCommands(), null, 2)),
+    {
+      title: 'List all site commands',
+      description:
+        'Every sitewise site command (about 64 across 50 sites: packages, news, papers, media, food, finance, and browser-driven sites like YouTube and Amazon) with its args, options, defaults and an example. Call once when no dedicated tool fits, then use run_command.',
+      annotations: { title: 'List all site commands', ...READ_ONLY, openWorldHint: false },
+    },
+    async () => asText(JSON.stringify(describeCommands())),
   );
 
-  server.tool(
+  server.registerTool(
     'run_command',
-    'Run a sitewise site command, e.g. site="hackernews" command="top". Returns structured JSON.',
     {
+      title: 'Run a site command',
+      description:
+        'Run any sitewise site command from list_commands, e.g. site="devto" command="top", or site="tvmaze" command="search" args=["severance"]. Returns structured JSON.',
+      annotations: { title: 'Run a site command', ...READ_ONLY },
+      inputSchema: {
       site: z.string().describe('adapter name, e.g. hackernews, reddit, github'),
       command: z.string().describe('command name, e.g. top, search'),
       args: z.array(z.string()).optional().describe('positional arguments, e.g. the search query'),
@@ -49,31 +87,40 @@ export async function runMcpServer(version: string): Promise<void> {
         .record(z.union([z.string(), z.number(), z.boolean()]))
         .optional()
         .describe('any of the command\'s options by name, e.g. {"time": "week"} for reddit top; see list_commands'),
+      },
     },
     async ({ site, command, args, limit, options }) => {
       const cmd = findCommand(site, command);
-      if (!cmd) return asText(`Unknown command ${site}/${command}. Use list_commands to see what exists.`);
+      if (!cmd) return asError(`Unknown command ${site}/${command}. Use list_commands to see what exists.`);
       let opts: Record<string, unknown>;
       try {
         opts = resolveOptions(cmd, { ...limitOverride(cmd, limit), ...options });
       } catch (err) {
-        return asText(`Invalid options for ${site}/${command}: ${(err as Error).message}`);
+        return asError(`Invalid options for ${site}/${command}: ${(err as Error).message}`);
       }
       try {
         return asContent(await cmd.run({ args: args ?? [], opts }));
       } catch (err) {
-        return asText(`${site}/${command} failed: ${(err as Error).message}`);
+        return asError(`${site}/${command} failed: ${(err as Error).message}`);
       }
     },
   );
 
-  server.tool(
+  server.registerTool(
     'read_url',
-    'Fetch a URL and return the main article as clean Markdown (title, byline, body).',
-    { url: z.string().describe('the page URL') },
+    {
+      title: 'Read a page as Markdown',
+      description: 'Fetch a URL and return its main article as clean Markdown (title, byline, body), without navigation, ads or scripts.',
+      inputSchema: { url: z.string().describe('the page URL') },
+      annotations: { title: 'Read a page as Markdown', ...READ_ONLY },
+    },
     async ({ url }) => {
-      const article = await readUrl(url);
-      return asText(`# ${article.title}\n\n${article.markdown}`);
+      try {
+        const article = await readUrl(url);
+        return asText(`# ${article.title}\n\n${article.markdown}`);
+      } catch (err) {
+        return asError(`read_url failed: ${(err as Error).message}`);
+      }
     },
   );
 

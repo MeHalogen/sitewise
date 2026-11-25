@@ -10,6 +10,14 @@ what it can, and every command does what its flags say.
 
 ### Added
 
+- **Dedicated MCP tools for agents**: `search_github`, `get_github_repo`,
+  `get_github_releases`, `search_npm`, `get_pypi_package`, `search_crates`,
+  `search_stackoverflow`, `hacker_news`, `search_arxiv`, `latest_arxiv_papers`,
+  `wikipedia_summary`, `get_weather`, `get_crypto_prices` and
+  `convert_currency`. Each description says when it beats a general web
+  search; results are compact JSON (or a short summary for single items).
+  The server now sends instructions on when to use sitewise, data tools are
+  annotated read-only, and failures are returned as MCP errors.
 - **`sitewise doctor --adapters`**: runs every command's example and prints a
   health table (`--json`, `--browser`, `--only <sites>`, `--badge <file>`).
 - **Nightly canary**: a GitHub Action checks every adapter, publishes the
