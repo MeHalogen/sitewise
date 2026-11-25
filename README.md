@@ -7,6 +7,7 @@
 [![adapter health](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/MeHalogen/sitewise/status/badge.json)](https://github.com/MeHalogen/sitewise/blob/status/status.json)
 [![ci](https://github.com/MeHalogen/sitewise/actions/workflows/ci.yml/badge.svg)](https://github.com/MeHalogen/sitewise/actions/workflows/ci.yml)
 [![license](https://img.shields.io/npm/l/sitewise?color=blue)](./LICENSE)
+[![sitewise on Glama](https://glama.ai/mcp/servers/MeHalogen/sitewise/badges/score.svg)](https://glama.ai/mcp/servers/MeHalogen/sitewise)
 
 **Add it to Claude Code in one line, nothing to install:**
 
